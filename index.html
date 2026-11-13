@@ -1064,6 +1064,29 @@ html.motion .wrgc{animation:wRing 1.2s cubic-bezier(.2,.8,.2,1) both}
 img.emo{display:inline-block;height:1.2em;width:1.2em;object-fit:contain;vertical-align:-.25em;margin:0 .02em;user-select:none;-webkit-user-drag:none;pointer-events:none}
 .wxi img.emo,.wag0 img.emo,.wph0 img.emo,.wpke img.emo{height:1.15em;width:1.15em;vertical-align:middle;filter:drop-shadow(0 3px 6px rgba(0,0,0,.18))}
 .wxd i img.emo{height:1.25em;width:1.25em}
+/* right-click menu */
+.wctx{position:fixed;z-index:80;min-width:220px;max-width:280px;padding:6px;border-radius:16px;background:color-mix(in srgb,var(--panel) 86%,transparent);border:1px solid var(--line);-webkit-backdrop-filter:blur(30px) saturate(180%);backdrop-filter:blur(30px) saturate(180%);box-shadow:0 18px 50px rgba(0,0,0,.28),0 2px 8px rgba(0,0,0,.12),inset 0 1px 0 var(--glass-hi);color:var(--ink);font-size:14px}
+html.motion .wctx.in{animation:wctxIn .16s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes wctxIn{from{opacity:0;scale:.94}}
+.wctxh{display:flex;align-items:center;gap:8px;padding:6px 10px 8px;font-size:12px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--mute)}
+.wctxh i{width:8px;height:8px;border-radius:50%}
+.wctx>button{display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;border:0;border-radius:10px;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.wctx>button svg{flex:none;opacity:.75}
+.wctx>button:hover:not([disabled]),.wctx>button:focus-visible{background:color-mix(in srgb,var(--accent) 16%,transparent);outline:none}
+.wctx>button[disabled]{opacity:.38;cursor:default}
+.wctx>button.del{color:#ff453a}.wctx>button.del svg{opacity:1}
+.wctx>button.del:hover,.wctx>button.del:focus-visible{background:color-mix(in srgb,#ff453a 14%,transparent)}
+.wctxs{display:flex;gap:2px;margin:4px 4px 2px;padding:3px;border-radius:11px;background:var(--glass-lo);border:1px solid var(--line)}
+.wctxs button{flex:1;padding:5px 4px;border:0;border-radius:8px;background:none;color:color-mix(in srgb,var(--ink) 72%,transparent);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
+.wctxs button.on{background:var(--pill);color:var(--ink);box-shadow:0 1px 5px rgba(0,0,0,.14)}
+.wctxs button:focus-visible{outline:2px solid var(--accent)}
+.wctxl{height:1px;margin:5px 8px;background:var(--line)}
+/* on a PC the Edit button gives way to right-click; Done stays while rearranging */
+html.finept .wds:not(.edit) [data-edit]{display:none}
+.wrch{display:none;font-size:12px;color:var(--mute);margin-right:4px}
+html.finept .wrch{display:inline}
+@media(max-width:700px){html.finept .wrch{display:none}}
+.wgrid>.wd[data-w]:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 </style>
 <script>try{var t=localStorage.getItem("wth");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);var a=localStorage.getItem("wacc");if(/^#[0-9a-f]{6}$/i.test(a||"")){var r=document.documentElement.style;r.setProperty("--accent",a);r.setProperty("--dot",a);r.setProperty("--today",a)}}catch(e){}</script>
 </head>
@@ -1897,6 +1920,7 @@ c.innerHTML=bar+(col?'':'<div class="wgrid">'+tiles+(ids.length?'':'<div class="
 
 /* ---------- interactions: long-press, drag, tile buttons ---------- */
 function setEdit(tab,on){WS().edit[tab]=on;buildWds(tab);if(on&&navigator.vibrate)try{navigator.vibrate(12)}catch(e){}}
+window.__setEdit=setEdit;window.__hasSet=function(id){return !!SETS[id]};window.__openSet=openSet;
 ["mail","calendar"].forEach(function(tab){var c=EL("wds-"+tab),lp=null,sx=0,sy=0;
 c.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
 if(b.dataset.cfg){openSet(b.dataset.cfg);return}
@@ -1905,7 +1929,7 @@ if(b.dataset.wat){var W2=jparse("wd-water",{}),k=dk();W2[k]=Math.max(0,(W2[k]||0
 if(b.dataset.sw){if(b.dataset.sw==="go"){if(SW.run){SW.t=swNow();SW.run=false}else{SW.t0=Date.now();SW.run=true}}else if(b.dataset.sw==="lap"){SW.laps.push(swNow())}else{SW={t:0,run:false,t0:0,laps:[]}}paintW("stopwatch")}});
 c.addEventListener("keydown",function(e){if(e.key==="Escape"&&WS().edit[tab]){setEdit(tab,false)}});
 c.addEventListener("pointerdown",function(e){var t=e.target.closest(".wd");if(!t||e.button>0||e.target.closest("button,input,textarea,select,a"))return;sx=e.clientX;sy=e.clientY;
-if(!WS().edit[tab]){clearTimeout(lp);lp=setTimeout(function(){lp=null;setEdit(tab,true)},550);return}
+if(!WS().edit[tab]){if(e.pointerType==="mouse")return;clearTimeout(lp);lp=setTimeout(function(){lp=null;setEdit(tab,true)},550);return}
 startDrag(tab,t,e)});
 c.addEventListener("pointermove",function(e){if(lp&&Math.hypot(e.clientX-sx,e.clientY-sy)>8){clearTimeout(lp);lp=null}});
 ["pointerup","pointercancel","pointerleave"].forEach(function(n){c.addEventListener(n,function(){clearTimeout(lp);lp=null})});
@@ -2312,13 +2336,13 @@ if(id==="stack"){var sel=stackIds();h+='<div class="stgl">In this stack</div><p 
 '<label class="stsw"><span class="stswt"><b>Rotate on its own</b><small>Every 9 seconds. Stops while the pointer or keyboard focus is on it</small></span><input type="checkbox" role="switch" id="wcauto"'+(c3("stack","auto",1)?' checked':'')+'><i aria-hidden="true"></i></label>'}
 return h}
 function openCus(tab,id){CUS={tab:tab,id:id};var w=wgById(id);EL("wch").textContent=w.name;EL("wcsub").textContent=w.desc;EL("wcbody").innerHTML=cusBody();
-EL("wcmore").hidden=!document.querySelector('#wds-'+tab+' [data-cfg="'+id+'"]');cm.hidden=false;var f=cm.querySelector(".wcseg .on");if(f)f.focus()}
+EL("wcmore").hidden=!(window.__hasSet&&__hasSet(id));cm.hidden=false;var f=cm.querySelector(".wcseg .on");if(f)f.focus()}
 function closeCus(){var id=CUS.id;saveText();cm.hidden=true;var b=document.querySelector('#wds-'+CUS.tab+' [data-cus="'+id+'"]');if(b)b.focus()}
 function saveText(){var id=CUS.id;if(id==="links"&&EL("wclinks")){var L=EL("wclinks").value.split("\n").map(function(x){var p=x.split("|"),t=(p[0]||"").trim(),u=(p[1]||"").trim();if(!u&&/^https?:|\./.test(t)){u=t;t=host(/^https?:/.test(t)?t:"https://"+t).replace(/^www\./,"")}if(u&&!/^https?:\/\//i.test(u))u="https://"+u;return t&&u&&host(u)?{t:t.slice(0,24),u:u}:null}).filter(Boolean).slice(0,8);if(L.length)set3("links","list",L);repaint3("links")}
 if(id==="photo"&&EL("wccap")){set3("photo","cap",EL("wccap").value.trim());repaint3("photo")}}
 function refreshCus(){var b=EL("wcbody"),st=b.scrollTop,ta=EL("wclinks"),tv=ta&&ta.value;b.innerHTML=cusBody();if(tv!=null&&EL("wclinks"))EL("wclinks").value=tv;b.scrollTop=st;buildWds(CUS.tab);tickWds()}
 EL("wcx").onclick=closeCus;EL("wcdone").onclick=closeCus;
-EL("wcmore").onclick=function(){var b=document.querySelector('#wds-'+CUS.tab+' [data-cfg="'+CUS.id+'"]');closeCus();if(b)b.click()};
+EL("wcmore").onclick=function(){var id=CUS.id;closeCus();if(window.__openSet)__openSet(id)};window.__openCus=openCus;
 cm.addEventListener("click",function(e){var t=e.target;if(t===cm)return closeCus();var id=CUS.id;
 var s=t.closest("[data-wc]");if(s){var k=s.dataset.wc,v=s.dataset.v;
 if(k==="style"){LOOK[id]=LOOK[id]||{};LOOK[id].style=v;saveLook()}
@@ -2367,6 +2391,69 @@ var q=[],sched=false;
 function flush(){sched=false;var L=q;q=[];L.forEach(function(n){if(n.isConnected)walk(n)})}
 new MutationObserver(function(ms){ms.forEach(function(m){if(m.type==="characterData")q.push(m.target);else m.addedNodes.forEach(function(n){q.push(n)})});if(!sched){sched=true;requestAnimationFrame(flush)}}).observe(document.body,{childList:true,subtree:true,characterData:true});
 walk(document.body);
+})();
+/* ===== Right-click menu for widgets ===== */
+(function(){
+var mq=window.matchMedia?matchMedia("(hover: hover) and (pointer: fine)"):null;
+function pc(){return !!(mq&&mq.matches)}
+function setPc(){document.documentElement.classList.toggle("finept",pc())}
+setPc();try{mq.addEventListener("change",setPc)}catch(e){}
+var I={
+cus:'<path d="M12 2a10 10 0 0 0 0 20c1.1 0 2-.9 2-2 0-.5-.2-1-.5-1.3-.3-.4-.5-.8-.5-1.3 0-1.1.9-2 2-2h2.3A5.7 5.7 0 0 0 22 9.7C22 5.4 17.5 2 12 2Z"/><circle cx="7.5" cy="11" r="1.2" fill="currentColor"/><circle cx="10.5" cy="7" r="1.2" fill="currentColor"/><circle cx="15" cy="7.5" r="1.2" fill="currentColor"/>',
+set:'<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>',
+left:'<path d="m15 18-6-6 6-6"/>',right:'<path d="m9 18 6-6-6-6"/>',
+move:'<path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3M2 12h20M12 2v20"/>',
+add:'<path d="M12 5v14M5 12h14"/>',rm:'<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>'};
+function ic(n){return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+I[n]+'</svg>'}
+var m=document.createElement("div");m.id="wctx";m.className="wctx";m.setAttribute("role","menu");m.hidden=true;document.body.appendChild(m);
+var cur=null,back=null;
+function item(act,icon,label,extra){return '<button type="button" role="menuitem" data-a="'+act+'"'+(extra||"")+'>'+ic(icon)+'<span>'+label+'</span></button>'}
+function build(tab,id){var w=id&&wgById(id),h="";
+if(w){var W=WS(),z=W.sz[tab+":"+id]||(w.wide?"w":"s"),i=WD[tab].indexOf(id),n=WD[tab].length;
+h='<div class="wctxh"><i style="background:'+TN(id)+'"></i>'+esc(w.name)+'</div>'+
+item("cus","cus","Customize…")+(window.__hasSet&&__hasSet(id)?item("set","set",esc(w.name)+" settings…"):'')+
+'<div class="wctxs" role="group" aria-label="Size">'+[["s","Small"],["w","Wide"],["l","Large"]].map(function(o){return '<button type="button" role="menuitemradio" aria-checked="'+(o[0]===z)+'" data-a="size" data-v="'+o[0]+'"'+(o[0]===z?' class="on"':'')+'>'+o[1]+'</button>'}).join("")+'</div>'+
+'<div class="wctxl" role="separator"></div>'+
+item("left","left","Move left",i<=0?' disabled':'')+item("right","right","Move right",i>=n-1?' disabled':'')+item("arrange","move","Drag to rearrange")+
+'<div class="wctxl" role="separator"></div>'+item("add","add","Add widgets…")+item("rm","rm","Remove",' class="del"')}
+else h='<div class="wctxh">Widgets</div>'+item("add","add","Add widgets…")+(WD[tab].length>1?item("arrange","move","Drag to rearrange"):'');
+m.innerHTML=h}
+function open(tab,id,x,y,from){cur={tab:tab,id:id};back=from||document.activeElement;build(tab,id);m.hidden=false;m.classList.remove("in");
+var r=m.getBoundingClientRect(),vw=innerWidth,vh=innerHeight,px=Math.min(x,vw-r.width-8),py=y+r.height>vh-8?Math.max(8,y-r.height):y;
+m.style.left=Math.max(8,px)+"px";m.style.top=Math.max(8,py)+"px";m.style.transformOrigin=(px<x?"right ":"left ")+(py<y?"bottom":"top");
+void m.offsetWidth;m.classList.add("in");var f=m.querySelector('button:not([disabled])');if(f)f.focus()}
+function close(refocus){if(m.hidden)return;m.hidden=true;cur=null;if(refocus&&back&&back.isConnected)try{back.focus()}catch(e){}}
+function tileOf(tab,id){return document.querySelector('#wds-'+tab+' .wgrid>.wd[data-w="'+id+'"]')}
+function run(a,v){var tab=cur.tab,id=cur.id;close(false);
+if(a==="cus"&&window.__openCus)return __openCus(tab,id);
+if(a==="set"&&window.__openSet)return __openSet(id);
+if(a==="size"){var W=WS();W.sz[tab+":"+id]=v;ss("wd-size",JSON.stringify(W.sz));buildWds(tab);tickWds();var t=tileOf(tab,id);if(t)t.focus();return}
+if(a==="left"||a==="right"){var L=WD[tab],i=L.indexOf(id),j=i+(a==="left"?-1:1);if(i<0||j<0||j>=L.length)return;L.splice(i,1);L.splice(j,0,id);saveWd();buildWds(tab);tickWds();var t2=tileOf(tab,id);if(t2)t2.focus();return}
+if(a==="arrange"&&window.__setEdit){__setEdit(tab,true);return}
+if(a==="add"){var b=document.querySelector('#wds-'+tab+' [data-add]');if(b)b.click();return}
+if(a==="rm"){var before=WD[tab].slice(),w=wgById(id);WD[tab]=WD[tab].filter(function(x){return x!==id});saveWd();buildWds(tab);tickWds();
+var tt=EL("toast");tt.innerHTML=esc(w?w.name:"Widget")+' removed <button type="button" class="undo" id="wctxundo">Undo</button>';tt.hidden=false;clearTimeout(tt._k);tt._k=setTimeout(function(){tt.hidden=true},6000);
+EL("wctxundo").onclick=function(){WD[tab]=before;saveWd();buildWds(tab);tickWds();tt.hidden=true}}}
+m.addEventListener("click",function(e){var b=e.target.closest("button[data-a]");if(!b||b.disabled||!cur)return;run(b.dataset.a,b.dataset.v)});
+m.addEventListener("keydown",function(e){var L=[].slice.call(m.querySelectorAll("button:not([disabled])")),i=L.indexOf(document.activeElement);
+if(e.key==="ArrowDown"||e.key==="ArrowUp"){e.preventDefault();var d=e.key==="ArrowDown"?1:-1;L[(i+d+L.length)%L.length].focus()}
+else if(e.key==="Home"||e.key==="End"){e.preventDefault();L[e.key==="Home"?0:L.length-1].focus()}
+else if(e.key==="ArrowLeft"||e.key==="ArrowRight"){var a=document.activeElement;if(a&&a.parentNode.classList.contains("wctxs")){e.preventDefault();var S=[].slice.call(a.parentNode.children),k=S.indexOf(a);S[(k+(e.key==="ArrowRight"?1:-1)+S.length)%S.length].focus()}}
+else if(e.key==="Escape"){e.preventDefault();e.stopPropagation();close(true)}
+else if(e.key==="Tab"){e.preventDefault();close(true)}});
+document.addEventListener("pointerdown",function(e){if(!m.hidden&&!m.contains(e.target))close(false)},true);
+window.addEventListener("resize",function(){close(false)});window.addEventListener("scroll",function(){close(false)},true);window.addEventListener("blur",function(){close(false)});
+["mail","calendar"].forEach(function(tab){var c=EL("wds-"+tab);
+/* right-click: our menu. Shift + right-click, or right-click inside a text box, still gives the browser's own menu */
+c.addEventListener("contextmenu",function(e){if(e.shiftKey||e.target.closest("input,textarea,[contenteditable]"))return;var t=e.target.closest(".wgrid>.wd[data-w]"),inArea=e.target.closest(".wgrid,.wemp");if(!t&&!inArea)return;
+e.preventDefault();e.stopPropagation();open(tab,t?t.dataset.w:null,e.clientX,e.clientY,t||c)},true);
+/* the menu key or Shift+F10 on a focused widget */
+c.addEventListener("keydown",function(e){if(!(e.key==="ContextMenu"||(e.shiftKey&&e.key==="F10")))return;var t=e.target.closest&&e.target.closest(".wgrid>.wd[data-w]");if(!t)return;e.preventDefault();var r=t.getBoundingClientRect();open(tab,t.dataset.w,r.left+16,r.top+24,t)})});
+/* widgets can be focused so the menu key works; the bar tells PC users where editing went */
+var _bw=buildWds;buildWds=function(tab){_bw(tab);var c=EL("wds-"+tab);if(!c)return;
+c.querySelectorAll(".wgrid>.wd[data-w]").forEach(function(t){if(!t.hasAttribute("tabindex"))t.tabIndex=0;var w=wgById(t.dataset.w);if(w&&!t.getAttribute("aria-label"))t.setAttribute("aria-label",w.name+" widget. Press Shift+F10 for options")});
+var bar=c.querySelector(".wbar"),ed=c.classList.contains("edit");if(bar&&!ed&&!bar.querySelector(".wrch")&&WD[tab].length)bar.querySelector(".wsp").insertAdjacentHTML("afterend",'<span class="wrch">Right-click a widget to edit it</span>')};
+buildWds("mail");buildWds("calendar");tickWds();
 })();
 </script>
 </body>
