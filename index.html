@@ -1050,7 +1050,7 @@ var cmSending=false,cmWarned=false,EMAIL=/^[^\s@<>,;]+@[^\s@<>,;]+\.[^\s@<>,;]+$
 var CM={needs_reauth:"Reconnect Gmail in Settings > Connectors.",server_not_connected:"Gmail isn’t connected.",not_in_manifest:"Sending wasn’t allowed for this page.",approval_required:"Approve the request, then press Send again.",blocked_by_policy:"Your organization blocks sending email here.",tool_error:"Gmail refused to send this email.",server_unavailable:"Not sure whether it was sent. Check your Sent folder in Gmail before trying again.",upstream_error:"Not sure whether it was sent. Check your Sent folder in Gmail before trying again.",cancelled:"Not sure whether it was sent. Check your Sent folder in Gmail before trying again."};
 function cmSay(t,bad){var m=EL("cmmsg");m.textContent=t;m.className=bad?"err":""}
 function cmDirty(){return !!(EL("cmto").value.trim()||EL("cmsub").value.trim()||EL("cmbody").value.trim())}
-function openCm(){EL("cmto").value="";EL("cmsub").value="";EL("cmbody").value="";cmSay("");cmWarned=false;EL("cmgo").disabled=false;EL("cm").hidden=false;EL("cmto").focus()}
+function openCm(){EL("cmto").value="";EL("cmsub").value="";EL("cmbody").value="";cmSay("");cmWarned=false;EL("cmgo").disabled=false;EL("cm").hidden=false;if(typeof fillFrom==="function")fillFrom();EL("cmto").focus()}
 function closeCm(force){if(cmSending)return;EL("cm").hidden=true;EL("cmbtn").focus()}
 EL("cmbtn").onclick=openCm;EL("cmcancel").onclick=closeCm;EL("cmx").onclick=closeCm;
 EL("cm").addEventListener("keydown",function(e){if((e.ctrlKey||e.metaKey)&&e.key==="Enter"){e.preventDefault();EL("cmgo").click()}});
@@ -1648,7 +1648,6 @@ function fillFrom(acct){var A=accts(),sel=EL("cmacct"),row=EL("cmfr");if(!sel)re
 sel.innerHTML=A.map(function(e){return '<option value="'+esc(e)+'">'+esc(e)+'</option>'}).join("");
 row.hidden=A.length<2;var v=acct&&A.indexOf(acct)>-1?acct:(acctF&&A.indexOf(acctF)>-1?acctF:A[0]||"");sel.value=v;drawPick();
 var f=EL("cmfrom");if(f)f.textContent=A.length>1?"Choose which account sends it":v?"From "+v:"From your Gmail account"}
-var _oc=openCm;openCm=function(){_oc();fillFrom()};
 EL("v-mail").addEventListener("click",function(e){var b=e.target.closest("[data-rep]");if(!b||!openTid)return;var k=openTid.indexOf("~");if(k>0)fillFrom(openTid.slice(0,k))});
 /* Important / Not important in the opened email */
 var STAR='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg>';
