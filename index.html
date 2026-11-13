@@ -2138,6 +2138,53 @@ html.motion #v-weather .wxt:nth-child(n){animation-delay:calc(.12s + var(--d,0s)
 .wpkic button.on{background:var(--accent);color:#fff}
 .wpkic button:active{transform:scale(.9)}
 .wpkic button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+
+/* pack editor */
+.wpki.mine{background:color-mix(in srgb,var(--pk,var(--accent)) 16%,transparent)!important;color:var(--pk,var(--accent))!important}
+.wpkc.on .wpki.mine{background:var(--pk,var(--accent))!important;color:#fff!important}
+.wpkw .wpkx{top:auto!important;bottom:8px!important;right:8px!important;display:grid;place-items:center}
+.wpkw:hover .wpkx{opacity:1}
+.wpkw.editing>.wpkc,.wpkadd.editing{border-color:var(--accent)!important;border-style:solid!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)!important}
+.wpked{display:grid;grid-template-columns:220px minmax(0,1fr);gap:22px;margin:4px 0 18px;padding:18px;border-radius:22px;border:1px solid color-mix(in srgb,var(--accent) 35%,var(--line));background:linear-gradient(160deg,color-mix(in srgb,var(--accent) 9%,var(--glass-lo)),var(--glass-lo));box-shadow:0 18px 40px -24px color-mix(in srgb,var(--accent) 60%,transparent)}
+html.motion .wpked{animation:wpkIn .38s cubic-bezier(.2,.8,.2,1)}
+@keyframes wpkIn{from{opacity:0;transform:translateY(-8px) scale(.985)}}
+.wpkedl{display:flex;flex-direction:column;gap:10px}
+.wpkedh{font-size:18px;font-weight:750;letter-spacing:-.01em}
+.wpkpv{cursor:default;width:100%;min-height:120px;pointer-events:none;background:var(--panel)!important;box-shadow:0 14px 30px -18px rgba(0,0,0,.35)!important}
+.wpkpv .wpki{width:46px!important;height:46px!important;border-radius:14px!important}
+.wpkpv .wpki svg{width:26px;height:26px}
+.wpkpv b{font-size:15px!important}
+.wpkedn{margin:0;font-size:12px;color:var(--mute)}
+.wpkedr{display:flex;flex-direction:column;gap:14px;min-width:0}
+.wpkf{display:flex;flex-direction:column;gap:7px;position:relative}
+.wpkf>span{display:flex;align-items:baseline;gap:8px;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+.wpkf>span em{font-style:normal;text-transform:none;letter-spacing:0;font-weight:600;color:var(--accent)}
+.wpkf input{height:40px;padding:0 54px 0 12px!important;border-radius:11px!important;border:1px solid var(--line)!important;background:var(--panel)!important;font:inherit;font-size:15px;font-weight:600;color:var(--ink);outline:0;transition:border-color .2s,box-shadow .2s}
+.wpkf input:focus{border-color:var(--accent)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)!important}
+.wpkf #wpkcount{position:absolute;right:12px;bottom:12px;font-style:normal;font-size:11px;color:var(--mute);font-variant-numeric:tabular-nums}
+.wpked .wpkic{grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:6px;margin:0}
+.wpked .wpkic button{border-radius:11px}
+.wpked .wpkic button svg{width:19px;height:19px}
+.wpked .wpkic button.on{background:var(--pk-ed,var(--accent));box-shadow:0 6px 14px -6px color-mix(in srgb,var(--pk-ed,var(--accent)) 80%,transparent)}
+.wpkcl{display:flex;flex-wrap:wrap;gap:8px}
+.wpkcl button{position:relative;width:30px;height:30px;border-radius:50%;border:0;background:var(--w);cursor:pointer;display:grid;place-items:center;transition:transform .15s}
+.wpkcl button b{font-size:12px;color:#fff;font-weight:800}
+.wpkcl button:hover{transform:scale(1.1)}
+.wpkcl button.on{box-shadow:0 0 0 2.5px var(--panel),0 0 0 4.5px var(--w)}
+.wpkcl button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.wpkws{display:flex;flex-wrap:wrap;gap:6px;max-height:210px;overflow:auto;padding:2px}
+.wpkwg{flex:1 0 100%;font-size:11px;font-weight:650;color:var(--mute);margin-top:2px}
+.wpkw2{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 11px 0 7px;border-radius:99px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+.wpkw2 i{display:grid;place-items:center;width:17px;height:17px;border-radius:50%;border:1.5px solid color-mix(in srgb,var(--ink) 25%,transparent)}
+.wpkw2.on{background:color-mix(in srgb,var(--accent) 14%,var(--panel));border-color:color-mix(in srgb,var(--accent) 50%,transparent)}
+.wpkw2.on i{background:var(--accent);border-color:var(--accent);color:#fff}
+.wpkw2 i svg{width:10px;height:10px}
+.wpkmore{height:30px;padding:0 12px;border-radius:99px;border:1px dashed color-mix(in srgb,var(--ink) 25%,transparent);background:none;color:var(--accent);font:inherit;font-size:12.5px;font-weight:650;cursor:pointer}
+.wpkbar{display:flex;align-items:center;gap:8px;padding-top:4px}
+.wpkbar .wsp{flex:1}
+.wpkbar .wpkdel{color:#ff453a!important}
+.wpkbar .btn.pri:disabled{opacity:.5;cursor:default}
+@media(max-width:640px){.wpked{grid-template-columns:1fr;gap:14px;padding:14px}.wpkpv{min-height:0}.wpkedn{display:none}}
 </style>
 <script>try{var t=localStorage.getItem("wth");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);var a=localStorage.getItem("wacc");if(/^#[0-9a-f]{6}$/i.test(a||"")){var r=document.documentElement.style;r.setProperty("--accent",a);r.setProperty("--dot",a);r.setProperty("--today",a)}}catch(e){}</script>
 </head>
@@ -3422,54 +3469,98 @@ document.addEventListener("click",function(){requestAnimationFrame(function(){if
 /* ---------- packs in the gallery ---------- */
 var PACKS=[["mail","Mail","mail",["unread","important","latest","deliveries"]],["calendar","Calendar","calendar",["next","agenda","week","month"]],["notes","Notes","notes",["notes","todo","habits","focus"]],["weather","Weather","weather",["weather","sun","world","rings"]]];
 function packIcon(t){var b=EL("t"+t),v=b&&b.querySelector("svg");return v?v.outerHTML:""}
-var PK_MINE='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><path d="M17.25 14v6.5M14 17.25h6.5"/></svg>',
- PK_CHECK='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
-var PK_ICONS={grid:'<rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><path d="M17.25 14v6.5M14 17.25h6.5"/>',
-star:'<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>',
-heart:'<path d="M12 20s-7.5-4.4-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10c0 5.6-7.5 10-7.5 10z"/>',
-bolt:'<path d="M13 2 4.5 13.5H12L11 22l8.5-11.5H12z"/>',
-coffee:'<path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5zM17 10h1.5a2.5 2.5 0 0 1 0 5H17M8 3v3M12 3v3"/>',
-work:'<rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/>',
-book:'<path d="M4 4.5A1.5 1.5 0 0 1 5.5 3H20v15H5.5A1.5 1.5 0 0 0 4 19.5zM4 19.5A1.5 1.5 0 0 0 5.5 21H20"/>',
-music:'<path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/>',
-moon:'<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',
-leaf:'<path d="M5 19c0-9 6-14 15-14 0 9-5 15-14 15M5 19l7-7"/>',
-rocket:'<path d="M12 15c3.5-2.5 6-6.5 6-11-4.5 0-8.5 2.5-11 6zM7 10l-3 .5L3 13l4 1M14 17l-.5 3L11 21l-1-4M9 15l-3 3"/>',
-home:'<path d="M4 11 12 4l8 7v8.5a.5.5 0 0 1-.5.5H15v-6H9v6H4.5a.5.5 0 0 1-.5-.5z"/>'};
-function pkIcon(k){return '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(PK_ICONS[k]||PK_ICONS.grid)+'</svg>'}
-var pkIconSel="grid";
+var PK_CHECK='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>',
+ PK_PEN='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
+var PK_ICONS=[
+["grid","Grid",'<rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><path d="M17.25 14v6.5M14 17.25h6.5"/>'],
+["star","Star",'<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>'],
+["heart","Heart",'<path d="M12 20s-7.5-4.4-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10c0 5.6-7.5 10-7.5 10z"/>'],
+["bolt","Energy",'<path d="M13 2 4.5 13.5H12L11 22l8.5-11.5H12z"/>'],
+["sun","Sun",'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>'],
+["moon","Moon",'<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>'],
+["cloud","Cloud",'<path d="M7 18a4 4 0 0 1-.6-8A6 6 0 0 1 18 9.5a4 4 0 0 1-.5 8.5z"/>'],
+["leaf","Leaf",'<path d="M5 19c0-9 6-14 15-14 0 9-5 15-14 15M5 19l7-7"/>'],
+["coffee","Coffee",'<path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5zM17 10h1.5a2.5 2.5 0 0 1 0 5H17M8 3v3M12 3v3"/>'],
+["work","Work",'<rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/>'],
+["book","Study",'<path d="M4 4.5A1.5 1.5 0 0 1 5.5 3H20v15H5.5A1.5 1.5 0 0 0 4 19.5zM4 19.5A1.5 1.5 0 0 0 5.5 21H20"/>'],
+["code","Code",'<path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 4l-4 16"/>'],
+["chat","Chat",'<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>'],
+["music","Music",'<path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/>'],
+["game","Games",'<rect x="2.5" y="7" width="19" height="11" rx="5.5"/><path d="M7 11v3M5.5 12.5h3M15.5 12h.01M18 14h.01"/>'],
+["camera","Photos",'<path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/>'],
+["palette","Creative",'<path d="M12 3a9 9 0 1 0 0 18c1 0 1.6-.8 1.6-1.6 0-.5-.2-.8-.4-1.1-.3-.3-.4-.7-.4-1.1 0-.9.7-1.6 1.6-1.6H16a5 5 0 0 0 5-5C21 6.6 17 3 12 3z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7.5" r="1"/><circle cx="14.5" cy="7.5" r="1"/>'],
+["gym","Fitness",'<path d="M6.5 6.5v11M17.5 6.5v11M3 9.5v5M21 9.5v5M6.5 12h11"/>'],
+["plane","Travel",'<path d="M10.5 13.5 3 11l1.5-1.5 8 .5 4.5-5a1.8 1.8 0 0 1 2.5 2.5l-5 4.5.5 8L13.5 21l-2.5-7.5-3.5 3.5V19l-1.5 1.5-1-3-3-1L4 15h2l3.5-3.5"/>'],
+["home","Home",'<path d="M4 11 12 4l8 7v8.5a.5.5 0 0 1-.5.5H15v-6H9v6H4.5a.5.5 0 0 1-.5-.5z"/>'],
+["gift","Gift",'<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M5 12v8h14v-8M12 8v12M12 8S10.5 3.5 8 4.5 9 8 12 8zM12 8s1.5-4.5 4-3.5S15 8 12 8z"/>'],
+["paw","Pets",'<circle cx="7" cy="9" r="1.8"/><circle cx="11" cy="6" r="1.8"/><circle cx="15.5" cy="7" r="1.8"/><circle cx="18" cy="11" r="1.8"/><path d="M8.5 17c0-2.5 2-5 4.5-5s4 2.2 3.5 4.5c-.4 2-2.5 2.5-4 2.5s-4 .5-4-2z"/>'],
+["rocket","Launch",'<path d="M12 15c3.5-2.5 6-6.5 6-11-4.5 0-8.5 2.5-11 6zM7 10l-3 .5L3 13l4 1M14 17l-.5 3L11 21l-1-4M9 15l-3 3"/>'],
+["target","Goals",'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/>']];
+var PK_COLS=[["","Accent"],["#7c4dff","Purple"],["#0a84ff","Blue"],["#30b0c7","Teal"],["#30d158","Green"],["#ffb020","Yellow"],["#ff9f0a","Orange"],["#ff375f","Pink"],["#ff453a","Red"],["#8e8e93","Grey"]];
+function pkIcon(k){var x=PK_ICONS.filter(function(i){return i[0]===k})[0]||PK_ICONS[0];return '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+x[2]+'</svg>'}
 function myPacks(){var a=jparse("wd-packs",[]);return Array.isArray(a)?a:[]}
 function saveMyPacks(a){ss("wd-packs",JSON.stringify(a))}
-function allPacks(){return PACKS.map(function(p){return {id:p[0],name:p[1],icon:packIcon(p[2]),ids:p[3],mine:false}}).concat(myPacks().map(function(p){return {id:"my-"+p.id,name:p.name,icon:pkIcon(p.icon),ids:p.ids,mine:true,raw:p.id}}))}
+function allPacks(){return PACKS.map(function(p){return {id:p[0],name:p[1],icon:packIcon(p[2]),ids:p[3],mine:false}}).concat(myPacks().map(function(p){return {id:"my-"+p.id,name:p.name,icon:pkIcon(p.icon),color:p.color||"",ids:p.ids,mine:true,raw:p.id}}))}
 function markPack(tab,id){var m=jparse("wd-packsel",{});m[tab]=id;ss("wd-packsel",JSON.stringify(m))}
 function sameSet(a,b){a=a.filter(wgById);b=b.filter(wgById);if(!a.length||a.length!==b.length)return false;var s={};a.forEach(function(x){s[x]=1});return b.every(function(x){return s[x]})}
-var undoPack=null,pkNaming=false;
+var undoPack=null,ED=null;
 function pkToast(html,undo){var tt=EL("toast");tt.innerHTML=html+(undo?' <button type="button" class="undo" id="wpkundo">Undo</button>':'');tt.hidden=false;clearTimeout(tt._k);tt._k=setTimeout(function(){tt.hidden=true},6000);if(undo)EL("wpkundo").onclick=function(){undo();tt.hidden=true}}
+function wname(id){return (wgById(id)||{}).name||id}
+
+/* ---------- the pack editor ---------- */
+function edPreview(){var n=ED.ids.filter(wgById);return '<div class="wpkc wpkpv" style="'+(ED.color?'--pk:'+ED.color:'')+'"><span class="wpke wpki mine">'+pkIcon(ED.icon)+'</span><b>'+esc(ED.name.trim()||"Untitled pack")+'</b><small>'+esc(n.map(wname).join(", ")||"No widgets yet")+'</small></div>'}
+function edHtml(){var tabIds=(WD[wgTab]||[]).filter(wgById),others=WG.filter(function(w){return tabIds.indexOf(w.id)<0&&!(GONE_IDS[w.id])}).map(function(w){return w.id});
+ var chip=function(id){var on=ED.ids.indexOf(id)>-1;return '<button type="button" class="wpkw2'+(on?' on':'')+'" role="checkbox" aria-checked="'+on+'" data-pkw="'+id+'"><i aria-hidden="true">'+(on?PK_CHECK:'')+'</i>'+esc(wname(id))+'</button>'};
+ return '<form class="wpked" id="wpkform" aria-labelledby="wpkedh"'+(ED.color?' style="--pk-ed:'+ED.color+'"':'')+'>'+
+ '<div class="wpkedl"><div class="wpkedh" id="wpkedh">'+(ED.mode==="edit"?"Edit pack":"New pack")+'</div><div id="wpkpvw">'+edPreview()+'</div><p class="wpkedn">This is how it will look in Your packs.</p></div>'+
+ '<div class="wpkedr">'+
+  '<label class="wpkf"><span>Name</span><input id="wpkname" maxlength="24" placeholder="Morning, Study, Weekend…" autocomplete="off" value="'+esc(ED.name)+'"><em id="wpkcount">'+ED.name.length+'/24</em></label>'+
+  '<div class="wpkf"><span>Icon</span><div class="wpkic" role="radiogroup" aria-label="Icon">'+PK_ICONS.map(function(x){var on=x[0]===ED.icon;return '<button type="button" role="radio" aria-checked="'+on+'" aria-label="'+x[1]+'" title="'+x[1]+'" data-pkicon="'+x[0]+'"'+(on?' class="on"':'')+'>'+pkIcon(x[0])+'</button>'}).join("")+'</div></div>'+
+  '<div class="wpkf"><span>Colour</span><div class="wpkcl" role="radiogroup" aria-label="Colour">'+PK_COLS.map(function(c){var on=c[0]===ED.color;return '<button type="button" role="radio" aria-checked="'+on+'" aria-label="'+c[1]+'" title="'+c[1]+'" data-pkcol="'+c[0]+'" style="--w:'+(c[0]||"var(--accent)")+'"'+(on?' class="on"':'')+'>'+(c[0]?'':'<b>A</b>')+'</button>'}).join("")+'</div></div>'+
+  '<div class="wpkf"><span>Widgets <em id="wpkwn">'+ED.ids.filter(wgById).length+' chosen</em></span><div class="wpkws">'+
+   (tabIds.length?'<small class="wpkwg">On this tab</small>'+tabIds.map(chip).join(""):'')+
+   (ED.more?'<small class="wpkwg">More widgets</small>'+others.map(chip).join(""):'<button type="button" class="wpkmore" data-pkmore="1">+ Add other widgets</button>')+
+  '</div></div>'+
+  '<div class="wpkbar">'+(ED.mode==="edit"?'<button type="button" class="btn wpkdel" data-pkdel="'+esc(ED.id)+'">Delete</button>':'')+'<span class="wsp"></span><button type="button" class="btn" data-pkcancel="1">Cancel</button><button type="submit" class="btn pri" id="wpkgo"'+(ED.ids.filter(wgById).length?'':' disabled')+'>'+(ED.mode==="edit"?"Save changes":"Save pack")+'</button></div>'+
+ '</div></form>'}
+var GONE_IDS={today:1,year:1,busiest:1,mix:1,orders:1,spam:1,quote:1};
+function edRefresh(part){var fm=EL("wpkform");if(fm){if(ED.color)fm.style.setProperty("--pk-ed",ED.color);else fm.style.removeProperty("--pk-ed")}var pv=EL("wpkpvw");if(pv){pv.innerHTML=edPreview();if(part==="pop"&&window.motionOn&&motionOn()){var t=pv.querySelector(".wpki");if(t)t.animate([{transform:"scale(.6) rotate(-12deg)"},{transform:"scale(1.15)"},{transform:"none"}],{duration:420,easing:"cubic-bezier(.3,1.4,.5,1)"})}}
+ var n=ED.ids.filter(wgById).length,c=EL("wpkwn");if(c)c.textContent=n+" chosen";var go=EL("wpkgo");if(go)go.disabled=!n}
+function edOpen(mode,p){ED=mode==="edit"?{mode:"edit",id:p.id,name:p.name,icon:p.icon||"grid",color:p.color||"",ids:p.ids.slice(),more:p.ids.some(function(id){return (WD[wgTab]||[]).indexOf(id)<0})}:{mode:"new",name:"",icon:"grid",color:"",ids:(WD[wgTab]||[]).filter(wgById),more:false};buildWg();
+ var f=EL("wpkform");if(f){f.scrollIntoView({block:"nearest",behavior:window.motionOn&&motionOn()?"smooth":"auto"});var i=EL("wpkname");if(i)i.focus()}}
+
 var _bwg=buildWg;buildWg=function(){_bwg();var q=EL("wgq")&&EL("wgq").value;if(q)return;var l=EL("wgl"),cur=WD[wgTab]||[];
  var list=allPacks(),sel=null,last=jparse("wd-packsel",{})[wgTab];list.forEach(function(p){if(p.id===last&&sameSet(p.ids,cur))sel=p.id});if(!sel)list.forEach(function(p){if(!sel&&sameSet(p.ids,cur))sel=p.id});
  var built=list.filter(function(p){return !p.mine}).sort(function(a,b){return (b.id===wgTab)-(a.id===wgTab)}),mine=list.filter(function(p){return p.mine});
- function card(p){var on=p.id===sel,names=p.ids.map(function(id){return (wgById(id)||{}).name}).filter(Boolean);
-  return '<div class="wpkw'+(on?' on':'')+'"><button type="button" class="wpkc'+(on?' on':'')+'" data-pack="'+esc(p.id)+'" aria-pressed="'+on+'"><span class="wpke wpki">'+p.icon+'</span>'+(on?'<em class="wpkt">'+PK_CHECK+'In use</em>':'')+'<b>'+esc(p.name)+'</b><small>'+esc(names.join(", ")||"No widgets")+'</small></button>'+
-  (p.mine?'<button type="button" class="wpkx" data-pkdel="'+esc(p.raw)+'" aria-label="Delete the '+esc(p.name)+' pack" title="Delete pack">×</button>':'')+'</div>'}
- var n=cur.filter(wgById).length,saveCard=pkNaming?
-  '<form class="wpkw wpkn" id="wpkform"><div class="wpkc wpknew"><span class="wpke wpki" id="wpkprev">'+pkIcon(pkIconSel)+'</span><div class="wpkic" role="radiogroup" aria-label="Pack icon">'+Object.keys(PK_ICONS).map(function(k){var on=k===pkIconSel;return '<button type="button" role="radio" aria-checked="'+on+'" aria-label="'+k+'" title="'+k.charAt(0).toUpperCase()+k.slice(1)+'" data-pkicon="'+k+'"'+(on?' class="on"':'')+'>'+pkIcon(k)+'</button>'}).join("")+'</div><input id="wpkname" maxlength="24" placeholder="Pack name" aria-label="Pack name" autocomplete="off" value="My pack '+(myPacks().length+1)+'"><small>'+n+' widget'+(n===1?'':'s')+' from this tab</small><span class="wpkbtns"><button type="button" class="btn sm" data-pkcancel="1">Cancel</button><button type="submit" class="btn pri sm">Save</button></span></div></form>':
-  '<div class="wpkw"><button type="button" class="wpkc wpkadd" data-pksave="1"'+(n?'':' disabled')+'><span class="wpke wpki">+</span><b>Save as a pack</b><small>'+(n?'Keep the '+n+' widget'+(n===1?'':'s')+' on this tab as your own pack':'Add some widgets first')+'</small></button></div>';
+ function card(p){var on=p.id===sel,names=p.ids.map(function(id){return (wgById(id)||{}).name}).filter(Boolean),edit=ED&&ED.mode==="edit"&&ED.id===p.raw;
+  return '<div class="wpkw'+(on?' on':'')+(edit?' editing':'')+'"'+(p.mine&&p.color?' style="--pk:'+p.color+'"':'')+'><button type="button" class="wpkc'+(on?' on':'')+'" data-pack="'+esc(p.id)+'" aria-pressed="'+on+'"><span class="wpke wpki'+(p.mine?' mine':'')+'">'+p.icon+'</span>'+(on?'<em class="wpkt">'+PK_CHECK+'In use</em>':'')+'<b>'+esc(p.name)+'</b><small>'+esc(names.join(", ")||"No widgets")+'</small></button>'+
+  (p.mine?'<button type="button" class="wpkx" data-pkedit="'+esc(p.raw)+'" aria-label="Edit the '+esc(p.name)+' pack" title="Edit pack">'+PK_PEN+'</button>':'')+'</div>'}
+ var n=cur.filter(wgById).length,add='<div class="wpkw"><button type="button" class="wpkc wpkadd'+(ED&&ED.mode==="new"?' editing':'')+'" data-pksave="1"><span class="wpke wpki">+</span><b>New pack</b><small>'+(n?'Starts with the '+n+' widget'+(n===1?'':'s')+' on this tab':'Pick widgets for it')+'</small></button></div>';
  l.insertAdjacentHTML("afterbegin",'<div class="wpk"><div class="stgl">Widget packs</div><p class="wpkh">A pack swaps the widgets on this tab for a set that goes together. Any pack works on any tab, and you can undo it.</p><div class="wpkr">'+built.map(card).join("")+'</div>'+
-  '<div class="stgl wpkmine">Your packs</div><div class="wpkr">'+mine.map(card).join("")+saveCard+'</div></div>');
- if(pkNaming){var i=EL("wpkname");if(i){i.focus();i.select()}}};
+  '<div class="stgl wpkmine">Your packs</div><div class="wpkr">'+mine.map(card).join("")+add+'</div>'+(ED?edHtml():'')+'</div>')};
+
 EL("wgl").addEventListener("click",function(e){var b;
- if((b=e.target.closest("[data-pkicon]"))){pkIconSel=b.dataset.pkicon;var f=EL("wpkform");f.querySelectorAll("[data-pkicon]").forEach(function(x){var on=x===b;x.classList.toggle("on",on);x.setAttribute("aria-checked",on)});EL("wpkprev").innerHTML=pkIcon(pkIconSel);return}
- if((b=e.target.closest("[data-pksave]"))){if(b.disabled)return;pkNaming=true;pkIconSel="grid";buildWg();return}
- if((b=e.target.closest("[data-pkcancel]"))){pkNaming=false;buildWg();return}
- if((b=e.target.closest("[data-pkdel]"))){var all=myPacks(),i=all.findIndex(function(x){return x.id===b.dataset.pkdel});if(i<0)return;var gone=all.splice(i,1)[0];saveMyPacks(all);buildWg();
-  pkToast('“'+esc(gone.name)+'” pack deleted',function(){var a=myPacks();a.splice(Math.min(i,a.length),0,gone);saveMyPacks(a);if(!EL("wg").hidden)buildWg()});return}
+ if((b=e.target.closest("[data-pkicon]"))){ED.icon=b.dataset.pkicon;b.parentNode.querySelectorAll("[data-pkicon]").forEach(function(x){var on=x===b;x.classList.toggle("on",on);x.setAttribute("aria-checked",on)});edRefresh("pop");return}
+ if((b=e.target.closest("[data-pkcol]"))){ED.color=b.dataset.pkcol;b.parentNode.querySelectorAll("[data-pkcol]").forEach(function(x){var on=x===b;x.classList.toggle("on",on);x.setAttribute("aria-checked",on)});edRefresh("pop");return}
+ if((b=e.target.closest("[data-pkw]"))){var id=b.dataset.pkw,i=ED.ids.indexOf(id);if(i>-1)ED.ids.splice(i,1);else ED.ids.push(id);var on=i<0;b.classList.toggle("on",on);b.setAttribute("aria-checked",on);b.querySelector("i").innerHTML=on?PK_CHECK:"";edRefresh();return}
+ if((b=e.target.closest("[data-pkmore]"))){ED.more=true;var f=EL("wpkform"),nm=EL("wpkname").value;ED.name=nm;buildWg();var w2=document.querySelector(".wpkws");if(w2)w2.scrollIntoView({block:"nearest"});return}
+ if((b=e.target.closest("[data-pksave]"))){if(ED&&ED.mode==="new"){ED=null;buildWg();return}edOpen("new");return}
+ if((b=e.target.closest("[data-pkedit]"))){var mp=myPacks().filter(function(x){return x.id===b.dataset.pkedit})[0];if(!mp)return;if(ED&&ED.mode==="edit"&&ED.id===mp.id){ED=null;buildWg();return}edOpen("edit",mp);return}
+ if((b=e.target.closest("[data-pkcancel]"))){ED=null;buildWg();return}
+ if((b=e.target.closest("[data-pkdel]"))){var all=myPacks(),k=all.findIndex(function(x){return x.id===b.dataset.pkdel});if(k<0)return;var gone=all.splice(k,1)[0];saveMyPacks(all);ED=null;buildWg();
+  pkToast('“'+esc(gone.name)+'” pack deleted',function(){var a=myPacks();a.splice(Math.min(k,a.length),0,gone);saveMyPacks(a);if(!EL("wg").hidden)buildWg()});return}
  if((b=e.target.closest("[data-pack]"))){var p=allPacks().filter(function(x){return x.id===b.dataset.pack})[0];if(!p)return;
   if(sameSet(p.ids,WD[wgTab]||[])){var was=jparse("wd-packsel",{})[wgTab];markPack(wgTab,p.id);if(was!==p.id){buildWg();return}pkToast(esc(p.name)+' is already on this tab');return}
   undoPack={tab:wgTab,ids:(WD[wgTab]||[]).slice()};markPack(wgTab,p.id);WD[wgTab]=p.ids.filter(function(id){return wgById(id)});saveWd();buildWds(wgTab);tickWds();buildWg();
   pkToast(esc(p.name)+' pack added',function(){if(!undoPack)return;WD[undoPack.tab]=undoPack.ids;saveWd();buildWds(undoPack.tab);tickWds();if(!EL("wg").hidden)buildWg();undoPack=null})}});
-EL("wgl").addEventListener("submit",function(e){if(e.target.id!=="wpkform")return;e.preventDefault();var name=(EL("wpkname").value||"").trim().slice(0,24)||"My pack",ids=(WD[wgTab]||[]).filter(wgById);if(!ids.length)return;
- var a=myPacks(),nid=Date.now().toString(36);a.push({id:nid,name:name,ids:ids,icon:pkIconSel});saveMyPacks(a);markPack(wgTab,"my-"+nid);pkNaming=false;buildWg();pkToast('Saved “'+esc(name)+'”')});
-EL("wgl").addEventListener("keydown",function(e){if(e.key==="Escape"&&pkNaming&&e.target.id==="wpkname"){e.stopPropagation();e.preventDefault();pkNaming=false;buildWg()}},true);
+EL("wgl").addEventListener("input",function(e){if(e.target.id!=="wpkname"||!ED)return;ED.name=e.target.value;var c=EL("wpkcount");if(c)c.textContent=ED.name.length+"/24";edRefresh()});
+EL("wgl").addEventListener("submit",function(e){if(e.target.id!=="wpkform"||!ED)return;e.preventDefault();var ids=ED.ids.filter(wgById);if(!ids.length)return;var name=(ED.name||"").trim().slice(0,24)||"My pack "+(myPacks().length+(ED.mode==="new"?1:0)),a=myPacks();
+ if(ED.mode==="edit"){var x=a.filter(function(p){return p.id===ED.id})[0];if(x){x.name=name;x.icon=ED.icon;x.color=ED.color;x.ids=ids}saveMyPacks(a);ED=null;buildWg();pkToast('Saved changes to “'+esc(name)+'”');return}
+ var nid=Date.now().toString(36);a.push({id:nid,name:name,ids:ids,icon:ED.icon,color:ED.color});saveMyPacks(a);if(sameSet(ids,WD[wgTab]||[]))markPack(wgTab,"my-"+nid);ED=null;buildWg();pkToast('Saved “'+esc(name)+'”');
+ var nc=document.querySelector('.wpkc[data-pack="my-'+nid+'"]');if(nc&&window.motionOn&&motionOn())nc.animate([{transform:"scale(.85)",opacity:0},{transform:"scale(1.04)",opacity:1},{transform:"none"}],{duration:480,easing:"cubic-bezier(.3,1.3,.5,1)"})});
+EL("wgl").addEventListener("keydown",function(e){if(e.key==="Escape"&&ED&&e.target.closest&&e.target.closest("#wpkform")){e.stopPropagation();e.preventDefault();ED=null;buildWg()}},true);
+/* a closed gallery forgets an unfinished pack */
+(function(){var g=EL("wg");if(!g)return;new MutationObserver(function(){if(g.hidden&&ED)ED=null}).observe(g,{attributes:true,attributeFilter:["hidden"]})})();
 
 buildWds("mail");buildWds("calendar");buildWds("weather");
 setInterval(function(){if(!document.hidden)["rings","sun","agenda"].forEach(function(id){if(document.querySelector('.wds [data-w="'+id+'"]'))repaint3(id)})},60000);
