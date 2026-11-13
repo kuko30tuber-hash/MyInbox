@@ -1988,6 +1988,15 @@ html.dense #v-mail #mail li>a .snip{-webkit-line-clamp:1}
 html.motion #v-mail #mail li>a{animation:none}
 html.motion #mpane .rd.m2new{animation:m2in .35s cubic-bezier(.2,.8,.2,1)}
 @keyframes m2in{from{opacity:0;transform:translateY(6px)}}
+
+/* seconds under the header clock */
+.hsec{position:absolute;right:var(--gut,40px);display:none;flex-direction:column;align-items:flex-end;gap:6px;pointer-events:none}
+html.sidebar .hsec{display:flex}
+.hsec b{font-family:var(--font-display);font-weight:400;font-size:clamp(22px,1.9vw,30px);line-height:1;color:var(--mute);font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.hsec i{display:block;width:clamp(52px,4.6vw,76px);height:2px;border-radius:2px;background:color-mix(in srgb,var(--ink) 12%,transparent);overflow:hidden}
+.hsec i::after{content:"";display:block;height:100%;width:100%;background:var(--accent);transform-origin:left;transform:scaleX(var(--sp,0))}
+html.motion .hsec i::after{transition:transform 1s linear}
+html.motion .hsec i.wrap::after{transition:none}
 </style>
 <script>try{var t=localStorage.getItem("wth");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);var a=localStorage.getItem("wacc");if(/^#[0-9a-f]{6}$/i.test(a||"")){var r=document.documentElement.style;r.setProperty("--accent",a);r.setProperty("--dot",a);r.setProperty("--today",a)}}catch(e){}</script>
 </head>
@@ -4113,6 +4122,15 @@ new MutationObserver(function(ms){var go=false;ms.forEach(function(m){if(m.added
 var lastOpen=null;var _ps=paneSync;paneSync=function(){_ps.apply(this,arguments);var p=EL("mpane");if(p&&openTid&&openTid!==lastOpen){var r=p.querySelector(".rd");if(r)r.classList.add("m2new")}lastOpen=openTid;if(p&&WIDE()&&!openTid)p.innerHTML='<div class="m2empty">'+I.mail+'<b>No email selected</b><span>Pick one from the list to read it here.</span><span class="hintk">Press <kbd>J</kbd> and <kbd>K</kbd> to move, <kbd>/</kbd> to search</span></div>';tidy(p)};
 renderMail(lastL,lastNote);
 })();
+/* ===== Seconds under the header clock ===== */
+(function(){var h=document.querySelector("header"),g=EL("greet"),c=EL("hclock");if(!h||!g||!c||EL("hsec"))return;
+var e=document.createElement("div");e.id="hsec";e.className="hsec";e.setAttribute("aria-hidden","true");e.innerHTML='<b></b><i></i>';h.appendChild(e);
+var b=e.querySelector("b"),bar=e.querySelector("i"),last=-1;
+function align(){e.style.top=(c.offsetTop+c.offsetHeight+10)+"px"}
+function tick(){var d=new Date(),s=d.getSeconds();if(!document.hidden&&s!==last){b.textContent=(s<10?"0":"")+s;
+ if(s===0){bar.classList.add("wrap");bar.style.setProperty("--sp",0);void bar.offsetWidth;bar.classList.remove("wrap")}else bar.style.setProperty("--sp",(s/59).toFixed(3));last=s}
+ setTimeout(tick,1000-d.getMilliseconds()+5)}
+tick();align();window.addEventListener("resize",align);try{new ResizeObserver(align).observe(g);new ResizeObserver(align).observe(c)}catch(x){}if(document.fonts&&document.fonts.ready)document.fonts.ready.then(align);setTimeout(align,500)})();
 </script>
 </body>
 </html>
