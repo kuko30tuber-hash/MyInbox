@@ -675,6 +675,31 @@ header h1{margin-top:14px}
 #mail .inl .rdh{padding-bottom:6px}
 #mail .inl .rds{font-size:21px}
 @media(max-width:600px){.mh{flex-wrap:wrap;gap:12px}.mt{flex:1 1 100%}}
+/* ===== alignment pass ===== */
+#v-mail{max-width:none!important}
+.hact{top:48px;right:20px}
+@media(min-width:1100px){.hact{right:32px}.kbh{right:max(32px,calc((100vw - 1320px)/2 + 32px))}}
+@media(max-width:600px){.hact{top:36px;right:20px}}
+.mh{margin:0 0 14px}
+#agenda>.day:first-child{padding-top:0}
+.nwrap{align-items:stretch}
+.nl{display:flex;flex-direction:column}
+.nl #nlist{flex:1;max-height:none}
+@media(min-width:1100px){
+ .mwrap{align-items:stretch;height:max(540px,calc(100vh - 120px));margin-bottom:22px}
+ .mcol,#mpane{margin:0!important;min-height:0;height:100%}
+ .mcol{display:flex;flex-direction:column}
+ .mcol #mail{flex:1;max-height:none;overflow:auto}
+ #mpane{position:relative;top:auto;max-height:none;overflow:auto}
+ .nwrap{height:max(520px,calc(100vh - 220px))}
+ .nl,.ne{min-height:0;height:100%}
+ .nl #nlist{overflow:auto}
+ .ne{overflow:auto}
+}
+main>section>h2{padding-left:0!important;padding-right:0!important}
+.wbar{padding:0!important}
+.nwrap,.mwrap{gap:18px!important;column-gap:18px!important}
+@media(min-width:1100px){#v-calendar .cal{column-gap:28px}}
 </style>
 <script>try{var t=localStorage.getItem("wth");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 </head>
