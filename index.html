@@ -2098,6 +2098,16 @@ html.motion #v-weather .wxt:nth-child(n){animation-delay:calc(.12s + var(--d,0s)
 /* sizes */
 @media(max-width:1199px){.wxdays,.wxtiles{grid-column:1/-1}}
 @media(max-width:600px){.wxp{padding:4px 0 100px;gap:12px}.wxh{padding:20px;min-height:0}.wxht{font-size:84px}.wxhicon .wxi2{width:80px}.wxtiles{grid-template-columns:1fr 1fr;gap:12px}.wxt{min-height:150px;padding:14px}.wxtv{font-size:32px}.wxdr{grid-template-columns:44px 24px 30px 30px minmax(40px,1fr) 30px;gap:6px;font-size:14px}.wxpadd input{width:140px}.wxpadd input:focus{width:180px}.wxcmp{width:58px;height:58px}.wxcmp svg{width:38px;height:38px}.wxwd{gap:10px}}
+
+/* widget packs: one per tab */
+.wpkh{margin:-2px 0 10px;font-size:12.5px;color:var(--mute);line-height:1.45}
+.wpkc{position:relative}
+.wpki{display:grid!important;place-items:center;width:38px;height:38px;border-radius:12px;background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent);font-size:0!important}
+.wpki svg{width:22px;height:22px}
+.wpkc.here{border-color:color-mix(in srgb,var(--accent) 55%,transparent)!important;box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 35%,transparent) inset}
+.wpkt{position:absolute;top:10px;right:10px;font-style:normal;font-size:10px;font-weight:750;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:99px;background:var(--accent);color:#fff}
+.wpk .wpkd{display:none!important}
+.wpk .wpkc{flex:1 1 150px}
 </style>
 <script>try{var t=localStorage.getItem("wth");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);var a=localStorage.getItem("wacc");if(/^#[0-9a-f]{6}$/i.test(a||"")){var r=document.documentElement.style;r.setProperty("--accent",a);r.setProperty("--dot",a);r.setProperty("--today",a)}}catch(e){}</script>
 </head>
@@ -3380,10 +3390,12 @@ WTABS.forEach(function(tab){EL("wds-"+tab).addEventListener("click",function(e){
 document.addEventListener("click",function(){requestAnimationFrame(function(){if(!cm.hidden&&typeof pills==="function")pills()})});
 
 /* ---------- packs in the gallery ---------- */
-var PACKS=[["morning","Morning","☀️",["weather","agenda","important","deliveries"]],["focus","Deep work","🎯",["focus","todo","breathe","water"]],["planner","Planner","🗓️",["agenda","week","month","rings"]],["inbox","Inbox pro","📬",["unread","important","accounts","activity"]],["calm","Calm","🌿",["breathe","sun","habits","photo"]]];
+var PACKS=[["mail","Mail","mail",["unread","important","latest","deliveries"]],["calendar","Calendar","calendar",["next","agenda","week","month"]],["notes","Notes","notes",["notes","todo","habits","focus"]],["weather","Weather","weather",["weather","sun","world","rings"]]];
+function packIcon(t){var b=EL("t"+t),v=b&&b.querySelector("svg");return v?v.outerHTML:""}
 var undoPack=null;
 var _bwg=buildWg;buildWg=function(){_bwg();var q=EL("wgq")&&EL("wgq").value;if(q)return;var l=EL("wgl");
-l.insertAdjacentHTML("afterbegin",'<div class="wpk"><div class="stgl">Widget packs</div><div class="wpkr">'+PACKS.map(function(p){return '<button type="button" class="wpkc" data-pack="'+p[0]+'"><span class="wpke">'+p[2]+'</span><b>'+p[1]+'</b><span class="wpkd">'+p[3].map(function(id){return '<i style="background:'+TN(id)+'" title="'+esc((wgById(id)||{}).name||id)+'"></i>'}).join("")+'</span><small>'+p[3].map(function(id){return (wgById(id)||{}).name}).join(", ")+'</small></button>'}).join("")+'</div></div>')};
+var PK=PACKS.slice().sort(function(a,b){return (b[0]===wgTab)-(a[0]===wgTab)});
+l.insertAdjacentHTML("afterbegin",'<div class="wpk"><div class="stgl">Widget packs</div><p class="wpkh">Each pack swaps the widgets on this tab for four that go together. Any pack works on any tab, and you can undo it.</p><div class="wpkr">'+PK.map(function(p){return '<button type="button" class="wpkc'+(p[0]===wgTab?' here':'')+'" data-pack="'+p[0]+'"><span class="wpke wpki">'+packIcon(p[2])+'</span>'+(p[0]===wgTab?'<em class="wpkt">This tab</em>':'')+'<b>'+p[1]+'</b><span class="wpkd">'+p[3].map(function(id){return '<i style="background:'+TN(id)+'" title="'+esc((wgById(id)||{}).name||id)+'"></i>'}).join("")+'</span><small>'+p[3].map(function(id){return (wgById(id)||{}).name}).join(", ")+'</small></button>'}).join("")+'</div></div>')};
 EL("wgl").addEventListener("click",function(e){var b=e.target.closest("[data-pack]");if(!b)return;var p=PACKS.filter(function(x){return x[0]===b.dataset.pack})[0];if(!p)return;
 undoPack={tab:wgTab,ids:WD[wgTab].slice()};WD[wgTab]=p[3].filter(function(id){return wgById(id)});saveWd();buildWds(wgTab);tickWds();buildWg();
 var tt=EL("toast");tt.innerHTML=esc(p[1])+' pack added <button type="button" class="undo" id="wpkundo">Undo</button>';tt.hidden=false;clearTimeout(tt._k);tt._k=setTimeout(function(){tt.hidden=true},6000);
