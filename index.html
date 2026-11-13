@@ -737,27 +737,125 @@ main>section>h2{padding-left:0!important;padding-right:0!important}
 
 header h1{padding-right:190px!important}
 @media(max-width:600px){header h1{padding-right:134px!important}}
-.stsheet{width:min(480px,100%)}
-.sth4{margin:18px 0 4px;font-size:13px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:var(--mute)}
-.sth4:first-child{margin-top:4px}
-.stp{margin:0 0 10px;font-size:14px;color:var(--mute)}
-.stacc{padding:14px;margin:0 0 10px;border-radius:20px;background:var(--glass-lo);border:1px solid var(--line)}
-.stah{display:flex;align-items:center;gap:9px;min-width:0;margin-bottom:12px}
-.stdot{flex:none;width:12px;height:12px;border-radius:50%;background:var(--ac);box-shadow:0 0 0 3px color-mix(in srgb,var(--ac) 25%,transparent)}
-.stem{flex:1;min-width:0;font-size:15px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.stsw{display:grid;grid-template-columns:repeat(auto-fill,minmax(34px,1fr));gap:8px}
-.stsw button,.swc{position:relative;width:100%;aspect-ratio:1;max-width:40px;border-radius:50%;border:0;padding:0;cursor:pointer;background:var(--s);box-shadow:inset 0 0 0 1px rgba(0,0,0,.12);transition:transform .15s}
-.stsw button:hover,.swc:hover{transform:scale(1.08)}
-.stsw button.on,.swc.on{box-shadow:0 0 0 2px var(--panel,#fff),0 0 0 4px var(--s)}
-.stsw button.on::after{content:"";position:absolute;left:50%;top:46%;width:7px;height:12px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:translate(-50%,-50%) rotate(45deg)}
-.stsw button:focus-visible,.swc:focus-within{outline:2px solid var(--accent);outline-offset:3px}
-.swc{display:block;background:conic-gradient(#ff453a,#ffd60a,#30d158,#64d2ff,#0a84ff,#bf5af2,#ff375f,#ff453a)}
-.swc.on{background:var(--s)}
-.swc input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;border:0;padding:0}
-.stres{margin-top:4px;font-size:13px}
-.stbtns{display:flex;flex-wrap:wrap;gap:8px}
+/* settings window */
+#st .stsheet{width:min(600px,100%);padding:0;display:flex;flex-direction:column;max-height:min(860px,100%);overflow:hidden}
+#st .stsheet>.shh{padding:22px 22px 0}
+#st .sttabs{display:flex;gap:2px;margin:14px 22px 0;padding:3px;border-radius:999px;background:var(--glass-lo);border:1px solid var(--line)}
+#st .sttabs button{flex:1;font:inherit;font-size:13.5px;font-weight:600;padding:8px 6px;border:0;border-radius:999px;background:none;color:color-mix(in srgb,var(--ink) 70%,transparent);cursor:pointer;white-space:nowrap;transition:background .2s,color .2s}
+#st .sttabs button.on{background:var(--pill);color:var(--ink);box-shadow:0 1px 8px rgba(0,0,0,.16)}
+#st .sttabs button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+#stbody{flex:1;overflow:auto;padding:16px 22px 6px;overscroll-behavior:contain}
+#st .stsheet>.acts{padding:12px 22px 20px;margin:0;border-top:1px solid var(--line)}
+#st .stp{margin:0 0 12px;font-size:14px;color:var(--mute)}
+#st .stempty{padding:24px;text-align:center;color:var(--mute);border:1px dashed var(--line);border-radius:18px}
+#st .stgrp{margin:0 0 16px}
+#st .stgl{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--mute);margin:0 2px 8px}
+/* account / accent cards */
+#st .stcard{margin:0 0 10px;border-radius:22px;background:var(--glass-lo);border:1px solid var(--line);overflow:hidden;transition:border-color .25s,box-shadow .25s}
+#st .stcard.open{border-color:color-mix(in srgb,var(--ac) 45%,var(--line));box-shadow:0 0 0 3px color-mix(in srgb,var(--ac) 12%,transparent)}
+#st .stch{display:flex;align-items:center;gap:12px;width:100%;padding:14px 16px;font:inherit;text-align:left;border:0;background:none;color:var(--ink);cursor:pointer}
+#st .stch.static{cursor:default}
+#st .stch:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;border-radius:22px}
+#st .stdot{flex:none;width:30px;height:30px;border-radius:50%;background:var(--ac);box-shadow:inset 0 0 0 1px rgba(0,0,0,.12),0 4px 14px color-mix(in srgb,var(--ac) 45%,transparent);transition:background .2s,box-shadow .2s}
+#st .stct{flex:1;min-width:0;display:flex;flex-direction:column}
+#st .stct b{font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#st .stct small{font-size:12.5px;color:var(--mute)}
+#st .stchev{flex:none;color:var(--mute);transition:transform .25s}
+#st .stcard.open .stchev{transform:rotate(180deg)}
+#st .stcb{display:none;padding:0 16px 16px}
+#st .stcard.open .stcb{display:block}
+#st .stcf{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+#st .btn.sm{padding:7px 13px;font-size:13px}
+#st .stadd{width:100%;justify-content:center;margin:4px 0 12px;display:inline-flex;align-items:center;gap:6px}
+/* live preview of an email row */
+#st .stprev{display:grid;grid-template-columns:38px 1fr auto;gap:10px;align-items:center;padding:10px 12px;margin:0 0 14px;border-radius:16px;background:var(--glass);border:1px solid var(--line)}
+#st .stprev .av{width:38px;height:38px;font-size:15px}
+#st .stpt{min-width:0}
+#st .stpf{display:flex;align-items:center;gap:6px;font-size:13.5px}
+#st .stps{font-size:13px;color:var(--mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#st .stpd{align-self:start;font-size:11.5px;color:var(--mute)}
+#st .stprev .acc{transition:background .2s,box-shadow .2s}
+/* accent preview */
+#st .stacp{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:12px;margin:0 0 14px;border-radius:16px;background:var(--glass);border:1px solid var(--line)}
+#st .stacp .btn.pri{pointer-events:none;background:var(--ac);border-color:transparent}
+#st .stacd{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--ac);color:#fff;font-weight:700;font-size:14px}
+#st .stacl{color:var(--ac);font-weight:600;font-size:14px;text-decoration:underline;text-underline-offset:3px}
+#st .stacs{width:44px;height:26px;border-radius:99px;background:var(--ac);position:relative}
+#st .stacs i{position:absolute;right:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.25)}
+/* the colour picker */
+#st .cpg{margin:0 0 12px}
+#st .cpl{font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--mute);margin:0 0 7px}
+#st .cps{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:7px}
+#st .cprec{grid-template-columns:repeat(12,minmax(0,1fr))}
+#st .cpw{position:relative;width:100%;aspect-ratio:1;border:0;padding:0;border-radius:50%;background:var(--w);cursor:pointer;box-shadow:inset 0 0 0 1px rgba(0,0,0,.14),inset 0 1px 0 rgba(255,255,255,.35);transition:transform .18s cubic-bezier(.2,.9,.3,1.4),box-shadow .18s}
+#st .cpw:hover{transform:scale(1.14)}
+#st .cpw:active{transform:scale(.92)}
+#st .cpw.on{transform:scale(1.06);box-shadow:0 0 0 2px var(--panel),0 0 0 4px var(--w),0 4px 12px color-mix(in srgb,var(--w) 55%,transparent)}
+#st .cpw.on::after{content:"";position:absolute;left:50%;top:45%;width:26%;height:44%;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:translate(-50%,-50%) rotate(45deg);filter:drop-shadow(0 0 1px rgba(0,0,0,.5))}
+#st .cpw:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+@media(max-width:600px){#st .cps{grid-template-columns:repeat(6,minmax(0,1fr));gap:9px}#st .cpw{max-width:44px;justify-self:center}}
+#st .cpcus{padding:12px;border-radius:16px;background:var(--glass);border:1px solid var(--line)}
+#st .cpsl{color:var(--mute);font-size:12.5px;margin:0 0 10px;display:grid;grid-template-columns:52px 1fr;align-items:center;gap:10px;margin:0 0 10px;font-size:12.5px;color:var(--mute)}
+#st .cpsl input{-webkit-appearance:none;appearance:none;width:100%;height:22px;padding:0;border:0;border-radius:99px;margin:0;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12);outline:none}
+#st .cph{background:linear-gradient(90deg,hsl(0,90%,55%),hsl(60,90%,55%),hsl(120,90%,45%),hsl(180,90%,45%),hsl(240,90%,60%),hsl(300,90%,55%),hsl(359,90%,55%))}
+#st .cpv{background:linear-gradient(90deg,hsl(var(--h),var(--s),18%),hsl(var(--h),var(--s),50%),hsl(var(--h),var(--s),82%))}
+#st .cpsl input::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:var(--c);border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.35)}
+#st .cpsl input::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--c);border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.35)}
+#st .cpsl input:focus-visible{box-shadow:0 0 0 2px var(--accent)}
+#st .cprow{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+#st .cpnow{width:36px;height:36px;border-radius:12px;background:var(--c);box-shadow:inset 0 0 0 1px rgba(0,0,0,.14);transition:background .15s}
+#st .cphex{margin:0;font-size:15px;display:inline-flex;align-items:center;gap:2px;padding:0 12px;height:36px;border-radius:12px;border:1px solid var(--line);background:var(--glass-lo);font-variant-numeric:tabular-nums;color:var(--mute)}
+#st .cphex:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
+#st .cpx{width:70px;flex:none;box-shadow:none;border-radius:0;border:0;background:none;font:inherit;font-size:15px;font-weight:600;letter-spacing:.04em;color:var(--ink);outline:none;text-transform:uppercase;padding:0}
+#st .cpx.bad{color:#ff453a}
+#st .cpbt{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;font-size:13px;height:36px}
+#st .cpwarn{font-size:12.5px;color:#ff9f0a;margin-top:8px}
+#st .cpwarn:empty{display:none}
+/* switches */
+#st .stsw{color:var(--ink);font-size:inherit;display:flex;align-items:center;gap:14px;padding:13px 14px;margin:0;border-radius:0;background:var(--glass-lo);border:1px solid var(--line);border-bottom-width:0;cursor:pointer}
+#st .stsw:first-child{border-radius:18px 18px 0 0}
+#st .stsw:last-child{border-radius:0 0 18px 18px;border-bottom-width:1px}
+#st .stsw:only-child{border-radius:18px}
+#st .stswt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+#st .stswt b{font-size:14.5px;font-weight:600}
+#st .stswt small{font-size:12.5px;color:var(--mute);line-height:1.35}
+#st .stsw input{position:absolute;opacity:0;width:1px;height:1px}
+#st .stsw i{flex:none;position:relative;width:46px;height:28px;border-radius:99px;background:color-mix(in srgb,var(--mute) 40%,transparent);transition:background .2s}
+#st .stsw i::after{content:"";position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.3);transition:transform .22s cubic-bezier(.2,.9,.3,1.2)}
+#st .stsw input:checked+i{background:#30d158}
+#st .stsw input:checked+i::after{transform:translateX(18px)}
+#st .stsw input:focus-visible+i{outline:2px solid var(--accent);outline-offset:2px}
+/* segmented choices */
+#st .stseg{display:flex;gap:2px;padding:3px;border-radius:14px;background:var(--glass-lo);border:1px solid var(--line)}
+#st .stseg button{flex:1;font:inherit;font-size:13.5px;font-weight:600;padding:9px 8px;border:0;border-radius:11px;background:none;color:color-mix(in srgb,var(--ink) 72%,transparent);cursor:pointer}
+#st .stseg button.on{background:var(--pill);color:var(--ink);box-shadow:0 1px 6px rgba(0,0,0,.14)}
+#st .stseg button:focus-visible{outline:2px solid var(--accent)}
+/* lists */
+#st .stlist{padding:14px;margin:0 0 10px;border-radius:18px;background:var(--glass-lo);border:1px solid var(--line)}
+#st .stlh{display:flex;align-items:center;gap:8px}
+#st .stlh b{font-size:14.5px}
+#st .stlc{font-size:11px;font-weight:700;padding:1px 8px;border-radius:99px;background:var(--glass);border:1px solid var(--line);color:var(--mute)}
+#st .stlist>small{display:block;font-size:12.5px;color:var(--mute);margin:2px 0 10px}
+#st .stchips{display:flex;flex-wrap:wrap;gap:6px}
+#st .stchip{display:inline-flex;align-items:center;gap:4px;padding:4px 4px 4px 11px;border-radius:99px;font-size:13px;background:var(--glass);border:1px solid var(--line);max-width:100%}
+#st .stchip button{width:22px;height:22px;border:0;border-radius:50%;background:var(--glass-lo);color:var(--ink);cursor:pointer;font-size:14px;line-height:1;padding:0}
+#st .stchip button:hover{background:color-mix(in srgb,#ff375f 25%,transparent)}
+#st .stnone{font-size:13px;color:var(--mute)}
+#st .stladd{display:flex;gap:6px;margin-top:10px}
+#st .stladd input{flex:1;min-width:0;font:inherit;font-size:14px;padding:8px 12px;border-radius:12px;border:1px solid var(--line);background:var(--glass);color:var(--ink);outline:none}
+#st .stladd input:focus{border-color:var(--accent)}
+#st .stladd input.bad{border-color:#ff453a}
+/* what the mail settings change */
+body.nosnip #mail .snip{display:none}
+body.noaccl #mail .acc{display:none}
+body.starimp #mail li.imp .subj::before{content:"★";color:#ff9f0a;margin-right:5px}
+body.dense #mail li a{padding:8px 12px;gap:10px;grid-template-columns:34px 1fr}
+body.dense #mail .av{width:34px;height:34px;font-size:14px}
+body.dense #mail li:not(:last-child)::after{left:58px}
+body.dense #mail li a .when{top:9px}
+body.dense #mail .snip{-webkit-line-clamp:1}
 </style>
-<script>try{var t=localStorage.getItem("wth");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<script>try{var t=localStorage.getItem("wth");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);var a=localStorage.getItem("wacc");if(/^#[0-9a-f]{6}$/i.test(a||"")){var r=document.documentElement.style;r.setProperty("--accent",a);r.setProperty("--dot",a);r.setProperty("--today",a)}}catch(e){}</script>
 </head>
 <body>
 <div id="bg" aria-hidden="true"><div class="vig"></div><div class="grn"></div></div>
@@ -812,7 +910,7 @@ header h1{padding-right:190px!important}
 </div>
 <div id="cmmsg" role="status"></div>
 <div class="acts"><span class="hint">Ctrl + Enter to send</span><button class="btn" id="cmcancel" type="button">Cancel</button><button class="btn pri" id="cmgo" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7Z"/></svg>Send</button></div></div></div>
-<div id="st" class="modal" hidden><div class="sheet stsheet" role="dialog" aria-modal="true" aria-labelledby="sth"><div class="shh"><div><h3 id="sth">Settings</h3><p class="shsub">Changes save right away</p></div><button class="x" id="stx" type="button" aria-label="Close">×</button></div><div id="stbody"></div><div class="acts"><button class="btn pri" id="stdone" type="button">Done</button></div></div></div>
+<div id="st" class="modal" hidden><div class="sheet stsheet" role="dialog" aria-modal="true" aria-labelledby="sth"><div class="shh"><div><h3 id="sth">Settings</h3><p class="shsub">Changes save right away on this device</p></div><button class="x" id="stx" type="button" aria-label="Close">×</button></div><div id="sttabs" class="sttabs" role="tablist" aria-label="Settings sections"></div><div id="stbody" role="tabpanel" tabindex="-1"></div><div class="acts"><button class="btn pri" id="stdone" type="button">Done</button></div></div></div>
 <div id="wg" class="modal" hidden><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="wgh"><div class="shh"><div><h3 id="wgh">Widgets</h3><p class="shsub" id="wgsub"></p></div><button class="x" id="wgx" type="button" aria-label="Close">×</button></div><div id="wgl"></div><div class="acts"><button class="btn pri" id="wgdone" type="button">Done</button></div></div></div>
 <div id="kb" class="modal" hidden><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="kbh3"><div class="shh"><div><h3 id="kbh3">Keyboard shortcuts</h3><p class="shsub">They work when you are not typing in a field</p></div><button class="x" id="kbx" type="button" aria-label="Close">×</button></div><div class="kbl"><div><span style="margin:0"><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd></span><span>Mail, Calendar, Notes</span></div><div><span style="margin:0"><kbd>J</kbd><kbd>K</kbd></span><span>Next or previous email</span></div><div><span style="margin:0"><kbd>R</kbd></span><span>Reply</span></div><div><span style="margin:0"><kbd>C</kbd></span><span>Write an email</span></div><div><span style="margin:0"><kbd>/</kbd></span><span>Search notes</span></div><div><span style="margin:0"><kbd>Esc</kbd></span><span>Close or fold up</span></div><div><span style="margin:0"><kbd>?</kbd></span><span>Show this list</span></div></div></div></div>
 <button id="kbh" class="kbh" type="button" aria-label="Keyboard shortcuts" title="Keyboard shortcuts">?</button>
@@ -838,7 +936,7 @@ function notSpamList(){try{var a=JSON.parse(ls("wd-notspam","[]"));return Array.
 function spamWhy(m){var from=(m[0]||"")+" "+(m[5]||""),text=(m[1]||"")+" "+(m[7]||""),labels=m[8]||"",addr=(addrOf(m[5]||"")||m[0]||"").toLowerCase();
 if(SP_TIKTOK.test(from)||SP_TIKTOK.test(m[1]||""))return "TikTok";
 if(FORCE.test(from))return "Your list";
-if(addr&&notSpamList().indexOf(addr)>-1)return "";
+if(typeof inList==="function"?inList(notSpamList(),addr):(addr&&notSpamList().indexOf(addr)>-1))return "";
 if(SP_GLASS.test(text)||SP_GLASS.test(from))return "";
 if(SP_TRANS.test(text))return "";
 if(/CATEGORY_PROMOTIONS/.test(labels))return "Promotion";
@@ -858,13 +956,14 @@ function renderAccf(A){var f=document.getElementById("accf");if(!f){var tb=docum
 if(A.length<2){f.hidden=true;f.innerHTML="";return}f.hidden=false;
 f.innerHTML='<button type="button" data-af=""'+(acctF?'':' class="on"')+'>All accounts</button>'+A.map(function(e){return '<button type="button" data-af="'+esc(e)+'"'+(acctF===e?' class="on"':'')+' title="'+esc(e)+'"><i style="background:'+accColor(e)+'"></i>'+esc(accShort(e))+'</button>'}).join("")}
 document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("#accf [data-af]");if(!b)return;acctF=b.dataset.af;try{localStorage.setItem("mailacct",acctF)}catch(x){}openTid=null;renderMail(lastL,lastNote)});
+function inList(a,addr){return !!addr&&a.some(function(x){x=String(x).toLowerCase();return addr===x||(x.indexOf("@")<0&&(addr.slice(-x.length-1)==="@"+x||addr.slice(-x.length-1)==="."+x))})}
 function listOf(k){try{var a=JSON.parse(ls(k,"[]"));return Array.isArray(a)?a:[]}catch(e){return[]}}
 var IMP_SEC=/security alert|new (sign|log)-?in|sign-?in attempt|password|verify your|verification|2-step|two-factor|bezpečnost|bezpecnost|prihlásen|prihlasen/i;
 var IMP_PAY=/invoice|faktúr|faktur|receipt|payment|platb|refund|vrátenie/i;
 var IMP_URG=/urgent|asap|deadline|action required|important|appointment|interview|reservation|rezerváci|rezervaci|dôležit|dolezit|súrne|surne|termín/i;
 function impWhy(m){var addr=(addrOf(m[5]||"")||m[0]||"").toLowerCase(),text=(m[1]||"")+" "+(m[7]||""),labels=m[8]||"";
-if(addr&&listOf("wd-notimp").indexOf(addr)>-1)return "";
-if(addr&&listOf("wd-imp").indexOf(addr)>-1)return "Your list";
+if(inList(listOf("wd-notimp"),addr))return "";
+if(inList(listOf("wd-imp"),addr))return "Your list";
 if(isSpam(m))return "";
 if(/\bSTARRED\b/.test(labels))return "Starred";
 if(IMP_SEC.test(text))return "Security";
@@ -886,7 +985,7 @@ document.getElementById("mail").innerHTML=cur.length?cur.map(function(m){
 var d=new Date(m[2]);
 var w=new Intl.DateTimeFormat("en-GB",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit",timeZone:tz}).format(d);
 var why=view==="sp"?spamWhy(m):view==="imp"?impWhy(m):"";
-return '<li class="'+(m[3]?"unread":"")+'"><a href="#mail" role="button" data-t="'+esc(m[6]||"")+'" data-k="'+esc(m[6]||m[4])+'" aria-expanded="'+((m[6]||m[4])===openTid)+'"><span class="av" style="--h:'+hue(m[0])+'">'+esc(ini(m[0]))+'<span class="dot"></span></span><span class="txt"><span class="from"><span class="fn">'+esc(m[0])+'</span>'+(why?'<span class="why'+(view==="imp"?" imp":"")+'">'+esc(why)+'</span>':'')+(multi&&m[10]?'<span class="acc" style="--ac:'+accColor(m[10])+'" title="Received in '+esc(m[10])+'">'+esc(accShort(m[10]))+'</span>':'')+'</span><span class="subj">'+esc(m[1])+'</span>'+(m[7]?'<span class="snip">'+esc(m[7])+'</span>':'')+'</span><span class="when">'+w+'</span></a>'+((m[6]||m[4])===openTid&&!WIDE()?'<div class="inl">'+openHTML.replace("<!--SUM-->",sumHtml(m[6]))+'</div>':'')+'</li>'}).join(""):'<li style="padding:16px 18px;color:var(--mute)">'+(!(window.CS&&CS.gmail==="ok")?"Connect Gmail to see your emails here.":view==="sp"?"No spam right now.":view==="imp"?"Nothing important right now.":"Inbox is empty.")+'</li>'}
+return '<li class="'+(m[3]?"unread":"")+(view==="in"&&isImp(m)?" imp":"")+'"><a href="#mail" role="button" data-t="'+esc(m[6]||"")+'" data-k="'+esc(m[6]||m[4])+'" aria-expanded="'+((m[6]||m[4])===openTid)+'"><span class="av" style="--h:'+hue(m[0])+'">'+esc(ini(m[0]))+'<span class="dot"></span></span><span class="txt"><span class="from"><span class="fn">'+esc(m[0])+'</span>'+(why?'<span class="why'+(view==="imp"?" imp":"")+'">'+esc(why)+'</span>':'')+(multi&&m[10]?'<span class="acc" style="--ac:'+accColor(m[10])+'" title="Received in '+esc(m[10])+'">'+esc(accShort(m[10]))+'</span>':'')+'</span><span class="subj">'+esc(m[1])+'</span>'+(m[7]?'<span class="snip">'+esc(m[7])+'</span>':'')+'</span><span class="when">'+w+'</span></a>'+((m[6]||m[4])===openTid&&!WIDE()?'<div class="inl">'+openHTML.replace("<!--SUM-->",sumHtml(m[6]))+'</div>':'')+'</li>'}).join(""):'<li style="padding:16px 18px;color:var(--mute)">'+(!(window.CS&&CS.gmail==="ok")?"Connect Gmail to see your emails here.":view==="sp"?"No spam right now.":view==="imp"?"Nothing important right now.":"Inbox is empty.")+'</li>'}
 function tabs(){document.getElementById("tin").classList.toggle("on",view==="in");document.getElementById("tsp").classList.toggle("on",view==="sp");var ti=document.getElementById("timp");if(ti)ti.classList.toggle("on",view==="imp")}
 document.getElementById("tin").onclick=function(){view="in";tabs();renderMail(lastL,lastNote)};
 document.getElementById("tsp").onclick=function(){view="sp";tabs();renderMail(lastL,lastNote)};
@@ -1695,26 +1794,124 @@ EL("cmpick").addEventListener("keydown",function(e){var d={ArrowRight:1,ArrowDow
 var _sc=setCals;setCals=function(cs){_sc(cs);var first=window.gAuth&&gAuth.primary?gAuth.primary():"",multi=accts().length>1;
 if(multi)cs.forEach(function(c,i){if(c.account&&c.account!==first&&C[i]&&C[i][0]!==c.account)C[i][0]=C[i][0]+" · "+accShort(c.account)});
 buildLegend();buildCalSelect()};
-/* ===== Settings: a colour for each account ===== */
-var PAL=[["#0a84ff","Blue"],["#5e5ce6","Indigo"],["#bf5af2","Purple"],["#ff375f","Pink"],["#ff453a","Red"],["#ff9f0a","Orange"],["#ffd60a","Yellow"],["#30d158","Green"],["#66d4cf","Mint"],["#64d2ff","Teal"],["#ac8e68","Brown"],["#8e8e93","Grey"]];
+/* ===== Settings 2 ===== */
+/* --- preferences --- */
+var PDEF={snip:1,accl:1,mread:1,star:1,open:"in",dense:0,spamauto:1};
+function P(){var o={};try{o=JSON.parse(localStorage.getItem("wprefs")||"{}")||{}}catch(e){}var r={};for(var k in PDEF)r[k]=k in o?o[k]:PDEF[k];return r}
+function setP(k,v){var o=P();o[k]=v;try{localStorage.setItem("wprefs",JSON.stringify(o))}catch(e){}applyPrefs()}
+function applyPrefs(){var p=P(),b=document.body;b.classList.toggle("nosnip",!p.snip);b.classList.toggle("noaccl",!p.accl);b.classList.toggle("starimp",!!p.star);b.classList.toggle("dense",!!p.dense);renderMail(lastL,lastNote)}
+var _sw=spamWhy;spamWhy=function(m){var r=_sw(m);if(!P().spamauto&&r!=="Your list"&&r!=="TikTok")return "";return r};
+var _mr=markRead;markRead=function(tid){if(!P().mread)return Promise.resolve();return _mr(tid)};
+if(P().open==="imp"){view="imp";tabs()}
+applyPrefs();
+
+/* --- colour maths --- */
+function hex2rgb(h){h=h.replace("#","");return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]}
+function rgb2hex(r,g,b){return "#"+[r,g,b].map(function(x){return ("0"+Math.round(Math.max(0,Math.min(255,x))).toString(16)).slice(-2)}).join("")}
+function hex2hsl(h){var c=hex2rgb(h),r=c[0]/255,g=c[1]/255,b=c[2]/255,mx=Math.max(r,g,b),mn=Math.min(r,g,b),l=(mx+mn)/2,s=0,hu=0,d=mx-mn;
+if(d){s=l>.5?d/(2-mx-mn):d/(mx+mn);hu=mx===r?(g-b)/d+(g<b?6:0):mx===g?(b-r)/d+2:(r-g)/d+4;hu*=60}return [Math.round(hu),Math.round(s*100),Math.round(l*100)]}
+function hsl2hex(h,s,l){s/=100;l/=100;var k=function(n){return (n+h/30)%12},a=s*Math.min(l,1-l),f=function(n){return l-a*Math.max(-1,Math.min(k(n)-3,Math.min(9-k(n),1)))};return rgb2hex(f(0)*255,f(8)*255,f(4)*255)}
+function cdist(a,b){var x=hex2rgb(a),y=hex2rgb(b),rm=(x[0]+y[0])/2,dr=x[0]-y[0],dg=x[1]-y[1],db=x[2]-y[2];return Math.sqrt((2+rm/256)*dr*dr+4*dg*dg+(2+(255-rm)/256)*db*db)}
+var HEX=/^#?[0-9a-f]{6}$/i;
+function normHex(v){v=String(v||"").trim();if(/^#?[0-9a-f]{3}$/i.test(v)){v=v.replace("#","");v=v[0]+v[0]+v[1]+v[1]+v[2]+v[2]}if(!HEX.test(v))return "";return ("#"+v.replace("#","")).toLowerCase()}
+
+/* --- palettes --- */
+var PALS=[["Vivid",[["#ff3b30","Red"],["#ff9500","Orange"],["#ffcc00","Yellow"],["#34c759","Green"],["#00c7be","Mint"],["#30b0c7","Teal"],["#32ade6","Cyan"],["#0a84ff","Blue"],["#5856d6","Indigo"],["#af52de","Purple"],["#ff2d55","Pink"],["#a2845e","Brown"]]],
+["Soft",[["#ff8a80","Coral"],["#ffb74d","Apricot"],["#ffd54f","Butter"],["#9ccc65","Lime"],["#4db6ac","Sea green"],["#4fc3f7","Sky"],["#7986cb","Periwinkle"],["#ba68c8","Lilac"],["#f06292","Rose"],["#a1887f","Mocha"],["#90a4ae","Slate"],["#aed581","Pistachio"]]],
+["Deep",[["#c62828","Crimson"],["#d84315","Rust"],["#b8860b","Gold"],["#2e7d32","Forest"],["#00796b","Pine"],["#0277bd","Ocean"],["#1a237e","Navy"],["#6a1b9a","Plum"],["#ad1457","Berry"],["#5d4037","Coffee"],["#455a64","Graphite"],["#263238","Midnight"]]]];
+var CNAME={};PALS.forEach(function(g){g[1].forEach(function(c){CNAME[c[0]]=c[1]})});
+function cName(c){return CNAME[c]||c.toUpperCase()}
+function recent(){try{var a=JSON.parse(localStorage.getItem("colrecent")||"[]");return Array.isArray(a)?a.filter(function(x){return HEX.test(x)}):[]}catch(e){return[]}}
+function pushRecent(c){var a=recent().filter(function(x){return x!==c});a.unshift(c);try{localStorage.setItem("colrecent",JSON.stringify(a.slice(0,8)))}catch(e){}}
+
+/* --- what a picker controls: an account ("acc:email") or the app accent ("accent") --- */
+var ACC_DEF="#0a84ff";
+function getAccent(){var c=ls("wacc","");return HEX.test(c)?c:""}
+function applyAccent(){var c=getAccent(),r=document.documentElement.style;if(c){r.setProperty("--accent",c);r.setProperty("--dot",c);r.setProperty("--today",c)}else{r.removeProperty("--accent");r.removeProperty("--dot");r.removeProperty("--today")}}
+applyAccent();
+function colOf(k){return k==="accent"?(getAccent()||ACC_DEF):accColor(k.slice(4)).toLowerCase()}
+function setCol(k,c,keep){if(k==="accent"){ss("wacc",c);applyAccent()}else{var cs=accCols();cs[k.slice(4)]=c;try{localStorage.setItem("acccol",JSON.stringify(cs))}catch(x){}repaint()}if(!keep)pushRecent(c)}
+function repaint(){renderMail(lastL,lastNote);renderConn();if(typeof drawPick==="function")drawPick();if(typeof drawGrid==="function"){}}
+function clash(k,c){if(k==="accent")return "";var e=k.slice(4),hit="";accts().forEach(function(o){if(o!==e&&!hit&&cdist(accColor(o),c)<70)hit=o});return hit}
+
+function pickerHtml(k){var c=colOf(k),hsl=hex2hsl(c),rc=recent();
+return '<div class="cp" data-k="'+esc(k)+'" style="--c:'+c+';--h:'+hsl[0]+';--s:'+Math.max(hsl[1],35)+'%">'+
+PALS.map(function(g){return '<div class="cpg"><div class="cpl">'+g[0]+'</div><div class="cps" role="radiogroup" aria-label="'+g[0]+' colours">'+g[1].map(function(p){var on=p[0]===c;return '<button type="button" role="radio" aria-checked="'+on+'" class="cpw'+(on?' on':'')+'" data-col="'+p[0]+'" style="--w:'+p[0]+'" title="'+p[1]+'" aria-label="'+p[1]+'"></button>'}).join("")+'</div></div>'}).join("")+
+(rc.length?'<div class="cpg"><div class="cpl">Recent</div><div class="cps cprec">'+rc.map(function(x){return '<button type="button" class="cpw'+(x===c?' on':'')+'" data-col="'+x+'" style="--w:'+x+'" title="'+esc(cName(x))+'" aria-label="Recent colour '+esc(cName(x))+'"></button>'}).join("")+'</div></div>':'')+
+'<div class="cpg"><div class="cpl">Your own colour</div><div class="cpcus">'+
+'<label class="cpsl"><span>Hue</span><input type="range" class="cph" min="0" max="359" value="'+hsl[0]+'" aria-label="Hue"></label>'+
+'<label class="cpsl"><span>Shade</span><input type="range" class="cpv" min="18" max="82" value="'+Math.min(82,Math.max(18,hsl[2]))+'" aria-label="Shade, dark to light"></label>'+
+'<div class="cprow"><span class="cpnow" aria-hidden="true"></span><label class="cphex"><span>#</span><input type="text" class="cpx" value="'+c.slice(1).toUpperCase()+'" maxlength="7" spellcheck="false" autocomplete="off" aria-label="Hex colour code"></label>'+
+('EyeDropper' in window?'<button type="button" class="btn cpbt" data-eye="1" title="Pick a colour from anywhere on your screen"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2 22 1-1h3l9-9"/><path d="M3 21v-3l9-9"/><path d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3l.4.4Z"/></svg> Pick from screen</button>':'')+
+'<button type="button" class="btn cpbt" data-rand="1" title="Pick a colour that stands apart from your other accounts"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.7-1.1 2-1.7 3.3-1.7H22"/><path d="m18 2 4 4-4 4"/><path d="M2 6h1.9c1.5 0 2.9.9 3.6 2.2"/><path d="M22 18h-5.9c-1.3 0-2.6-.7-3.3-1.8l-.5-.8"/><path d="m18 14 4 4-4 4"/></svg> Surprise me</button>'+
+'</div><div class="cpwarn" role="status"></div></div></div></div>'}
+
+/* refresh a picker and its card without rebuilding, so sliders keep working while dragged */
+function syncCp(cp,c,from){var k=cp.dataset.k,hsl=hex2hsl(c),card=cp.closest(".stcard");
+cp.style.setProperty("--c",c);if(from!=="slider"){cp.style.setProperty("--h",hsl[0]);cp.style.setProperty("--s",Math.max(hsl[1],35)+"%");cp.querySelector(".cph").value=hsl[0];cp.querySelector(".cpv").value=Math.min(82,Math.max(18,hsl[2]))}
+if(from!=="hex")cp.querySelector(".cpx").value=c.slice(1).toUpperCase();
+cp.querySelectorAll(".cpw").forEach(function(b){var on=b.dataset.col===c;b.classList.toggle("on",on);if(b.hasAttribute("role"))b.setAttribute("aria-checked",on)});
+if(card){card.style.setProperty("--ac",c);var nm=card.querySelector(".stcn");if(nm)nm.textContent=cName(c)}
+var w=cp.querySelector(".cpwarn"),hit=clash(k,c);w.textContent=hit?"Very close to the colour of "+hit+". Pick something more different so you can tell them apart.":"";
+if(k==="accent"){var d=cp.closest("#st");if(d)d.style.setProperty("--accent",c)}}
+
+function surprise(k){var others=accts().filter(function(e){return "acc:"+e!==k}).map(accColor),cur=colOf(k),all=[];PALS[0][1].concat(PALS[2][1]).forEach(function(p){if(p[0]!==cur)all.push(p[0])});
+all.sort(function(a,b){var da=Math.min.apply(null,others.map(function(o){return cdist(a,o)}).concat([999])),db=Math.min.apply(null,others.map(function(o){return cdist(b,o)}).concat([999]));return db-da});
+var top=all.slice(0,Math.max(3,Math.ceil(all.length/3)));return top[Math.floor(Math.random()*top.length)]}
+
+/* --- the window --- */
+var stTab="acc";
 (function(){var h=document.querySelector(".hact");if(!h||EL("stbtn"))return;
 h.insertAdjacentHTML("beforeend",'<button id="stbtn" class="wpbtn" type="button" aria-label="Settings" title="Settings" aria-haspopup="dialog"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.2 2h-.4a2 2 0 0 0-2 2v.2a2 2 0 0 1-1 1.7l-.4.3a2 2 0 0 1-2 0l-.2-.1a2 2 0 0 0-2.7.7l-.2.4a2 2 0 0 0 .7 2.7l.2.1a2 2 0 0 1 1 1.7v.6a2 2 0 0 1-1 1.7l-.2.1a2 2 0 0 0-.7 2.7l.2.4a2 2 0 0 0 2.7.7l.2-.1a2 2 0 0 1 2 0l.4.3a2 2 0 0 1 1 1.7v.2a2 2 0 0 0 2 2h.4a2 2 0 0 0 2-2v-.2a2 2 0 0 1 1-1.7l.4-.3a2 2 0 0 1 2 0l.2.1a2 2 0 0 0 2.7-.7l.2-.4a2 2 0 0 0-.7-2.7l-.2-.1a2 2 0 0 1-1-1.7v-.6a2 2 0 0 1 1-1.7l.2-.1a2 2 0 0 0 .7-2.7l-.2-.4a2 2 0 0 0-2.7-.7l-.2.1a2 2 0 0 1-2 0l-.4-.3a2 2 0 0 1-1-1.7V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></button>')})();
-function drawSettings(){var A=accts(),cs=accCols();
-EL("stbody").innerHTML='<h4 class="sth4">Account colours</h4><p class="stp">Each email is labelled in its account’s colour.</p>'+(A.length?A.map(function(e,i){var cur=accColor(e).toLowerCase(),inPal=PAL.some(function(p){return p[0]===cur});
-return '<div class="stacc" style="--ac:'+cur+'"><div class="stah"><span class="stdot"></span><span class="stem">'+esc(e)+'</span><span class="acc">'+esc(accShort(e))+'</span></div><div class="stsw" role="radiogroup" aria-label="Colour for '+esc(e)+'">'+PAL.map(function(p){var on=p[0]===cur;return '<button type="button" role="radio" aria-checked="'+on+'" aria-label="'+p[1]+'" title="'+p[1]+'" data-acc="'+esc(e)+'" data-col="'+p[0]+'" style="--s:'+p[0]+'"'+(on?' class="on"':'')+'></button>'}).join("")+'<label class="swc'+(inPal?'':' on')+'" title="Pick any colour" style="--s:'+cur+'"><input type="color" value="'+cur+'" data-acc="'+esc(e)+'" aria-label="Any colour for '+esc(e)+'"></label></div></div>'}).join("")+(Object.keys(cs).length?'<button type="button" class="btn stres" id="stres">Reset to default colours</button>':''):'<p class="stp">Sign in with Google to choose account colours.</p>')+
-'<h4 class="sth4">Accounts</h4><div class="stbtns">'+(window.gAuth&&gAuth.addAccount?'<button type="button" class="btn" id="stadd">+ Add another Gmail account</button>':'')+'</div>'}
-function setAccColor(e,c){var cs=accCols();cs[e]=c;try{localStorage.setItem("acccol",JSON.stringify(cs))}catch(x){}repaint()}
-function repaint(){renderMail(lastL,lastNote);renderConn();if(typeof drawPick==="function")drawPick()}
-function openSt(){drawSettings();EL("st").hidden=false;var f=EL("st").querySelector('.stsw [aria-checked="true"]')||EL("stdone");f.focus()}
+var TABS=[["acc","Accounts"],["look","Appearance"],["mail","Mail"],["lists","Lists"]];
+function sw(id,label,sub,on){return '<label class="stsw"><span class="stswt"><b>'+label+'</b>'+(sub?'<small>'+sub+'</small>':'')+'</span><input type="checkbox" role="switch" data-p="'+id+'"'+(on?' checked':'')+'><i aria-hidden="true"></i></label>'}
+function segH(id,opts,cur,label){return '<div class="stseg" role="radiogroup" aria-label="'+label+'">'+opts.map(function(o){var on=o[0]===cur;return '<button type="button" role="radio" aria-checked="'+on+'" data-seg="'+id+'" data-v="'+o[0]+'"'+(on?' class="on"':'')+'>'+o[1]+'</button>'}).join("")+'</div>'}
+function previewRow(e){return '<div class="stprev" aria-hidden="true"><span class="av" style="--h:212">D</span><div class="stpt"><div class="stpf"><b>Dana</b><span class="acc">'+esc(accShort(e))+'</span></div><div class="stps">Quarterly report is ready</div></div><span class="stpd">10:24</span></div>'}
+function cardAcc(e,open){var c=accColor(e).toLowerCase(),a=(window.gAuth&&gAuth.accounts?gAuth.accounts():[]).filter(function(x){return x.email===e})[0];
+return '<section class="stcard'+(open?' open':'')+'" style="--ac:'+c+'"><button type="button" class="stch" aria-expanded="'+!!open+'"><span class="stdot"></span><span class="stct"><b>'+esc(e)+'</b><small><span class="stcn">'+esc(cName(c))+'</span>'+(a&&!a.on?' · signed out':'')+'</small></span><svg class="stchev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button><div class="stcb">'+previewRow(e)+pickerHtml("acc:"+e)+'<div class="stcf"><button type="button" class="btn sm" data-acdef="'+esc(e)+'">Default colour</button><button type="button" class="btn sm del" data-acout="'+esc(e)+'">Sign out of this account</button></div></div></section>'}
+function drawSettings(){var b=EL("stbody"),p=P(),A=accts(),h="";
+EL("sttabs").innerHTML=TABS.map(function(t){var on=t[0]===stTab;return '<button type="button" role="tab" id="stt-'+t[0]+'" aria-selected="'+on+'" tabindex="'+(on?0:-1)+'" data-tab="'+t[0]+'"'+(on?' class="on"':'')+'>'+t[1]+'</button>'}).join("");
+if(stTab==="acc"){h='<p class="stp">Every email, filter and chip uses its account’s colour. Tap an account to change it.</p>'+(A.length?A.map(function(e,i){return cardAcc(e,i===0)}).join(""):'<p class="stempty">Sign in with Google to see your accounts here.</p>')+
+(window.gAuth&&gAuth.addAccount?'<button type="button" class="btn stadd" id="stadd"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Add another Gmail account</button>':'')}
+else if(stTab==="look"){var c=getAccent()||ACC_DEF;h='<div class="stgrp"><div class="stgl">Theme</div>'+segH("theme",[["auto","Automatic"],["light","Light"],["dark","Dark"]],typeof TH==="string"?TH:"auto","Theme")+'</div>'+
+'<section class="stcard open" style="--ac:'+c+'"><div class="stch static"><span class="stdot"></span><span class="stct"><b>Accent colour</b><small><span class="stcn">'+esc(getAccent()?cName(c):"Default blue")+'</span> · buttons, today, links</small></span></div><div class="stcb"><div class="stacp" aria-hidden="true"><span class="btn pri">Send</span><span class="stacd">13</span><span class="stacl">Open in Gmail</span><span class="stacs"><i></i></span></div>'+pickerHtml("accent")+'<div class="stcf"><button type="button" class="btn sm" data-accdef="1">Default accent</button></div></div></section>'+
+'<div class="stgrp"><div class="stgl">Email list</div>'+segH("dense",[["0","Comfortable"],["1","Compact"]],String(p.dense?1:0),"Email list density")+'</div>'}
+else if(stTab==="mail"){h='<div class="stgrp">'+sw("snip","Show message previews","A line of each email under its subject",p.snip)+sw("accl","Show account labels","Coloured name of the account on each email",p.accl)+sw("star","Star important emails in Inbox","A small ★ next to emails that are also in Important",p.star)+sw("mread","Mark as read when opened","Turn off to keep emails unread until you read them in Gmail",p.mread)+sw("spamauto","Automatic spam filter","Moves promotions and discounts to Spam. TikTok and your own spam list always go to Spam",p.spamauto)+'</div>'+
+'<div class="stgrp"><div class="stgl">Open the page on</div>'+segH("open",[["in","Inbox"],["imp","Important"]],p.open,"Open the page on")+'</div>'+
+'<button type="button" class="btn sm" id="stkb">Keyboard shortcuts</button>'}
+else{var L=[["wd-spamfrom","Always spam","Emails from these go straight to Spam.",1],["wd-notspam","Never spam","Always stay in your Inbox.",0],["wd-imp","Always important","Always show in Important.",1],["wd-notimp","Never important","Never show in Important.",0]];
+h=L.map(function(l){var a=listOf(l[0]);return '<div class="stlist"><div class="stlh"><b>'+l[1]+'</b><span class="stlc">'+a.length+'</span></div><small>'+l[2]+'</small><div class="stchips">'+(a.length?a.map(function(x){return '<span class="stchip">'+esc(x)+'<button type="button" data-lrm="'+l[0]+'" data-v="'+esc(x)+'" aria-label="Remove '+esc(x)+'">×</button></span>'}).join(""):'<span class="stnone">Empty</span>')+'</div>'+(l[3]?'<form class="stladd" data-l="'+l[0]+'"><input type="text" placeholder="name@example.com or example.com" aria-label="Add to '+l[1]+'" autocomplete="off"><button type="submit" class="btn sm">Add</button></form>':'')+'</div>'}).join("")}
+b.innerHTML=h;b.setAttribute("aria-labelledby","stt-"+stTab)}
+function openSt(t){if(t)stTab=t;drawSettings();EL("st").hidden=false;var f=EL("sttabs").querySelector(".on");if(f)f.focus()}
 function closeSt(){EL("st").hidden=true;EL("stbtn").focus()}
-EL("stbtn").onclick=openSt;EL("stx").onclick=closeSt;EL("stdone").onclick=closeSt;
-EL("st").addEventListener("click",function(e){if(e.target===EL("st"))return closeSt();
-var b=e.target.closest("[data-col]");if(b){var acc=b.dataset.acc;setAccColor(acc,b.dataset.col);drawSettings();var n=EL("st").querySelector('[data-acc="'+acc+'"][data-col="'+b.dataset.col+'"]');if(n)n.focus();return}
-if(e.target.id==="stres"){try{localStorage.removeItem("acccol")}catch(x){}repaint();drawSettings();EL("stdone").focus();return}
-if(e.target.id==="stadd"){e.target.disabled=true;gAuth.addAccount().then(function(){location.reload()},function(){e.target.disabled=false;say("Couldn’t add that account. In Google Cloud, add it as a test user of the app first.",7000)})}});
-EL("st").addEventListener("input",function(e){var t=e.target;if(t.type!=="color")return;var row=t.closest(".stacc");setAccColor(t.dataset.acc,t.value);row.style.setProperty("--ac",t.value);t.parentNode.style.setProperty("--s",t.value);row.querySelectorAll(".stsw button").forEach(function(x){x.classList.remove("on");x.setAttribute("aria-checked","false")});t.parentNode.classList.add("on")});
-EL("st").addEventListener("change",function(e){if(e.target.type==="color")drawSettings()});
+EL("stbtn").onclick=function(){openSt()};EL("stx").onclick=closeSt;EL("stdone").onclick=closeSt;
 document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!EL("st").hidden){e.stopPropagation();closeSt()}},true);
+EL("sttabs").addEventListener("keydown",function(e){var d={ArrowRight:1,ArrowLeft:-1}[e.key];if(!d)return;var i=TABS.findIndex(function(t){return t[0]===stTab});stTab=TABS[(i+d+TABS.length)%TABS.length][0];drawSettings();EL("sttabs").querySelector(".on").focus()});
+EL("st").addEventListener("click",function(e){var t=e.target;if(t===EL("st"))return closeSt();
+var tb=t.closest("[data-tab]");if(tb){stTab=tb.dataset.tab;drawSettings();EL("sttabs").querySelector(".on").focus();EL("stbody").scrollTop=0;return}
+var ch=t.closest(".stch:not(.static)");if(ch){var card=ch.closest(".stcard"),o=!card.classList.contains("open");card.classList.toggle("open",o);ch.setAttribute("aria-expanded",o);return}
+var cp=t.closest(".cp"),k=cp&&cp.dataset.k;
+var w=t.closest("[data-col]");if(w&&cp){setCol(k,w.dataset.col);syncCp(cp,w.dataset.col);return}
+if(t.closest("[data-rand]")&&cp){var r=surprise(k);setCol(k,r);syncCp(cp,r);return}
+if(t.closest("[data-eye]")&&cp){new EyeDropper().open().then(function(r){var c=normHex(r.sRGBHex);if(c){setCol(k,c);syncCp(cp,c)}},function(){});return}
+var d=t.closest("[data-acdef]");if(d){var cs=accCols();delete cs[d.dataset.acdef];try{localStorage.setItem("acccol",JSON.stringify(cs))}catch(x){}repaint();var c0=accColor(d.dataset.acdef).toLowerCase(),cp2=d.closest(".stcard").querySelector(".cp");syncCp(cp2,c0);return}
+if(t.closest("[data-accdef]")){try{localStorage.removeItem("wacc")}catch(x){}applyAccent();EL("st").style.removeProperty("--accent");syncCp(t.closest(".stcard").querySelector(".cp"),ACC_DEF);t.closest(".stcard").querySelector(".stcn").textContent="Default blue";return}
+var so=t.closest("[data-acout]");if(so){so.disabled=true;gAuth.signOut(so.dataset.acout).then(function(){location.reload()});return}
+var sg=t.closest("[data-seg]");if(sg){var id=sg.dataset.seg,v=sg.dataset.v;sg.parentNode.querySelectorAll("button").forEach(function(x){var on=x===sg;x.classList.toggle("on",on);x.setAttribute("aria-checked",on)});
+if(id==="theme")setTheme(v,true);else if(id==="dense")setP("dense",v==="1"?1:0);else if(id==="open")setP("open",v);return}
+var lr=t.closest("[data-lrm]");if(lr){var key=lr.dataset.lrm,a=listOf(key).filter(function(x){return x!==lr.dataset.v});ss(key,JSON.stringify(a));if(key==="wd-spamfrom")FORCE=mkForce();renderMail(lastL,lastNote);drawSettings();return}
+if(t.id==="stkb"){closeSt();var kb=document.querySelector(".kbh");if(kb)kb.click();return}
+if(t.closest("#stadd")){var ad=t.closest("#stadd");ad.disabled=true;gAuth.addAccount().then(function(){location.reload()},function(){ad.disabled=false;say("Couldn’t add that account. In Google Cloud, add it as a test user of the app first.",7000)})}});
+EL("st").addEventListener("input",function(e){var t=e.target,cp=t.closest(".cp");if(!cp)return;var k=cp.dataset.k;
+if(t.classList.contains("cph")||t.classList.contains("cpv")){var h=+cp.querySelector(".cph").value,l=+cp.querySelector(".cpv").value,s=parseInt(getComputedStyle(cp).getPropertyValue("--s"))||80;cp.style.setProperty("--h",h);var c=hsl2hex(h,s,l);setCol(k,c,1);syncCp(cp,c,"slider")}
+else if(t.classList.contains("cpx")){var c2=normHex(t.value);t.classList.toggle("bad",!c2&&t.value.length>=6);if(c2&&c2.length===7&&t.value.replace("#","").length===6){setCol(k,c2,1);syncCp(cp,c2,"hex")}}});
+EL("st").addEventListener("change",function(e){var t=e.target;if(t.dataset.p){setP(t.dataset.p,t.checked?1:0);return}var cp=t.closest(".cp");if(cp&&(t.classList.contains("cph")||t.classList.contains("cpv")||t.classList.contains("cpx"))){var c=colOf(cp.dataset.k);pushRecent(c)}});
+EL("st").addEventListener("focusin",function(e){if(e.target.classList&&e.target.classList.contains("cpx")){var t=e.target;setTimeout(function(){t.select()},0)}});
+EL("st").addEventListener("focusout",function(e){var t=e.target;if(t.classList&&t.classList.contains("cpx")){var cp=t.closest(".cp");if(cp&&!normHex(t.value)){t.value=colOf(cp.dataset.k).slice(1).toUpperCase();t.classList.remove("bad")}}});
+EL("st").addEventListener("submit",function(e){var f=e.target.closest(".stladd");if(!f)return;e.preventDefault();var v=f.querySelector("input").value.trim().toLowerCase().replace(/^@/,"");if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$|^[^\s@]+\.[^\s@]+$/.test(v)){f.querySelector("input").classList.add("bad");return}
+var key=f.dataset.l,a=listOf(key);if(a.indexOf(v)<0)a.push(v);ss(key,JSON.stringify(a));
+var opp={"wd-spamfrom":"wd-notspam","wd-imp":"wd-notimp"}[key];if(opp)ss(opp,JSON.stringify(listOf(opp).filter(function(x){return x!==v})));
+if(key==="wd-spamfrom")FORCE=mkForce();renderMail(lastL,lastNote);drawSettings();var nf=EL("st").querySelector('.stladd[data-l="'+key+'"] input');if(nf)nf.focus()});
 </script>
 </body>
 </html>
