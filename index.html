@@ -1329,6 +1329,22 @@ html.motion .wrzt.pop{animation:wrzPop .3s cubic-bezier(.3,1.6,.5,1)}
 .wpladj{display:flex;align-items:center;justify-content:space-between}
 .wpreset{border:0;background:none;color:var(--accent);font:inherit;font-size:12.5px;font-weight:700;letter-spacing:0;text-transform:none;cursor:pointer;padding:0}
 .wpsws{grid-template-columns:repeat(6,minmax(0,1fr))!important}
+/* ===== Motion 2 ===== */
+:root{--ease:cubic-bezier(.2,.8,.2,1);--spring:cubic-bezier(.3,1.25,.45,1)}
+html.motion main>section.vin{animation:none}
+/* edit mode: widgets jiggle, each slightly out of step */
+@keyframes wJig{from{rotate:-.55deg}to{rotate:.55deg}}
+html.motion .wds.edit .wgrid>.wd:not(.resizing):not(.dragging){animation:wJig .26s ease-in-out infinite alternate!important}
+html.motion .wds.edit .wgrid>.wd:nth-child(2n):not(.resizing):not(.dragging){animation-delay:-.13s!important;animation-duration:.29s!important}
+html.motion .wds.edit .wgrid>.wd:nth-child(3n):not(.resizing):not(.dragging){animation-delay:-.07s!important;animation-duration:.24s!important}
+html.motion .wds.edit .wgrid>.wd:hover{animation-play-state:paused!important}
+.wghost{will-change:transform,opacity}
+/* gentler hover lift for widgets and cards, on the same curve */
+html.motion .wds:not(.edit) .wd{transition:transform .35s var(--spring),box-shadow .35s var(--ease)}
+html.motion .wpc .wpt,html.motion .wpkc,html.motion .wgc{transition:translate .3s var(--spring),box-shadow .3s var(--ease)}
+/* the toast slides up from below instead of popping */
+@keyframes mToast2{from{opacity:0;translate:0 18px;scale:.96}}
+html.motion .toast:not([hidden]){animation:mToast2 .42s var(--spring) both}
 </style>
 <script>try{var t=localStorage.getItem("wth");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);var a=localStorage.getItem("wacc");if(/^#[0-9a-f]{6}$/i.test(a||"")){var r=document.documentElement.style;r.setProperty("--accent",a);r.setProperty("--dot",a);r.setProperty("--today",a)}}catch(e){}</script>
 </head>
@@ -3013,6 +3029,52 @@ else if(t.dataset&&t.dataset.swi){if(typeof pushRecent==="function")pushRecent(t
 else if(t.dataset&&t.dataset.p==="anim"){var a=EL("wpmo");if(a){a.checked=t.checked;a.onchange&&a.onchange()}}},true);
 /* one switch for motion: the wallpaper follows the Animations setting */
 (function(){var a=EL("wpmo"),on=P().anim!==0;if(a&&a.checked!==on){a.checked=on;a.onchange&&a.onchange()}})();
+})();
+/* ===== Motion 2: one feel everywhere, and things leave as nicely as they arrive ===== */
+(function(){
+var M=function(){return !!(window.motionOn&&motionOn())};
+var EASE="cubic-bezier(.2,.8,.2,1)",SPRING="cubic-bezier(.3,1.25,.45,1)",EXIT="cubic-bezier(.4,0,1,1)";
+var HID=Object.getOwnPropertyDescriptor(HTMLElement.prototype,"hidden");
+
+/* ---------- exits: windows, panels, menus and messages animate away before they hide ---------- */
+function exitFor(el){
+ if(el.classList.contains("modal"))return function(){var sh=el.querySelector(".sheet"),phone=innerWidth<=600,a=el.animate([{opacity:1},{opacity:0}],{duration:220,easing:EXIT,fill:"forwards"});if(sh)sh.animate([{transform:"none"},{transform:phone?"translateY(40px)":"translateY(10px) scale(.96)"}],{duration:220,easing:EXIT,fill:"forwards"});return a};
+ if(el.id==="wps")return function(){return el.animate([{opacity:1,transform:"none"},{opacity:0,transform:innerWidth<=600?"translateY(60px)":"translateX(40px)"}],{duration:240,easing:EXIT,fill:"forwards"})};
+ if(el.id==="wctx")return function(){return el.animate([{opacity:1,transform:"none"},{opacity:0,transform:"scale(.95)"}],{duration:130,easing:EXIT,fill:"forwards"})};
+ if(el.id==="toast")return function(){return el.animate([{opacity:1,translate:"0 0"},{opacity:0,translate:"0 14px"}],{duration:200,easing:EXIT,fill:"forwards"})};
+ return null}
+function softHide(el){var ex=exitFor(el);if(!ex||el._soft)return;el._soft=1;
+ Object.defineProperty(el,"hidden",{configurable:true,get:function(){return HID.get.call(el)||!!el._closing},set:function(v){
+  if(v){if(HID.get.call(el)||el._closing)return;if(!M()){HID.set.call(el,true);return}
+   el._closing=ex();if(!el._closing){HID.set.call(el,true);return}el.style.pointerEvents="none";el._closing.onfinish=function(){if(!el._closing)return;el._closing=null;el.style.pointerEvents="";HID.set.call(el,true);el.getAnimations().forEach(function(a){a.cancel()});var sh=el.querySelector&&el.querySelector(".sheet");if(sh)sh.getAnimations().forEach(function(a){a.cancel()})}}
+  else{el.style.pointerEvents="";if(el._closing){var c=el._closing;el._closing=null;c.cancel();el.getAnimations().forEach(function(a){if(a!==c&&a.effect&&a.effect.getComputedTiming().fill==="forwards")a.cancel()});var sh2=el.querySelector&&el.querySelector(".sheet");if(sh2)sh2.getAnimations().forEach(function(a){a.cancel()})}HID.set.call(el,false)}}})}
+function wire(){document.querySelectorAll(".modal,#wps,#wctx,#toast").forEach(softHide)}
+wire();new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(function(n){if(n.nodeType===1&&(n.matches(".modal,#wps,#wctx,#toast")))softHide(n)})})}).observe(document.body,{childList:true});
+
+/* ---------- direction: pages and tabs slide from the side you are going ---------- */
+var ORDER=["v-mail","v-calendar","v-notes"];
+var _sh=show;show=function(v){var a=document.querySelector("main>section:not([hidden])"),ai=a?ORDER.indexOf(a.id):-1;_sh(v);var b=document.querySelector("main>section:not([hidden])"),bi=b?ORDER.indexOf(b.id):-1;
+ if(M()&&b&&a!==b&&ai>-1&&bi>-1){b.getAnimations().forEach(function(x){x.cancel()});b.animate([{opacity:0,transform:"translateX("+(bi>ai?36:-36)+"px)"},{opacity:1,transform:"none"}],{duration:420,easing:EASE})}};
+function slideIn(box,dir){if(!M()||!box)return;box.getAnimations().forEach(function(x){x.cancel()});box.animate([{opacity:0,transform:"translateX("+(dir*28)+"px)"},{opacity:1,transform:"none"}],{duration:320,easing:EASE})}
+var lastSt=stTab;var _ds=drawSettings;drawSettings=function(){var prev=lastSt;_ds();var ids=TABS.map(function(t){return t[0]}),a=ids.indexOf(prev),b=ids.indexOf(stTab);if(prev!==stTab&&a>-1&&b>-1)slideIn(EL("stbody"),b>a?1:-1);lastSt=stTab};
+(function(){var tabs=EL("wpstabs"),body=EL("wpsb");if(!tabs||!body)return;var last=null;new MutationObserver(function(){var on=tabs.querySelector(".on"),L=[].slice.call(tabs.children),i=L.indexOf(on);if(last!=null&&i!==last&&i>-1)slideIn(body,i>last?1:-1);last=i}).observe(tabs,{childList:true})})();
+
+/* ---------- widgets: neighbours glide, new ones grow in, removed ones shrink away ---------- */
+function rects(c){var r={};c.querySelectorAll(".wgrid>.wd[data-w]").forEach(function(t){r[t.dataset.w]={b:t.getBoundingClientRect(),n:t}});return r}
+var _bw=buildWds;buildWds=function(tab){var c=EL("wds-"+tab),before=c&&M()?rects(c):null,wasCol=c&&c.classList.contains("col");_bw(tab);c=EL("wds-"+tab);if(!before||!c||wasCol||c.classList.contains("col"))return;
+ var grid=c.querySelector(".wgrid");if(!grid)return;var gr=grid.getBoundingClientRect(),seen={};
+ grid.querySelectorAll(":scope>.wd[data-w]").forEach(function(t){var id=t.dataset.w,o=before[id];seen[id]=1;if(t.classList.contains("resizing"))return;
+  if(!o){t.animate([{opacity:0,transform:"scale(.82)"},{opacity:1,transform:"none"}],{duration:420,easing:SPRING});return}
+  var b=t.getBoundingClientRect(),dx=o.b.left-b.left,dy=o.b.top-b.top;if(Math.abs(dx)>1||Math.abs(dy)>1)t.animate([{transform:"translate("+dx+"px,"+dy+"px)"},{transform:"none"}],{duration:440,easing:SPRING})});
+ Object.keys(before).forEach(function(id){if(seen[id])return;var o=before[id],g=o.n.cloneNode(true);g.removeAttribute("data-w");g.setAttribute("aria-hidden","true");g.classList.add("wghost");g.querySelectorAll("button,a,input,textarea").forEach(function(x){x.tabIndex=-1});
+  g.style.cssText+="position:absolute;margin:0;left:"+(o.b.left-gr.left)+"px;top:"+(o.b.top-gr.top)+"px;width:"+o.b.width+"px;height:"+o.b.height+"px;pointer-events:none;z-index:0";grid.insertBefore(g,grid.firstChild);
+  g.animate([{opacity:1,transform:"none"},{opacity:0,transform:"scale(.8)"}],{duration:260,easing:EXIT,fill:"forwards"}).onfinish=function(){g.remove()}})};
+
+/* ---------- small touches ---------- */
+/* the calendar day you tap pops */
+document.addEventListener("click",function(e){var d=e.target.closest&&e.target.closest("#grid button[data-k]");if(d&&M())d.animate([{transform:"scale(.9)"},{transform:"scale(1.06)"},{transform:"none"}],{duration:360,easing:EASE})},true);
+/* switches settle with a little bounce */
+document.addEventListener("change",function(e){var t=e.target;if(!M()||t.type!=="checkbox")return;var k=t.nextElementSibling;if(k&&k.tagName==="I")k.animate([{transform:"scale(.92)"},{transform:"scale(1.04)"},{transform:"none"}],{duration:320,easing:EASE})},true);
 })();
 </script>
 </body>
