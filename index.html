@@ -1260,6 +1260,21 @@ html.motion .wps.in{animation:wpsIn .4s cubic-bezier(.2,.9,.3,1)}
 .wsk i{height:12px;border-radius:6px;background:linear-gradient(90deg,color-mix(in srgb,var(--ink) 7%,transparent) 0,color-mix(in srgb,var(--ink) 14%,transparent) 50%,color-mix(in srgb,var(--ink) 7%,transparent) 100%);background-size:200% 100%;animation:wShim 1.3s linear infinite}
 .wsk i:first-child{height:28px;width:50%}.wsk i:last-child{width:70%}
 @keyframes wShim{to{background-position:-200% 0}}
+/* corner resize handle */
+.wds.edit .wmv [data-sz]{display:none}
+.wds.edit .wmv{right:auto;left:40px;top:8px;bottom:auto}
+.wrz{position:absolute;right:0;bottom:0;z-index:4;width:40px;height:40px;padding:0 4px 4px 0;display:flex;align-items:flex-end;justify-content:flex-end;border:0;background:none;color:color-mix(in srgb,var(--ink) 78%,transparent);cursor:nwse-resize;touch-action:none;filter:drop-shadow(0 1px 2px rgba(0,0,0,.35))}
+.wrz svg{display:block;transition:scale .15s}
+.wrz:hover svg,.wd.resizing .wrz svg{scale:1.15}
+.wrz:focus-visible{outline:none}.wrz:focus-visible svg{color:var(--accent)}
+.st-vivid .wrz{color:#fff}
+.wds.edit .wd.resizing{animation:none!important;z-index:30;box-shadow:0 24px 60px rgba(0,0,0,.3);transition:transform .12s ease-out}
+.wds.edit .wd.resizing .wb{overflow:hidden}
+.wds.rzing .wd:not(.resizing){animation:none!important}
+.wgrid{position:relative}
+.wrzt{position:fixed;z-index:90;pointer-events:none;padding:4px 11px;border-radius:99px;background:var(--accent);color:#fff;font-size:12.5px;font-weight:700;box-shadow:0 6px 16px rgba(0,0,0,.25)}
+html.motion .wrzt.pop{animation:wrzPop .3s cubic-bezier(.3,1.6,.5,1)}
+@keyframes wrzPop{40%{scale:1.18}}
 </style>
 <script>try{var t=localStorage.getItem("wth");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);var a=localStorage.getItem("wacc");if(/^#[0-9a-f]{6}$/i.test(a||"")){var r=document.documentElement.style;r.setProperty("--accent",a);r.setProperty("--dot",a);r.setProperty("--today",a)}}catch(e){}</script>
 </head>
@@ -2840,6 +2855,57 @@ var ch=false;["mail","calendar"].forEach(function(tab){var out=[];(WD[tab]||[]).
 if(ch)saveWd();
 try{var w3=JSON.parse(localStorage.getItem("wd-w3")||"{}");if(w3.stack&&w3.stack.ids){var s=w3.stack.ids.map(function(id){return id in GONE?GONE[id]:id}).filter(function(id,i,a){return id&&a.indexOf(id)===i});if(s.join()!==w3.stack.ids.join()){w3.stack.ids=s;localStorage.setItem("wd-w3",JSON.stringify(w3))}}}catch(e){}
 buildWds("mail");buildWds("calendar");tickWds();
+})();
+/* ===== Resize widgets by dragging the corner, like on iPhone and iPad ===== */
+(function(){
+var SZ={s:[1,1],w:[2,1],l:[2,2]},NAME={s:"Small",w:"Medium",l:"Large"},ORDER=["s","w","l"];
+var ARC='<svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true"><path d="M5 23.5A18.5 18.5 0 0 0 23.5 5" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>';
+function sizeOf(tab,id){var w=wgById(id),z=WS().sz[tab+":"+id];return z||(w&&w.wide?"w":"s")}
+function setSize(tab,id,z){var W=WS();W.sz[tab+":"+id]=z;ss("wd-size",JSON.stringify(W.sz))}
+function handles(tab){var c=EL("wds-"+tab);if(!c||!c.classList.contains("edit"))return;
+c.querySelectorAll(".wgrid>.wd[data-w]").forEach(function(t){if(t.querySelector(".wrz"))return;var id=t.dataset.w,z=sizeOf(tab,id),n=(wgById(id)||{}).name||id;
+t.insertAdjacentHTML("beforeend",'<button type="button" class="wrz" data-rz="'+id+'" aria-label="Resize '+esc(n)+', now '+NAME[z]+'. Drag, or use the arrow keys" title="Drag to resize">'+ARC+'</button>')})}
+var _bw=buildWds;buildWds=function(tab){_bw(tab);handles(tab)};
+var _tw=tickWds;tickWds=function(){_tw();handles("mail");handles("calendar")};
+
+/* spring the tiles from where they were to where they are now */
+function flipAll(grid,before,except){var M=window.motionOn&&motionOn();grid.querySelectorAll(":scope>.wd[data-w]").forEach(function(t){var a=before[t.dataset.w];if(!a||!M)return;var b=t.getBoundingClientRect();
+var sx=a.width/b.width,sy=a.height/b.height,dx=a.left-b.left,dy=a.top-b.top;if(Math.abs(dx)<1&&Math.abs(dy)<1&&Math.abs(sx-1)<.01&&Math.abs(sy-1)<.01)return;
+if(t.dataset.w===except){t.style.transformOrigin="0 0";t.animate([{transform:"translate("+dx+"px,"+dy+"px) scale("+sx+","+sy+")"},{transform:"none"}],{duration:520,easing:"cubic-bezier(.3,1.35,.45,1)"});t.querySelector(".wb").animate([{opacity:.35},{opacity:1}],{duration:380,easing:"ease-out"})}
+else t.animate([{transform:"translate("+dx+"px,"+dy+"px)"},{transform:"none"}],{duration:460,easing:"cubic-bezier(.3,1.2,.45,1)"})})}
+function rects(grid){var r={};grid.querySelectorAll(":scope>.wd[data-w]").forEach(function(t){r[t.dataset.w]=t.getBoundingClientRect()});return r}
+function apply(tab,id,z,keep){var c=EL("wds-"+tab),grid=c.querySelector(".wgrid"),before=keep||rects(grid);setSize(tab,id,z);buildWds(tab);tickWds();var g2=EL("wds-"+tab).querySelector(".wgrid");flipAll(g2,before,id);if(navigator.vibrate)try{navigator.vibrate(8)}catch(e){}}
+
+/* drag the corner: the widget snaps between sizes as you drag and the others make room, like on iPhone */
+var D=null;
+function unit(grid){var cs=getComputedStyle(grid),cols=cs.gridTemplateColumns.split(" ").filter(Boolean).length||1,gap=parseFloat(cs.columnGap)||0,rg=parseFloat(cs.rowGap)||gap,cw=(grid.clientWidth-gap*(cols-1))/cols;return {cw:cw,gap:gap,rg:rg,cols:cols}}
+function nearest(w,h,u,uh){var best="s",bd=1e9;ORDER.forEach(function(z){var s=SZ[z],tw=Math.min(s[0],u.cols)*u.cw+(Math.min(s[0],u.cols)-1)*u.gap,th=s[1]*uh+(s[1]-1)*u.rg,d=Math.hypot(w-tw,h-th);if(d<bd){bd=d;best=z}});return best}
+function setClass(t,z){t.classList.remove("zs","zw","zl");t.classList.add("z"+z)}
+document.addEventListener("pointerdown",function(e){var hd=e.target.closest&&e.target.closest(".wrz");if(!hd||e.button>0)return;e.preventDefault();e.stopPropagation();
+var t=hd.closest(".wd"),c=t.closest(".wds"),tab=c.id.replace("wds-",""),grid=t.parentNode,r=t.getBoundingClientRect(),z=sizeOf(tab,t.dataset.w),u=unit(grid),uh=(r.height-(SZ[z][1]-1)*u.rg)/SZ[z][1];
+var tip=document.createElement("div");tip.className="wrzt";tip.textContent=NAME[z];document.body.appendChild(tip);
+D={t:t,tab:tab,id:t.dataset.w,grid:grid,u:u,uh:uh,z0:z,z:z,tip:tip,start:rects(grid)};
+t.classList.add("resizing");c.classList.add("rzing");try{hd.setPointerCapture(e.pointerId)}catch(x){}tipAt(e)},true);
+function tipAt(e){var tw=D.tip.offsetWidth||70,th=D.tip.offsetHeight||26,x=e.clientX+18,y=e.clientY+18;if(x+tw>innerWidth-8)x=e.clientX-tw-18;if(y+th>innerHeight-8)y=e.clientY-th-18;D.tip.style.left=Math.max(8,x)+"px";D.tip.style.top=Math.max(8,y)+"px"}
+document.addEventListener("pointermove",function(e){if(!D)return;e.preventDefault();tipAt(e);
+var r=D.t.getBoundingClientRect(),w=e.clientX-r.left,h=e.clientY-r.top,z=nearest(w,h,D.u,D.uh);
+if(z!==D.z){var before=rects(D.grid);D.z=z;setClass(D.t,z);D.t.style.transform="";flipAll(D.grid,before,D.id);D.tip.textContent=NAME[z];D.tip.classList.remove("pop");void D.tip.offsetWidth;D.tip.classList.add("pop");if(navigator.vibrate)try{navigator.vibrate(6)}catch(x){}r=D.t.getBoundingClientRect()}
+/* a little elastic pull toward the finger */
+var sx=Math.max(.94,Math.min(1.06,1+((e.clientX-r.right)/Math.max(r.width,1))*.12)),sy=Math.max(.94,Math.min(1.06,1+((e.clientY-r.bottom)/Math.max(r.height,1))*.12));
+D.t.style.transformOrigin="0 0";D.t.style.transform="scale("+sx.toFixed(3)+","+sy.toFixed(3)+")"},{passive:false});
+function end(){if(!D)return;var d=D;D=null;d.tip.remove();var before=rects(d.grid);d.t.style.transform="";d.t.classList.remove("resizing");d.t.closest(".wds").classList.remove("rzing");
+if(d.z!==d.z0){setSize(d.tab,d.id,d.z);buildWds(d.tab);tickWds();flipAll(EL("wds-"+d.tab).querySelector(".wgrid"),before,d.id);if(navigator.vibrate)try{navigator.vibrate(8)}catch(e){}}
+else{setClass(d.t,d.z0);var M=window.motionOn&&motionOn();if(M)d.t.animate([{transform:"scale(1.03)"},{transform:"none"}],{duration:380,easing:"cubic-bezier(.3,1.4,.5,1)"})}
+var h=document.querySelector('#wds-'+d.tab+' [data-rz="'+d.id+'"]');if(h)h.focus({preventScroll:true})}
+document.addEventListener("pointerup",end);document.addEventListener("pointercancel",end);
+/* keyboard: arrows change the size */
+document.addEventListener("keydown",function(e){var hd=e.target.closest&&e.target.closest(".wrz");if(!hd)return;var d={ArrowRight:1,ArrowDown:1,ArrowLeft:-1,ArrowUp:-1}[e.key];if(!d)return;e.preventDefault();
+var t=hd.closest(".wd"),tab=t.closest(".wds").id.replace("wds-",""),id=t.dataset.w,i=ORDER.indexOf(sizeOf(tab,id)),j=Math.max(0,Math.min(2,i+d));if(i===j)return;apply(tab,id,ORDER[j]);var h=document.querySelector('#wds-'+tab+' [data-rz="'+id+'"]');if(h)h.focus()},true);
+/* clicks on the handle never reach the widget */
+document.addEventListener("click",function(e){if(e.target.closest&&e.target.closest(".wrz")){e.stopPropagation();e.preventDefault()}},true);
+/* the old S/M/L button gives way to the handle */
+handles("mail");handles("calendar");
+window.__wrz={apply:apply};
 })();
 </script>
 </body>
