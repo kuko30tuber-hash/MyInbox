@@ -508,6 +508,7 @@ header h1{padding-right:112px}
 .gso{cursor:pointer;font:inherit;font-size:12px}
 .gexp{position:fixed;left:50%;top:16px;transform:translateX(-50%);z-index:80;display:flex;align-items:center;gap:12px;padding:8px 8px 8px 16px;border-radius:999px;background:var(--glass);-webkit-backdrop-filter:blur(30px) saturate(180%);backdrop-filter:blur(30px) saturate(180%);border:1px solid var(--line);box-shadow:inset 0 1px 0 var(--glass-hi),var(--shadow);font-size:14px;color:var(--ink)}
 .gexp .btn{padding:7px 14px;font-size:13px}
+.why{margin-left:6px;padding:0 7px;border-radius:99px;font-size:10px;font-weight:600;background:color-mix(in srgb,var(--accent) 16%,transparent);color:var(--accent);vertical-align:1px}
 </style>
 <script>try{var t=localStorage.getItem("wth");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 </head>
@@ -579,7 +580,24 @@ var TRX=/transaction@|serv@|no-reply@accounts|noreply@account|noreply@email\.app
 var PROMO=/sale|% ?off|\boff\b|discount|deal|offer|black friday|last chance|upgrade|shop|collection|highlights|z\u013eav|zlav|akcia|claim/i;
 var BULK=/newsletter|news@|mailing|marketing|promo|offers?@|hello@|gazette/i;
 var FORCE=mkForce();
-function isSpam(m){var from=m[0]+" "+(m[5]||"");if(FORCE.test(from))return true;if(IMP.test(m[1])||TRX.test(from))return false;return PROMO.test(m[1])||BULK.test(from)}
+var SP_TIKTOK=/tiktok/i;
+var SP_GLASS=/\b(eye)?glasses\b|sunglasses|eyewear|spectacles|okuliar|okulár|optik|optic|šošov|sosov|contact lens|\blens(es)?\b|brýl|bryl/i;
+var SP_TRANS=/your order|order (confirm|number|no\.?|#|status|update|has|is|was)|objednávk|objednavk|objednávk|shipped|shipping (update|confirm)|out for delivery|delivered|doručen|dorucen|doruč|zásielk|zasielk|tracking|sledovanie|invoice|faktúr|faktur|receipt|payment (received|confirm)|platb|refund|vrátenie|security alert|new (sign|log)-?in|password|verification|verify|bezpečnost|bezpecnost/i;
+var SP_DISC=/\d+ ?%|%\s?off|\bsale\b|discount|coupon|promo ?code|voucher|\bdeals?\b|black friday|cyber monday|free shipping|limited time|last chance|special offer|\boffers?\b|zľav|zlav|výpredaj|vypredaj|\bakcia\b|kupón|kupon|sleva|výhodn|vyhodn/i;
+var SP_PROMO=/shop now|buy now|new arrivals|new collection|newsletter|don.t miss|exclusive|members? only|early access|nakupuj|novinky|\bupgrade\b|claim (your|a)/i;
+var SP_BULK=/newsletter|news@|mailing|marketing|promo|offers?@|hello@|gazette|deals?@|shop@|store@|info@/i;
+function notSpamList(){try{var a=JSON.parse(ls("wd-notspam","[]"));return Array.isArray(a)?a:[]}catch(e){return[]}}
+function spamWhy(m){var from=(m[0]||"")+" "+(m[5]||""),text=(m[1]||"")+" "+(m[7]||""),labels=m[8]||"",addr=(addrOf(m[5]||"")||m[0]||"").toLowerCase();
+if(SP_TIKTOK.test(from)||SP_TIKTOK.test(m[1]||""))return "TikTok";
+if(FORCE.test(from))return "Your list";
+if(addr&&notSpamList().indexOf(addr)>-1)return "";
+if(SP_GLASS.test(text)||SP_GLASS.test(from))return "";
+if(SP_TRANS.test(text))return "";
+if(/CATEGORY_PROMOTIONS/.test(labels))return "Promotion";
+if(SP_DISC.test(text))return "Discount";
+if(SP_PROMO.test(text)||(m[9]&&SP_BULK.test(from)))return "Promotion";
+return ""}
+function isSpam(m){return !!spamWhy(m)}
 var view="in",lastL=[],lastNote="";
 function renderMail(L,note){lastL=L;lastNote=note;var sp=L.filter(isSpam),inb=L.filter(function(m){return !isSpam(m)}),cur=view==="sp"?sp:inb,un=cur.filter(function(m){return m[3]}).length;
 document.getElementById("tin").textContent="Inbox ("+inb.length+")";var iu=inb.filter(function(m){return m[3]}).length;var bb=document.getElementById("tmailb");bb.textContent=iu>99?"99+":iu;bb.hidden=!iu;document.getElementById("tsp").textContent="Spam ("+sp.length+")";
@@ -587,7 +605,7 @@ document.getElementById("count").textContent=un+" unread"+(note?" · "+note:"");
 document.getElementById("mail").innerHTML=cur.length?cur.map(function(m){
 var d=new Date(m[2]);
 var w=new Intl.DateTimeFormat("en-GB",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit",timeZone:tz}).format(d);
-return '<li class="'+(m[3]?"unread":"")+'"><a href="#mail" role="button" data-t="'+(m[6]||"")+'" data-k="'+(m[6]||m[4])+'" aria-expanded="'+((m[6]||m[4])===openTid)+'"><span class="av" style="--h:'+hue(m[0])+'">'+esc(ini(m[0]))+'<span class="dot"></span></span><span class="txt"><span class="from">'+esc(m[0])+'</span><span class="subj">'+esc(m[1])+'</span></span><span class="when">'+w+'</span></a>'+((m[6]||m[4])===openTid&&!WIDE()?'<div class="inl">'+openHTML.replace("<!--SUM-->",sumHtml(m[6]))+'</div>':'')+'</li>'}).join(""):'<li style="padding:16px 18px;color:var(--mute)">'+(!(window.CS&&CS.gmail==="ok")?"Connect Gmail to see your emails here.":view==="sp"?"No spam right now.":"Inbox is empty.")+'</li>'}
+return '<li class="'+(m[3]?"unread":"")+'"><a href="#mail" role="button" data-t="'+(m[6]||"")+'" data-k="'+(m[6]||m[4])+'" aria-expanded="'+((m[6]||m[4])===openTid)+'"><span class="av" style="--h:'+hue(m[0])+'">'+esc(ini(m[0]))+'<span class="dot"></span></span><span class="txt"><span class="from">'+esc(m[0])+(view==="sp"&&spamWhy(m)?'<span class="why">'+esc(spamWhy(m))+'</span>':'')+'</span><span class="subj">'+esc(m[1])+'</span></span><span class="when">'+w+'</span></a>'+((m[6]||m[4])===openTid&&!WIDE()?'<div class="inl">'+openHTML.replace("<!--SUM-->",sumHtml(m[6]))+'</div>':'')+'</li>'}).join(""):'<li style="padding:16px 18px;color:var(--mute)">'+(!(window.CS&&CS.gmail==="ok")?"Connect Gmail to see your emails here.":view==="sp"?"No spam right now.":"Inbox is empty.")+'</li>'}
 function tabs(){document.getElementById("tin").classList.toggle("on",view==="in");document.getElementById("tsp").classList.toggle("on",view==="sp")}
 document.getElementById("tin").onclick=function(){view="in";tabs();renderMail(lastL,lastNote)};
 document.getElementById("tsp").onclick=function(){view="sp";tabs();renderMail(lastL,lastNote)};
@@ -596,7 +614,7 @@ function dec(s){var t=document.createElement("textarea");t.innerHTML=s;return t.
 function fromThreads(p){if(typeof p==="string"){try{p=JSON.parse(p)}catch(e){return null}}
 if(!p||!p.threads)return null;
 return p.threads.map(function(t){var m=(t.messages||[])[0]||{},s=m.sender||"",nm=s.replace(/<[^>]*>/,"").replace(/"/g,"").trim()||s;
-return [nm,dec(m.subject||"(no subject)"),m.date||"",(m.labelIds||[]).indexOf("UNREAD")>-1?1:0,t.viewUrl||"",s,t.id||""]}).filter(function(m){return m[2]&&m[4]&&!/one-time code|verification code|security code|passcode/i.test(m[1])}).sort(function(a,b){return new Date(b[2])-new Date(a[2])})}
+return [nm,dec(m.subject||"(no subject)"),m.date||"",(m.labelIds||[]).indexOf("UNREAD")>-1?1:0,t.viewUrl||"",s,t.id||"",dec(m.snippet||""),(m.labelIds||[]).join(" "),m.listUnsub?1:0]}).filter(function(m){return m[2]&&m[4]&&!/one-time code|verification code|security code|passcode/i.test(m[1])}).sort(function(a,b){return new Date(b[2])-new Date(a[2])})}
 var ERR={needs_reauth:"reconnect Gmail in Settings > Connectors",server_not_connected:"Gmail is not connected",not_in_manifest:"Gmail access was not allowed",approval_required:"Gmail needs your approval"};
 (async function(){try{var mcp=window.claude&&await claude.use("mcp");if(!mcp)return;
 mcp.watchTool("Gmail","search_threads",{query:"in:inbox newer_than:14d",pageSize:25,view:"THREAD_VIEW_SUMMARY"},function(ev){connStat("gmail",ev);EL("rfmail").classList.remove("spin");
@@ -990,7 +1008,7 @@ var h='<div class="mb2"><div'+(main.length>1800?' class="clip"':'')+'>'+ps+'</di
 if(quote)h+='<details class="qt"><summary>Show quoted text</summary><div class="qb mb2">'+quote.split(/\n{2,}/).map(function(p){return '<p>'+fmtInline(p).replace(/\n/g,"<br>")+'</p>'}).join("")+'</div></details>';
 return h}
 function addrOf(s){return (String(s).match(/<([^>]+)>/)||[])[1]||(String(s).indexOf("@")>-1?String(s).trim():"")}
-function actBar(tid,m,subj){return '<div class="tb"><button type="button" class="btn rep" data-sum="'+esc(tid)+'">'+SPARK+' Summarize</button><button type="button" class="btn rep" data-rep="1" data-to="'+esc(addrOf(m.sender||""))+'" data-sub="'+esc(subj)+'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 6 6v3"/></svg> Reply</button><button type="button" class="btn del" data-del="'+esc(tid)+'">'+TRASH+' Delete</button></div>'}
+function actBar(tid,m,subj){var row=lastL.filter(function(x){return x[6]===tid})[0],sb=row?(isSpam(row)?'<button type="button" class="btn rep" data-notspam="'+esc(tid)+'">Not spam</button>':'<button type="button" class="btn rep" data-isspam="'+esc(tid)+'">Spam</button>'):'';return '<div class="tb">'+sb+'<button type="button" class="btn rep" data-sum="'+esc(tid)+'">'+SPARK+' Summarize</button><button type="button" class="btn rep" data-rep="1" data-to="'+esc(addrOf(m.sender||""))+'" data-sub="'+esc(subj)+'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 6 6v3"/></svg> Reply</button><button type="button" class="btn del" data-del="'+esc(tid)+'">'+TRASH+' Delete</button></div>'}
 function msgHead(m){var s=m.sender||"",nm=sname(s)||s||"Unknown",em=addrOf(s),w=m.date?new Intl.DateTimeFormat("en-GB",{weekday:"short",day:"numeric",month:"short",hour:"2-digit",minute:"2-digit",timeZone:tz}).format(new Date(m.date)):"";
 return '<div class="mh2"><span class="av sm" style="--h:'+hue(nm)+'">'+esc(ini(nm))+'</span><div class="mi"><div class="mn">'+esc(nm)+'</div><div class="me">'+esc(em)+'</div></div><div class="mdt">'+esc(w)+'</div></div>'}
 function toLine(m){var r=(m.toRecipients||[]).map(function(x){var e=addrOf(x);return (MYMAIL&&e.toLowerCase()===MYMAIL)?"me":(sname(x)||x)});if(!r.length)return "";return '<div class="mto">To '+esc(r.slice(0,2).join(", "))+(r.length>2?" +"+(r.length-2):"")+'</div>'}
@@ -1159,6 +1177,13 @@ EL("wgl").innerHTML='<div class="wgg">'+WG.filter(function(w){return w.tab===wgT
 return '<div class="wgc"><div class="wgp" aria-hidden="true"><div class="wd zs" style="--tn:'+TN(w.id)+'"><div class="wb">'+w.r()+'</div></div></div><div class="wgi"><b>'+esc(w.name)+'</b><span>'+esc(w.desc)+'</span></div><button class="btn'+(on?'':' pri')+'" type="button" data-id="'+w.id+'">'+(on?"Remove":"Add")+'</button></div>'}).join("")+'</div><button type="button" class="btn wreset" id="wreset">Reset to defaults</button>'}
 EL("wgl").addEventListener("click",function(e){if(!e.target.closest("#wreset"))return;WD={mail:["unread","spam"],calendar:["next","week"]};WS().sz={};ss("wd-size","{}");saveWd();buildWds("mail");buildWds("calendar");tickWds();buildWg()});
 buildWds("mail");buildWds("calendar");tickWds();
+EL("v-mail").addEventListener("click",function(e){var b=e.target.closest("[data-notspam],[data-isspam]");if(!b)return;
+var tid=b.dataset.notspam||b.dataset.isspam,row=lastL.filter(function(x){return x[6]===tid})[0];if(!row)return;
+var addr=(addrOf(row[5]||"")||row[0]||"").toLowerCase();if(!addr)return;
+if(b.dataset.notspam!=null){var a=notSpamList();if(a.indexOf(addr)<0){a.push(addr);ss("wd-notspam",JSON.stringify(a))}
+var f=spamList().filter(function(x){return addr.indexOf(x)<0});ss("wd-spamfrom",JSON.stringify(f));FORCE=mkForce()}
+else{var n=notSpamList().filter(function(x){return x!==addr});ss("wd-notspam",JSON.stringify(n));var l=spamList();if(l.indexOf(addr)<0){l.push(addr);ss("wd-spamfrom",JSON.stringify(l))}FORCE=mkForce()}
+openTid=null;renderMail(lastL,lastNote);var tt=EL("toast");tt.textContent=b.dataset.notspam!=null?"Emails from "+addr+" stay in your Inbox":"Emails from "+addr+" go to Spam";tt.hidden=false;setTimeout(function(){tt.hidden=true},3500)});
 </script>
 </body>
 </html>

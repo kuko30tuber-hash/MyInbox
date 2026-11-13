@@ -181,7 +181,7 @@
       return api(GM + "threads?" + qs({ q: i.query, maxResults: i.pageSize || 25 })).then(function (r) {
         var ids = (r.threads || []).map(function (t) { return t.id; });
         return pool(ids, 6, function (id) {
-          return api(GM + "threads/" + id + "?" + qs({ format: "metadata", metadataHeaders: ["From", "Subject"] }));
+          return api(GM + "threads/" + id + "?" + qs({ format: "metadata", metadataHeaders: ["From", "Subject", "List-Unsubscribe"] }));
         }).then(function (ts) {
           return {
             threads: ts.filter(Boolean).map(function (t) {
@@ -195,7 +195,8 @@
                   subject: hdr(first, "Subject"),
                   date: new Date(Number(last.internalDate) || Date.now()).toISOString(),
                   labelIds: Object.keys(labels),
-                  snippet: decodeEntities(last.snippet || "")
+                  snippet: decodeEntities(last.snippet || ""),
+                  listUnsub: ms.some(function (x) { return !!hdr(x, "List-Unsubscribe"); })
                 }]
               };
             })
