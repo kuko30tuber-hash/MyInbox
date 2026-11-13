@@ -1864,6 +1864,130 @@ html.motion .wd.hov .wx2hr,html.motion .wd.hov .wx2dr{animation:wxIn .5s cubic-b
 @keyframes wxIn{from{opacity:0;transform:translateY(6px)}}
 html.motion .wd.hov .wx2bar>i{animation:rgFill .8s cubic-bezier(.2,.8,.2,1) both;transform-origin:left}
 html.motion .wd.hov .wx2.still .wx2hr,html.motion .wd.hov .wx2.still .wx2dr,html.motion .wd.hov .wx2.still .wx2bar>i{animation:none}
+/* ===== Mail 2 ===== */
+/* one panel with two columns */
+#v-mail .mwrap{gap:0!important;column-gap:0!important;border-radius:22px;background:var(--surf,var(--glass-lo));border:1px solid var(--line);box-shadow:inset 0 1px 0 var(--hair-hi,var(--glass-hi)),0 1px 2px rgba(15,15,25,.05),0 24px 60px -30px rgba(15,15,25,.3);-webkit-backdrop-filter:blur(28px) saturate(150%);backdrop-filter:blur(28px) saturate(150%);overflow:hidden}
+#v-mail .mwrap>.mcol,#v-mail .mwrap>.mpane{background:none!important;border:0!important;box-shadow:none!important;border-radius:0!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;margin:0!important}
+#v-mail .mwrap>.mcol{padding:0!important;min-height:0;display:flex;flex-direction:column}
+#v-mail .mwrap>.mpane{padding:0!important;position:relative!important;top:auto!important;max-height:none!important;height:100%;border-left:1px solid var(--line)!important;overflow:auto}
+#v-mail #mail{flex:1;min-height:0;overflow:auto;padding:4px 10px 14px!important;margin:0!important;scrollbar-width:thin}
+/* header */
+.mlh{display:flex;flex-direction:column;gap:12px;padding:20px 20px 10px}
+.mlt{display:flex;align-items:baseline;gap:10px}
+.mlt h3{margin:0;font-size:28px;font-weight:750;letter-spacing:-.025em;line-height:1.1}
+#mlc{font-size:13px;font-weight:600;color:var(--mute)}
+.mlq{display:flex;align-items:center;gap:8px;height:36px;padding:0 10px 0 12px;border-radius:11px;background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--mute);transition:background .2s,box-shadow .2s}
+.mlq:focus-within{background:color-mix(in srgb,var(--panel) 85%,transparent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 35%,transparent)}
+.mlq input{flex:1;min-width:0;border:0!important;background:none!important;box-shadow:none!important;outline:0;padding:0!important;font:inherit;font-size:14px;color:var(--ink)}
+.mlq input::-webkit-search-cancel-button{opacity:.5}
+.mlq kbd,.m2empty kbd{font:600 11px/1 inherit;padding:3px 6px;border-radius:5px;background:color-mix(in srgb,var(--ink) 8%,transparent);color:var(--mute)}
+.mlq:focus-within kbd{display:none}
+#v-mail .mcol>.tabs{padding:0 20px 10px!important;margin:0!important;border:0!important;background:none!important;gap:8px!important}
+#v-mail .mcol>.tabs .segw{flex:1}
+#v-mail .mcol>.tabs .segw button{flex:1;white-space:nowrap;font-size:12.5px!important;padding-left:8px!important;padding-right:8px!important}
+#v-mail #cmbtn{background:var(--accent)!important;color:#fff!important;border:0!important;border-radius:11px!important;padding:0 14px!important;height:34px;font-weight:650!important;box-shadow:0 6px 16px -6px color-mix(in srgb,var(--accent) 70%,transparent)!important;transition:transform .2s,box-shadow .2s,filter .2s}
+#v-mail #cmbtn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+#v-mail #cmbtn svg{stroke:#fff}
+#v-mail #rfmail{width:34px;height:34px;border-radius:11px!important}
+#v-mail .accf{padding:0 20px 8px!important;margin:0!important}
+#v-mail .sprule{margin:0 20px 10px!important}
+/* day groups */
+#mail .mgh{position:sticky;top:-4px;z-index:2;padding:12px 10px 6px!important;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);background:linear-gradient(var(--surf,var(--panel)) 70%,transparent);list-style:none;border:0!important}
+#mail .mgh::after,#mail .mgh::before{display:none!important}
+#mail .mlnone{padding:30px 12px!important;text-align:center;color:var(--mute);font-size:14px;list-style:none}
+/* rows */
+#v-mail #mail li{border:0!important;margin:0!important;padding:0!important;background:none!important}
+#v-mail #mail li::after{display:none!important}
+#v-mail #mail li>a{position:relative;display:grid!important;grid-template-columns:40px minmax(0,1fr) auto!important;grid-template-areas:"av txt when"!important;align-items:start!important;column-gap:12px!important;padding:11px 12px 11px 20px!important;border-radius:14px!important;background:none;transition:background .18s ease,translate .25s cubic-bezier(.2,.8,.2,1)!important;translate:none!important}
+#v-mail #mail li>a:hover{background:color-mix(in srgb,var(--ink) 5%,transparent)!important}
+#v-mail #mail li>a[aria-expanded="true"]{background:color-mix(in srgb,var(--accent) 14%,transparent)!important}
+#v-mail #mail li>a .av{grid-area:av;width:40px!important;height:40px!important;font-size:15px!important;font-weight:650;margin:2px 0 0!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+#v-mail #mail li>a .av .dot{display:none!important}
+#v-mail #mail li.unread>a::before{content:"";position:absolute;left:7px;top:24px;width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 18%,transparent)}
+#v-mail #mail li>a .txt{grid-area:txt;display:flex!important;flex-direction:column;gap:1px;min-width:0}
+#v-mail #mail li>a .from{display:flex;align-items:center;gap:6px;min-width:0;font-size:14.5px!important;line-height:1.35}
+#v-mail #mail li>a .fn{font-weight:550;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#v-mail #mail li.unread>a .fn{font-weight:700}
+#v-mail #mail li>a .subj{font-size:13.5px!important;line-height:1.35;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:450}
+#v-mail #mail li.unread>a .subj{font-weight:600}
+#v-mail #mail li>a .snip{font-size:13px!important;line-height:1.4;color:var(--mute);display:-webkit-box!important;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;white-space:normal!important}
+html.dense #v-mail #mail li>a .snip{-webkit-line-clamp:1}
+#v-mail #mail li>a .when{grid-area:when;position:static!important;font-size:12px!important;font-weight:550;color:var(--mute)!important;white-space:nowrap;padding-top:2px}
+#v-mail #mail li.unread>a .when{color:var(--accent)!important;font-weight:650}
+#v-mail #mail li>a .acc{flex:none;width:7px!important;height:7px!important;min-width:0!important;padding:0!important;border-radius:50%!important;font-size:0!important;background:var(--ac)!important;border:0!important;box-shadow:none!important}
+#v-mail #mail li>a .why{flex:none}
+/* inline reading on narrow screens */
+#v-mail #mail li .inl{margin:4px 4px 12px!important;border-radius:18px!important}
+/* reading pane */
+.m2empty{height:100%;min-height:380px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:30px;text-align:center;color:var(--mute)}
+.m2empty svg{color:color-mix(in srgb,var(--ink) 25%,transparent);margin-bottom:8px}
+.m2empty b{font-size:16px;font-weight:650;color:var(--ink)}
+.m2empty span{font-size:13.5px}
+.m2empty .hintk{margin-top:14px;font-size:12px}
+#mpane .inl.pane{background:none!important;border:0!important;box-shadow:none!important;margin:0!important;padding:0!important}
+.rd .rdh{display:flex!important;flex-direction:column-reverse;align-items:stretch!important;gap:14px!important;padding:18px 28px 18px!important;margin:0!important;background:none!important;border:0!important;box-shadow:none!important}
+#mpane .rd .rdh{position:sticky;top:0;z-index:3;background:color-mix(in srgb,var(--panel) 30%,transparent)!important;-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)!important}
+.rd .rds{flex:none!important;min-height:0!important;height:auto!important;margin:0!important;font-size:24px!important;font-weight:750!important;letter-spacing:-.02em;line-height:1.25!important}
+.rd .rdt{display:flex;justify-content:flex-end}
+.rd .tb{display:flex!important;flex-wrap:wrap;gap:6px!important;margin:0!important;padding:0!important;border:0!important;background:none!important}
+.rd .tb .btn{height:34px;min-width:34px;display:inline-flex!important;align-items:center;justify-content:center;gap:6px;padding:0 10px!important;border-radius:10px!important;border:1px solid transparent!important;background:color-mix(in srgb,var(--ink) 6%,transparent)!important;color:var(--ink)!important;font-size:13px!important;font-weight:600!important;box-shadow:none!important;transition:background .15s,transform .15s}
+.rd .tb .btn:hover{background:color-mix(in srgb,var(--ink) 11%,transparent)!important}
+.rd .tb .btn:active{transform:scale(.95)}
+.rd .tb .btn .bl{display:none}
+.rd .tb .btn.m2pri{background:var(--accent)!important;color:#fff!important;padding:0 14px!important}
+.rd .tb .btn.m2pri .bl{display:inline}
+.rd .tb .btn.m2pri:hover{filter:brightness(1.08)}
+.rd .tb .btn.del{color:#ff453a!important}
+.rd .tb .btn.del:hover{background:color-mix(in srgb,#ff453a 14%,transparent)!important}
+.rd .tb .btn.imp.on svg{fill:#ffb020;stroke:#ffb020}
+.rd .tb .tq{font-size:13px;font-weight:600;margin-right:4px;align-self:center}
+.rd .tb .btn.pri.red{background:#ff453a!important;color:#fff!important;padding:0 12px!important}
+.rd .tb .btn.pri.red .bl,.rd .tb [data-delno] .bl{display:inline}
+.rd .tb [data-delno]{padding:0 12px!important}
+.rd .mc{max-width:760px;margin:0 auto!important;padding:22px 28px 30px!important;background:none!important;border:0!important;box-shadow:none!important}
+.rd .mc+.mc{border-top:1px solid var(--line)!important}
+.rd .mh2{display:grid!important;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:12px!important}
+.rd .mh2 .av{width:44px!important;height:44px!important;font-size:17px!important}
+.rd .mn{font-size:15px!important;font-weight:700!important}
+.rd .me{font-size:13px!important;color:var(--mute)!important}
+.rd .mdt{font-size:12.5px!important;color:var(--mute)!important;align-self:start;padding-top:4px}
+.rd .mto{margin:12px 0 0 56px!important;font-size:12.5px!important;color:var(--mute)!important}
+.rd .mb2{margin-top:22px!important;font-size:15px!important;line-height:1.65!important;color:var(--ink)}
+.rd .mb2 p{margin:0 0 1em}
+.rd .mb2 a{color:var(--accent)}
+.rd .sum{margin:0 28px!important}
+/* narrow screens */
+@media(max-width:1099px){
+ #v-mail .mwrap{display:block!important;height:auto!important;min-height:0}
+ #v-mail #mail{overflow:visible}
+ #mail .mgh{position:static}
+ .rd .rdh{padding:14px 16px!important}
+ .rd .mc{padding:16px 16px 22px!important}
+ .rd .rds{font-size:20px!important}
+}
+@media(max-width:600px){
+ .mlh{padding:16px 14px 8px}.mlt h3{font-size:24px}
+ #v-mail .mcol>.tabs{padding:0 14px 8px!important;flex-wrap:wrap}
+ #v-mail .mcol>.tabs .segw{flex:1 1 100%}
+ #v-mail .accf{padding:0 14px 8px!important}
+ #v-mail #mail{padding:2px 6px 10px!important}
+ #v-mail #mail li>a{padding:10px 8px 10px 16px!important;column-gap:10px!important;grid-template-columns:36px minmax(0,1fr) auto!important}
+ #v-mail #mail li>a .av{width:36px!important;height:36px!important}
+ #v-mail #mail li.unread>a::before{left:5px}
+ .rd .mto{margin-left:0!important}
+ #v-mail #mail li .inl{padding:0!important}
+ .rd .rdt{justify-content:flex-start}
+ .rd .tb{flex-wrap:nowrap!important;gap:5px!important}
+ .rd .tb .btn{min-width:32px;height:32px;padding:0 8px!important}
+ .rd .mh2{grid-template-columns:40px minmax(0,1fr)!important}
+ .rd .mh2 .av{width:40px!important;height:40px!important}
+ .rd .mdt{grid-column:2;padding-top:0;text-align:left!important;justify-self:start}
+ .rd .rdh{padding:12px 12px 12px!important}
+ .rd .mc{padding:14px 12px 18px!important}
+}
+html.motion #v-mail #mail li>a{animation:none}
+html.motion #mpane .rd.m2new{animation:m2in .35s cubic-bezier(.2,.8,.2,1)}
+@keyframes m2in{from{opacity:0;transform:translateY(6px)}}
 </style>
 <script>try{var t=localStorage.getItem("wth");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);var a=localStorage.getItem("wacc");if(/^#[0-9a-f]{6}$/i.test(a||"")){var r=document.documentElement.style;r.setProperty("--accent",a);r.setProperty("--dot",a);r.setProperty("--today",a)}}catch(e){}</script>
 </head>
@@ -3946,6 +4070,48 @@ function html(p,d){var c=d.c,day=c.is_day!==0,k=kind(c.weather_code),lo=d.d.temp
  return '<div class="wxsky k-'+sk+(day?' day':' night')+'" aria-hidden="true"><i></i><i></i><i></i></div><div class="wxon wx2 k-'+k+(document.querySelector('.wd.hov[data-w="weather"]')?' still':'')+'">'+lab+head+hours+days+'</div>'}
 W.r=function(){var h=old(),p=place();load();if(!p||!D2||D2.key!==key(p)||!D2.c)return h;try{return html(p,D2)}catch(e){return h}};
 paint();
+})();
+/* ===== Mail 2: one panel, a real header, day groups and a calm reading pane ===== */
+(function(){
+var col=document.querySelector("#v-mail .mcol"),tabs=col&&col.querySelector(".tabs");if(!col||!tabs)return;
+var I={search:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
+ spam:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 2h8.2L22 7.9v8.2L16.1 22H7.9L2 16.1V7.9z"/><path d="M12 8v4M12 16h.01"/></svg>',
+ mail:'<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>'};
+/* header: mailbox name, unread count and search */
+var hd=document.createElement("div");hd.className="mlh";
+hd.innerHTML='<div class="mlt"><h3 id="mlt">Inbox</h3><span id="mlc"></span></div><label class="mlq">'+I.search+'<input id="mlq" type="search" placeholder="Search" aria-label="Search loaded emails" autocomplete="off"><kbd>/</kbd></label>';
+col.insertBefore(hd,tabs);
+var NAMES={in:"Inbox",imp:"Important",sp:"Spam"};
+/* dates people read at a glance */
+function dayKey(d){return tk.format(d)}
+var TF=new Intl.DateTimeFormat("en-GB",{hour:"2-digit",minute:"2-digit",timeZone:tz}),WF=new Intl.DateTimeFormat("en-GB",{weekday:"long",timeZone:tz}),DF=new Intl.DateTimeFormat("en-GB",{day:"numeric",month:"short",timeZone:tz}),YF=new Intl.DateTimeFormat("en-GB",{day:"numeric",month:"short",year:"numeric",timeZone:tz});
+function ago(k){return Math.round((Date.parse(dayKey(new Date())+"T00:00:00Z")-Date.parse(k+"T00:00:00Z"))/864e5)}
+function when(d){var n=ago(dayKey(d));if(n<=0)return TF.format(d);if(n===1)return "Yesterday";if(n<7)return WF.format(d);if(d.getFullYear()===new Date().getFullYear())return DF.format(d);return YF.format(d)}
+function group(d){var n=ago(dayKey(d));return n<=0?"Today":n===1?"Yesterday":n<7?"This week":n<31?"This month":"Older"}
+function rowOf(k){for(var i=0;i<lastL.length;i++){var m=lastL[i];if((m[6]||m[4])===k)return m}return null}
+function decorate(){var ul=EL("mail");if(!ul)return;var last=null;
+ Array.prototype.slice.call(ul.children).forEach(function(li){var a=li.querySelector(":scope>a[data-k]");if(!a)return;var m=rowOf(a.dataset.k);if(!m)return;var d=new Date(m[2]);if(isNaN(d))return;
+  var w=a.querySelector(".when");if(w){w.textContent=when(d);w.title=YF.format(d)+", "+TF.format(d)}
+  var g=group(d);if(g!==last){var h=document.createElement("li");h.className="mgh";h.setAttribute("role","presentation");h.textContent=g;ul.insertBefore(h,li);last=g}});
+ var un=0;ul.querySelectorAll("li.unread").forEach(function(){un++});
+ EL("mlt").textContent=NAMES[view]||"Inbox";EL("mlc").textContent=un?un+" unread":"All read";filter()}
+function filter(){var q=(EL("mlq").value||"").trim().toLowerCase(),ul=EL("mail");if(!ul)return;var shown=0,h=null,hs=0;
+ Array.prototype.slice.call(ul.children).forEach(function(li){if(li.classList.contains("mgh")){if(h)h.hidden=!hs;h=li;hs=0;return}
+  var a=li.querySelector(":scope>a[data-k]");if(!a)return;var ok=!q||li.textContent.toLowerCase().indexOf(q)>-1;li.hidden=!ok;if(ok){hs++;shown++}});
+ if(h)h.hidden=!hs;
+ var none=ul.querySelector(".mlnone");if(q&&!shown){if(!none){none=document.createElement("li");none.className="mlnone";ul.appendChild(none)}none.textContent="No emails match “"+EL("mlq").value.trim()+"”"}else if(none)none.remove()}
+EL("mlq").addEventListener("input",filter);
+EL("mlq").addEventListener("keydown",function(e){if(e.key==="Escape"){e.stopPropagation();this.value="";filter();this.blur()}});
+document.addEventListener("keydown",function(e){if(e.key!=="/"||kbBlocked(e)||EL("v-mail").hidden)return;e.preventDefault();EL("mlq").focus()});
+var _rm=renderMail;renderMail=function(L,note){_rm.apply(this,arguments);try{decorate();tidy(document)}catch(e){}};
+/* reading pane: quiet icon buttons with labels on hover */
+function tidy(root){root.querySelectorAll(".rd .tb .btn:not([data-m2])").forEach(function(b){b.setAttribute("data-m2","1");var t=b.textContent.trim();if(!t)return;b.title=t;if(!b.getAttribute("aria-label"))b.setAttribute("aria-label",t);
+  Array.prototype.slice.call(b.childNodes).forEach(function(n){if(n.nodeType===3&&n.textContent.trim()){var s=document.createElement("span");s.className="bl";s.textContent=n.textContent.trim();b.replaceChild(s,n)}});
+  if(b.dataset.isspam!=null||b.dataset.notspam!=null){if(!b.querySelector("svg"))b.insertAdjacentHTML("afterbegin",I.spam)}
+  if(b.dataset.rep!=null)b.classList.add("m2pri")})}
+new MutationObserver(function(ms){var go=false;ms.forEach(function(m){if(m.addedNodes.length)go=true});if(go)tidy(EL("v-mail"))}).observe(EL("v-mail"),{childList:true,subtree:true});
+var lastOpen=null;var _ps=paneSync;paneSync=function(){_ps.apply(this,arguments);var p=EL("mpane");if(p&&openTid&&openTid!==lastOpen){var r=p.querySelector(".rd");if(r)r.classList.add("m2new")}lastOpen=openTid;if(p&&WIDE()&&!openTid)p.innerHTML='<div class="m2empty">'+I.mail+'<b>No email selected</b><span>Pick one from the list to read it here.</span><span class="hintk">Press <kbd>J</kbd> and <kbd>K</kbd> to move, <kbd>/</kbd> to search</span></div>';tidy(p)};
+renderMail(lastL,lastNote);
 })();
 </script>
 </body>
