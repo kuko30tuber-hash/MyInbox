@@ -15,7 +15,10 @@
   /* ---------- accounts and sign-in ----------
      Several Google accounts can be signed in at once.
      localStorage "gaccts": the account emails, first one also gives the calendar.
-     sessionStorage "gtoks": { email: { t: token, exp: time } } */
+     localStorage "gtoks": { email: { t: token, exp: time } }, short-lived access tokens.
+     When the site has its sign-in helper (netlify/functions/gauth.js), Google's
+     long-lived refresh tokens stay in an HttpOnly cookie there and new access
+     tokens are fetched quietly, so you stay signed in on this device. */
   var ACC_KEY = "gaccts", TOKS_KEY = "gtoks", OLD_KEY = "gtok";
   function lsGet(k, d) { try { var v = JSON.parse(localStorage.getItem(k) || "null"); return v == null ? d : v; } catch (e) { return d; } }
   function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
@@ -23,12 +26,49 @@
   function ssSet(k, v) { try { sessionStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
   function accounts() { var a = lsGet(ACC_KEY, []); return Array.isArray(a) ? a.filter(function (x) { return typeof x === "string" && x; }) : []; }
   function setAccounts(a) { lsSet(ACC_KEY, a); }
-  function toks() { var t = ssGet(TOKS_KEY, {}); return t && typeof t === "object" ? t : {}; }
+  function toks() { var t = lsGet(TOKS_KEY, null); if (!t) { t = ssGet(TOKS_KEY, {}); if (t && Object.keys(t).length) lsSet(TOKS_KEY, t); } return t && typeof t === "object" ? t : {}; }
   function readTok(email) { var t = toks()[email]; return t && t.exp > Date.now() + 30000 ? t : null; }
-  function saveTok(email, t) { var all = toks(); all[email] = t; ssSet(TOKS_KEY, all); }
-  function clearTok(email) { var all = toks(); delete all[email]; ssSet(TOKS_KEY, all); }
+  function saveTok(email, t) { var all = toks(); all[email] = t; lsSet(TOKS_KEY, all); }
+  function clearTok(email) { var all = toks(); delete all[email]; lsSet(TOKS_KEY, all); }
   function primary() { return accounts()[0] || ""; }
   function live() { return accounts().filter(function (e) { return !!readTok(e); }); }
+
+  /* ---------- staying signed in (server helper) ---------- */
+  var SRV = "/.netlify/functions/gauth", srvOn = false, srvHas = {}, inflight = {};
+  function srvCall(op, body) {
+    body = body || {}; body.client_id = CLIENT_ID;
+    return fetch(SRV + "?op=" + op, { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json", "X-OwnInbox": "1" }, body: JSON.stringify(body) })
+      .then(function (r) { return r.json().then(function (j) { j._s = r.status; return j; }, function () { return { _s: r.status }; }); });
+  }
+  var srvReady = (location.protocol === "https:" && CLIENT_ID ? srvCall("list") : Promise.resolve({ _s: 0 }))
+    .then(function (j) {
+      srvOn = j._s === 200 && !!j.ok;
+      if (!srvOn) return;
+      var a = accounts();
+      (j.emails || []).forEach(function (e) { srvHas[e] = 1; if (a.indexOf(e) < 0) a.push(e); });
+      setAccounts(a);
+      if (a.length) { try { localStorage.setItem("gsigned", "1"); } catch (e) {} }
+    }, function () { srvOn = false; });
+  function kept(email) { return srvOn && !!srvHas[email]; }
+  /* a usable token for this account, renewing it quietly when it can */
+  function ensureTok(email, force) {
+    var t = !force && readTok(email);
+    if (t) return Promise.resolve(t);
+    if (!kept(email)) return Promise.resolve(null);
+    if (inflight[email]) return inflight[email];
+    inflight[email] = srvCall("refresh", { email: email }).then(function (j) {
+      delete inflight[email];
+      if (j && j.access_token) { var tok = { t: j.access_token, exp: Date.now() + (Number(j.expires_in) || 3600) * 1000 }; saveTok(email, tok); return tok; }
+      if (j && j._s === 401) delete srvHas[email];
+      return null;
+    }, function () { delete inflight[email]; return null; });
+    return inflight[email];
+  }
+  function fresh() { return Promise.all(accounts().map(function (e) { return ensureTok(e); })); }
+  /* renew a few minutes before Google's hour runs out, and when you come back to the tab */
+  function topUp() { if (!srvOn) return; accounts().forEach(function (e) { var t = toks()[e]; if (kept(e) && (!t || t.exp - Date.now() < 5 * 60e3)) ensureTok(e, true); }); }
+  setInterval(topUp, 60e3);
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) topUp(); });
 
   function profile(token) {
     return fetch(GM + "profile", { headers: { Authorization: "Bearer " + token } })
@@ -45,8 +85,8 @@
   var ready = (function () {
     var old = null; try { old = JSON.parse(sessionStorage.getItem(OLD_KEY) || "null"); } catch (e) {}
     try { sessionStorage.removeItem(OLD_KEY); } catch (e) {}
-    if (!old || !(old.exp > Date.now() + 30000)) return Promise.resolve();
-    return profile(old.t).then(function (email) { if (email) remember(email, old); });
+    if (!old || !(old.exp > Date.now() + 30000)) return srvReady;
+    return Promise.all([srvReady, profile(old.t).then(function (email) { if (email) remember(email, old); })]);
   })();
 
   function gisReady() {
@@ -71,6 +111,7 @@
     var hint = typeof opt === "string" ? opt : "";
     if (!add && !hint) hint = accounts().filter(function (e) { return !readTok(e); })[0] || "";
     var prompt = add ? "select_account" : (hint || localStorage.getItem("gsigned")) ? "" : "consent";
+    if (srvOn) return gisReady().then(function () { return codeSignIn(add, hint, false); });
     return gisReady().then(function () {
       return new Promise(function (res, rej) {
         var cfg = {
@@ -92,6 +133,33 @@
       });
     });
   }
+  /* sign in once and stay signed in: Google gives a code, the site's helper
+     swaps it for a refresh token it keeps, and hands back an access token */
+  function codeSignIn(add, hint, retried) {
+    return new Promise(function (res, rej) {
+      var cfg = {
+        client_id: CLIENT_ID, scope: SCOPES, ux_mode: "popup", select_account: !!add,
+        callback: function (r) {
+          if (!(r && r.code)) return rej(r);
+          srvCall("exchange", { code: r.code }).then(function (j) {
+            if (!j || !j.access_token || !j.email) return rej(new Error(j && j.error || "Sign-in failed"));
+            var tok = { t: j.access_token, exp: Date.now() + (Number(j.expires_in) || 3600) * 1000 };
+            remember(j.email, tok);
+            if (j.need_consent && !retried) {
+              /* Google already had an older permission without "stay signed in": reset it once and ask again */
+              try { google.accounts.oauth2.revoke(j.access_token, function () { codeSignIn(false, j.email, true).then(res, rej); }); } catch (x) { res(j.email); }
+              return;
+            }
+            if (!j.need_consent) srvHas[j.email] = 1;
+            res(j.email);
+          }, rej);
+        },
+        error_callback: function (e) { rej(e); }
+      };
+      if (hint) cfg.login_hint = hint;
+      google.accounts.oauth2.initCodeClient(cfg).requestCode();
+    });
+  }
   /* signOut(email) removes one account; signOut() removes all */
   function signOut(email) {
     var list = email ? [email] : accounts(), all = toks();
@@ -100,6 +168,7 @@
       if (t && window.google && google.accounts && google.accounts.oauth2) { try { google.accounts.oauth2.revoke(t.t, function () {}); } catch (x) {} }
       clearTok(e);
     });
+    if (srvOn) { list.forEach(function (e) { delete srvHas[e]; }); srvCall("signout", email ? { email: email } : {}).catch(function () {}); }
     var rest = accounts().filter(function (e) { return list.indexOf(e) < 0; });
     setAccounts(rest);
     if (!rest.length) { try { localStorage.removeItem("gsigned"); } catch (e) {} }
@@ -109,8 +178,9 @@
     signIn: signIn,
     addAccount: function () { return signIn({ add: true }); },
     signOut: signOut,
-    signedIn: function () { return live().length > 0; },
-    accounts: function () { return accounts().map(function (e) { return { email: e, on: !!readTok(e) }; }); },
+    signedIn: function () { return live().length > 0 || accounts().some(kept); },
+    accounts: function () { return accounts().map(function (e) { return { email: e, on: !!readTok(e) || kept(e) }; }); },
+    staysSignedIn: function () { return srvOn; },
     primary: primary,
     ready: ready
   };
@@ -118,7 +188,7 @@
   /* Small floating prompt, one line per account whose 1-hour Google session ran out */
   var promptEl = null, expired = {};
   function showExpired(email) {
-    if (!email || accounts().indexOf(email) < 0 || expired[email]) return;
+    if (!email || accounts().indexOf(email) < 0 || expired[email] || kept(email)) return;
     expired[email] = 1;
     if (!promptEl) {
       promptEl = document.createElement("div");
@@ -139,14 +209,16 @@
   function api(url, opt, email) {
     return ready.then(function () {
       email = email || primary();
-      var t = email && readTok(email);
+      return email ? ensureTok(email) : null;
+    }).then(function (t) { return call(t, false); });
+    function call(t, again) {
       if (!t) { showExpired(email); return Promise.reject(err("needs_signin")); }
       opt = opt || {};
       var h = { Authorization: "Bearer " + t.t };
       if (opt.body) h["Content-Type"] = "application/json";
       return fetch(url, { method: opt.method || "GET", headers: h, body: opt.body ? JSON.stringify(opt.body) : undefined })
         .then(function (r) {
-          if (r.status === 401) { clearTok(email); showExpired(email); throw err("needs_signin"); }
+          if (r.status === 401) { clearTok(email); if (!again && kept(email)) return ensureTok(email, true).then(function (t2) { return call(t2, true); }); showExpired(email); throw err("needs_signin"); }
           if (r.status === 204) return {};
           return r.json().catch(function () { return {}; }).then(function (j) {
             if (!r.ok) {
@@ -159,7 +231,7 @@
             return j;
           });
         }, function (e) { throw err("server_unavailable", String(e)); });
-    });
+    }
   }
   /* thread ids carry their account: "me@gmail.com~18c3f..." */
   function split(id) {
@@ -270,7 +342,7 @@
   /* ---------- the tools the app calls ---------- */
   var TOOLS = {
     "Gmail/search_threads": function (i) {
-      return ready.then(function () {
+      return ready.then(fresh).then(function () {
         var all = accounts();
         if (!all.length) return Promise.reject(err("needs_signin"));
         all.forEach(function (e) { if (!readTok(e)) showExpired(e); });
@@ -328,7 +400,7 @@
     /* calendars from every signed-in account; the first account's ids stay plain,
        others are "email~calendarId"; a calendar two accounts share is listed once */
     "Google Calendar/list_calendars": function () {
-      return ready.then(function () {
+      return ready.then(fresh).then(function () {
         var on = live(), first = primary();
         if (!on.length) return api(CA + "users/me/calendarList"); /* triggers the sign-in prompt */
         on.sort(function (a, b) { return (b === first ? 1 : 0) - (a === first ? 1 : 0); });
