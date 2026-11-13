@@ -2185,6 +2185,134 @@ html.motion .wpked{animation:wpkIn .38s cubic-bezier(.2,.8,.2,1)}
 .wpkbar .wpkdel{color:#ff453a!important}
 .wpkbar .btn.pri:disabled{opacity:.5;cursor:default}
 @media(max-width:640px){.wpked{grid-template-columns:1fr;gap:14px;padding:14px}.wpkpv{min-height:0}.wpkedn{display:none}}
+/* ===== Spotify tab ===== */
+#v-spotify[hidden]{display:none}
+.spx{padding:4px 0 28px}
+.spk{position:relative;border-radius:22px;background:var(--surf,var(--glass-lo));border:1px solid var(--line);box-shadow:inset 0 1px 0 var(--hair-hi,var(--glass-hi)),0 18px 44px -26px rgba(15,15,25,.3);-webkit-backdrop-filter:blur(24px) saturate(140%);backdrop-filter:blur(24px) saturate(140%);padding:18px 20px;min-width:0}
+.spm{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(300px,1fr);gap:16px}
+.sph{grid-column:1;grid-row:1;padding:0;overflow:hidden;min-height:300px;isolation:isolate;--spc:var(--accent)}
+.sphbg{position:absolute;inset:-40px;z-index:-1;background-size:cover;background-position:center;filter:blur(50px) saturate(160%);opacity:.55;transform:scale(1.1);transition:background-image .6s}
+.sph::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(135deg,color-mix(in srgb,var(--spc) 38%,transparent),transparent 70%)}
+:root[data-theme="dark"] .sphbg{opacity:.45}
+.sphi{display:flex;gap:28px;align-items:center;padding:28px;min-height:300px}
+.spart{flex:none;width:clamp(150px,18vw,244px);aspect-ratio:1;border-radius:16px;overflow:hidden;background:color-mix(in srgb,var(--ink) 8%,transparent);display:grid;place-items:center;color:var(--mute);box-shadow:0 24px 50px -18px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.08) inset;transition:transform .5s cubic-bezier(.3,1.3,.5,1)}
+.spart img{width:100%;height:100%;object-fit:cover;display:block}
+.spart svg{width:50%;height:50%}
+html.motion .sph:hover .spart{transform:scale(1.02) rotate(-1deg)}
+.spinfo{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.spdevn{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--mute);margin-bottom:6px;min-height:16px}
+.speq{display:inline-flex;align-items:flex-end;gap:2px;height:12px}
+.speq b{width:3px;height:100%;border-radius:2px;background:#1ed760;transform-origin:bottom}
+html.motion .speq b{animation:spEq .9s ease-in-out infinite alternate}
+.speq b:nth-child(2){animation-delay:-.3s!important}.speq b:nth-child(3){animation-delay:-.6s!important}
+@keyframes spEq{0%{transform:scaleY(.25)}100%{transform:scaleY(1)}}
+.sptn{font-family:var(--font-display,inherit);font-weight:400;font-size:clamp(28px,2.8vw,42px);line-height:1.05;letter-spacing:-.015em;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.spta{font-size:16px;font-weight:650;margin-top:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.spal{font-size:13.5px;color:var(--mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.spprog{display:grid;grid-template-columns:40px 1fr 40px;align-items:center;gap:10px;margin-top:18px;font-size:12px;font-variant-numeric:tabular-nums;color:var(--mute)}
+.spprog span:last-child{text-align:right}
+.spprog input,.spvol input{-webkit-appearance:none;appearance:none;height:5px;border-radius:99px;background:linear-gradient(90deg,var(--ink) var(--p,0%),color-mix(in srgb,var(--ink) 15%,transparent) var(--p,0%));outline:0;cursor:pointer;margin:0;border:0!important;padding:0!important}
+.spprog input::-webkit-slider-thumb,.spvol input::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.3);opacity:0;transition:opacity .15s}
+.spprog:hover input::-webkit-slider-thumb,.spvol:hover input::-webkit-slider-thumb,.spprog input:focus-visible::-webkit-slider-thumb{opacity:1}
+.spprog input::-moz-range-thumb,.spvol input::-moz-range-thumb{width:13px;height:13px;border:0;border-radius:50%;background:var(--ink)}
+.spctl{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:10px}
+.spb{position:relative;display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:50%;background:none;color:var(--ink);cursor:pointer;transition:transform .15s,background .15s,color .15s}
+.spb svg{width:24px;height:24px}
+.spb:hover{background:color-mix(in srgb,var(--ink) 8%,transparent)}
+.spb:active{transform:scale(.9)}
+.spb.sm{width:36px;height:36px}.spb.sm svg{width:18px;height:18px}
+.spb.sm.on{color:#1ed760}
+.spb.sm.on::after{content:"";position:absolute;bottom:3px;width:4px;height:4px;border-radius:50%;background:#1ed760}
+.spb em{position:absolute;top:6px;right:5px;font-style:normal;font-size:8px;font-weight:800}
+.spb.big{width:60px;height:60px;background:var(--ink);color:var(--panel);box-shadow:0 10px 24px -8px rgba(0,0,0,.45)}
+.spb.big svg{width:26px;height:26px}
+.spb.big:hover{background:var(--ink);transform:scale(1.06)}
+.spx2{display:flex;align-items:center;gap:10px;margin-top:12px}
+.spheart.on{color:#1ed760}.spheart.on svg{fill:#1ed760}
+.spvol{display:flex;align-items:center;gap:8px;flex:1;max-width:200px;color:var(--mute)}
+.spvol svg{width:17px;height:17px;flex:none}
+.spvol input{flex:1;--p:50%}
+.spdevb{margin-left:auto;display:inline-flex;align-items:center;gap:6px}
+.spdevb svg,.spempty .btn svg{width:15px;height:15px}
+.spdev{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.spdev[hidden]{display:none}
+.spdv{display:flex;flex-direction:column;align-items:flex-start;padding:7px 12px;border-radius:12px;border:1px solid var(--line);background:color-mix(in srgb,var(--panel) 70%,transparent);color:var(--ink);font:inherit;font-size:13px;font-weight:650;cursor:pointer}
+.spdv small{font-size:11px;font-weight:500;color:var(--mute)}
+.spdv.on{border-color:#1ed760;box-shadow:0 0 0 1px #1ed760 inset}
+.spempty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;color:var(--mute);padding:20px}
+.spempty>svg{width:44px;height:44px;margin-bottom:6px;opacity:.6}
+.spempty b{font-size:17px;color:var(--ink)}
+.spempty .btn{display:inline-flex;align-items:center;gap:6px;margin-top:6px}
+.spempty .spdev{justify-content:center}
+/* right column */
+.spcol{grid-column:2;grid-row:1;display:flex;flex-direction:column;gap:16px;min-height:0}
+.spcol .spk{flex:1;display:flex;flex-direction:column;min-height:0;max-height:320px}
+.spsteps a{display:inline!important;padding:0!important;margin:0!important;background:none!important}
+.spheart.on::after{display:none}
+.spcol .spk .splist{flex:1}
+.sptitle{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin-bottom:8px}
+.splist{overflow:auto;margin:0 -10px;scrollbar-width:thin}
+.sprow{display:flex;align-items:center;gap:11px;width:100%;padding:6px 10px;border:0;border-radius:12px;background:none;color:var(--ink);font:inherit;text-align:left;cursor:pointer;transition:background .15s}
+.sprow:hover{background:color-mix(in srgb,var(--ink) 6%,transparent)}
+.spth{position:relative;flex:none;width:42px;height:42px;border-radius:8px;overflow:hidden;background:color-mix(in srgb,var(--ink) 8%,transparent);display:grid;place-items:center;color:var(--mute)}
+.spth img{width:100%;height:100%;object-fit:cover}
+.spth>svg{width:20px;height:20px}
+.spth i,.sppc i{position:absolute;inset:0;display:grid;place-items:center;background:rgba(0,0,0,.45);color:#fff;opacity:0;transition:opacity .15s}
+.spth i svg{width:18px;height:18px}
+.sprow:hover .spth i,.sppl:hover .sppc i{opacity:1}
+.sprt{flex:1;min-width:0;display:flex;flex-direction:column}
+.sprt b{font-size:13.5px;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sprt small{font-size:12px;color:var(--mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sprow em{font-style:normal;font-size:12px;color:var(--mute);font-variant-numeric:tabular-nums}
+.spnone{margin:6px 10px;font-size:13px;color:var(--mute)}
+/* playlists and search */
+.spwide{grid-column:1/-1}
+.sphead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.sphead .sptitle{margin:0}
+.spq{display:flex;align-items:center;gap:8px;height:36px;width:min(320px,55%);padding:0 12px;border-radius:11px;background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--mute)}
+.spq:focus-within{box-shadow:0 0 0 3px color-mix(in srgb,#1ed760 35%,transparent);background:color-mix(in srgb,var(--panel) 85%,transparent)}
+.spq svg{width:15px;height:15px;flex:none}
+.spq input{flex:1;min-width:0;border:0!important;background:none!important;box-shadow:none!important;outline:0;padding:0!important;font:inherit;font-size:14px;color:var(--ink)}
+.spres{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.spres .sprow{margin:0 -10px;width:calc(100% + 20px)}
+.spsub{font-size:12px;font-weight:700;color:var(--mute);margin:8px 0 4px}
+.spchips{display:flex;flex-wrap:wrap;gap:8px}
+.spart2{display:flex;align-items:center;gap:8px;padding:4px 12px 4px 4px;border-radius:99px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-size:13px;font-weight:650;cursor:pointer}
+.spart2 span{width:30px;height:30px;border-radius:50%;overflow:hidden;background:color-mix(in srgb,var(--ink) 8%,transparent);display:grid;place-items:center}
+.spart2 img{width:100%;height:100%;object-fit:cover}.spart2 svg{width:15px;height:15px}
+.spgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px}
+.sppl{display:flex;flex-direction:column;gap:4px;padding:10px;border:0;border-radius:16px;background:none;color:var(--ink);font:inherit;text-align:left;cursor:pointer;transition:background .2s,transform .3s cubic-bezier(.2,.8,.2,1)}
+.sppl:hover{background:color-mix(in srgb,var(--ink) 5%,transparent)}
+html.motion .sppl:hover{transform:translateY(-3px)}
+.sppc{position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;background:color-mix(in srgb,var(--ink) 8%,transparent);display:grid;place-items:center;color:var(--mute);margin-bottom:6px;box-shadow:0 12px 24px -14px rgba(0,0,0,.45)}
+.sppc img{width:100%;height:100%;object-fit:cover}
+.sppc>svg{width:40%;height:40%}
+.sppc i{inset:auto 10px 10px auto;width:44px;height:44px;border-radius:50%;background:#1ed760;color:#000;transform:translateY(8px);transition:opacity .2s,transform .25s cubic-bezier(.2,.8,.2,1);box-shadow:0 8px 16px rgba(0,0,0,.35)}
+.sppc i svg{width:20px;height:20px}
+.sppl:hover .sppc i{transform:none}
+.sppl b{font-size:14px;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sppl small{font-size:12px;color:var(--mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.spfoot{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:12.5px;color:var(--mute)}
+/* setup */
+.spsetup{max-width:760px;padding:26px 28px}
+.spsh{display:flex;gap:16px;align-items:flex-start;margin-bottom:12px}
+.spbadge{flex:none;display:grid;place-items:center;width:52px;height:52px;border-radius:16px;background:#1ed760;color:#000}
+.spbadge svg{width:28px;height:28px}
+.spsh h3{margin:0 0 4px;font-size:22px;font-weight:750;letter-spacing:-.01em}
+.spsh p{margin:0;color:var(--mute);font-size:14px;line-height:1.5}
+.spsteps{margin:18px 0 0;padding-left:22px;display:flex;flex-direction:column;gap:16px;font-size:14px;line-height:1.55}
+.spsteps li::marker{font-weight:800;color:#1ed760}
+.spsteps a{color:var(--accent);font-weight:650}
+.spuri{display:flex;align-items:center;gap:8px;margin:6px 0}
+.spuri code{flex:1;min-width:0;padding:7px 10px;border-radius:9px;background:color-mix(in srgb,var(--ink) 7%,transparent);font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.spcid{display:flex;gap:8px;margin-top:8px}
+.spcid input{flex:1;min-width:0;height:40px;padding:0 12px!important;border-radius:11px!important;border:1px solid var(--line)!important;background:var(--panel)!important;font:inherit;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;color:var(--ink)}
+.spcid .btn.pri{background:#1ed760!important;color:#000!important;border:0!important;font-weight:700}
+.spnote{margin:18px 0 0;font-size:12.5px;color:var(--mute);line-height:1.5}
+.sperr{margin:0 0 14px;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,#ff453a 12%,transparent);color:color-mix(in srgb,#ff453a 75%,var(--ink));font-size:13.5px}
+/* sizes */
+@media(max-width:1099px){.spm{grid-template-columns:1fr}.spcol{grid-column:1;grid-row:auto}.sph{grid-row:auto}}
+@media(max-width:600px){.spx{padding-bottom:100px}.sphi{flex-direction:column;align-items:stretch;padding:20px;gap:18px}.spart{width:min(100%,280px);align-self:center}.sptn{font-size:28px}.spres{grid-template-columns:1fr}.sphead{flex-direction:column;align-items:stretch}.spq{width:100%}.spgrid{grid-template-columns:repeat(2,1fr);gap:10px}.spsetup{padding:20px}.spcid{flex-direction:column}}
 </style>
 <script>try{var t=localStorage.getItem("wth");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);var a=localStorage.getItem("wacc");if(/^#[0-9a-f]{6}$/i.test(a||"")){var r=document.documentElement.style;r.setProperty("--accent",a);r.setProperty("--dot",a);r.setProperty("--today",a)}}catch(e){}</script>
 </head>
@@ -2224,6 +2352,11 @@ html.motion .wpked{animation:wpkIn .38s cubic-bezier(.2,.8,.2,1)}
 <h2>Weather <span id="wxpstat"></span></h2>
 <div class="wds" id="wds-weather"></div>
 <div class="wxp" id="wxp"></div>
+</section>
+<section id="v-spotify" hidden>
+<h2>Spotify</h2>
+<div class="wds" id="wds-spotify"></div>
+<div class="spx" id="spx"></div>
 </section>
 <section id="v-notes" hidden>
 <h2>Notes <span id="nsync">Saved on this device</span></h2>
@@ -2370,7 +2503,7 @@ function show(v){v=v==="calendar"?"calendar":"mail";["mail","calendar"].forEach(
 document.getElementById("tmail").onclick=function(){show("mail")};
 document.getElementById("tcalendar").onclick=function(){show("calendar")};
 window.addEventListener("hashchange",function(){show(location.hash.slice(1))});
-show(location.hash.slice(1));
+window.__hash0=window.__hash0||location.hash;show(location.hash.slice(1));
 var WP=[
 {id:"default",n:"Default",l:["#e8ecf4","#6fa8ff","#ffa6d2","#9ff0cf"],d:["#090b12","#2447ff","#9b2fd0","#0b9c88"]},
 {id:"sunset",n:"Sunset",l:["#fbe9e0","#ff9a6b","#ff6fa1","#ffd36b"],d:["#1a0d12","#c2410c","#be185d","#a16207"]},
@@ -2532,9 +2665,9 @@ function ini(s){var c=Array.from(String(s).replace(/[^\p{L}\p{N}]/gu," ").trim()
 function moveInd(){var b=document.querySelector(".top button.on"),i=document.querySelector(".top .ind");if(b&&i){i.style.width=b.offsetWidth+"px";i.style.transform="translateX("+b.offsetLeft+"px)"}}
 EL("today").textContent=new Intl.DateTimeFormat("en-GB",{weekday:"long",day:"numeric",month:"long",timeZone:tz}).format(now);
 window.addEventListener("resize",moveInd);window.addEventListener("load",moveInd);moveInd();
-var WTABS=["mail","calendar","weather"];
-var WD={mail:["unread","important"],calendar:["next","week"],weather:["sun","world","clock"]};
-try{var sv=JSON.parse(localStorage.getItem("wd")||"null");if(sv&&sv.mail&&sv.calendar){WD=sv;if(!WD.weather)WD.weather=["sun","world","clock"]}}catch(e){}
+var WTABS=["mail","calendar","weather","spotify"];
+var WD={mail:["unread","important"],calendar:["next","week"],weather:["sun","world","clock"],spotify:[]};
+try{var sv=JSON.parse(localStorage.getItem("wd")||"null");if(sv&&sv.mail&&sv.calendar){WD=sv;if(!WD.weather)WD.weather=["sun","world","clock"];if(!WD.spotify)WD.spotify=[]}}catch(e){}
 function saveWd(){try{localStorage.setItem("wd",JSON.stringify(WD))}catch(e){}}
 function ls(k,d){try{var v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}}
 function ss(k,v){try{localStorage.setItem(k,v)}catch(e){}}
@@ -2570,7 +2703,7 @@ c.addEventListener("change",function(e){var t=e.target;if(t.dataset&&t.dataset.t
 c.addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.classList.contains("tdi")){var v=e.target.value.trim();if(v){var a=todo();a.push({t:v,d:false});setTodo(a,true)}}});
 c.addEventListener("input",function(e){if(e.target.classList.contains("wt")){ss("wd-notes",e.target.value);document.querySelectorAll(".wt").forEach(function(x){if(x!==e.target)x.value=e.target.value})}})}
 var wgTab="mail";
-function buildWg(){EL("wgsub").textContent=wgTab==="mail"?"For the Mail tab":wgTab==="weather"?"For the Weather tab":"For the Calendar tab";EL("wgl").innerHTML=WG.filter(function(w){return w.tab===wgTab||w.tab==="both"}).map(function(w){var on=WD[wgTab].indexOf(w.id)>-1;return '<div class="wgr"><div class="wgi"><b>'+w.name+'</b><span>'+w.desc+'</span></div><button class="btn'+(on?'':' pri')+'" type="button" data-id="'+w.id+'">'+(on?"Remove":"Add")+'</button></div>'}).join("")}
+function buildWg(){EL("wgsub").textContent=wgTab==="mail"?"For the Mail tab":wgTab==="weather"?"For the Weather tab":wgTab==="spotify"?"For the Spotify tab":"For the Calendar tab";EL("wgl").innerHTML=WG.filter(function(w){return w.tab===wgTab||w.tab==="both"}).map(function(w){var on=WD[wgTab].indexOf(w.id)>-1;return '<div class="wgr"><div class="wgi"><b>'+w.name+'</b><span>'+w.desc+'</span></div><button class="btn'+(on?'':' pri')+'" type="button" data-id="'+w.id+'">'+(on?"Remove":"Add")+'</button></div>'}).join("")}
 function openWg(tab){wgTab=tab;buildWg();EL("wg").hidden=false;EL("wgdone").focus()}
 function closeWg(){EL("wg").hidden=true}
 EL("wgl").addEventListener("click",function(e){var b=e.target.closest("button[data-id]");if(!b)return;var id=b.dataset.id,i=WD[wgTab].indexOf(id);if(i>-1)WD[wgTab].splice(i,1);else WD[wgTab].push(id);saveWd();buildWds(wgTab);buildWg()});
@@ -2579,7 +2712,7 @@ EL("wg").addEventListener("click",function(e){if(e.target===EL("wg"))closeWg()})
 document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!EL("wg").hidden)closeWg()});
 var _rm=renderMail;renderMail=function(){_rm.apply(this,arguments);tickWds();spUi();paneSync()};
 var _ra=renderAg;renderAg=function(){_ra.apply(this,arguments);tickWds()};
-buildWds("mail");buildWds("calendar");buildWds("weather");bindWds("mail");bindWds("calendar");bindWds("weather");setInterval(tickWds,20000);
+buildWds("mail");buildWds("calendar");buildWds("weather");buildWds("spotify");bindWds("mail");bindWds("calendar");bindWds("weather");bindWds("spotify");setInterval(tickWds,20000);
 function wmData(){return {
 am:["Good morning","Morning"],
 pm:["Good afternoon","Afternoon"],
@@ -2701,7 +2834,7 @@ else if(b.dataset.cdset){var t=b.closest(".wd"),d=t.querySelector(".cdd").value,
 else if(b.dataset.cdclr){try{localStorage.removeItem("wd-cd")}catch(x){}renderCd()}})});
 setInterval(function(){if(!FT.run)return;var l=ftLeft();document.querySelectorAll('[data-w="focus"] .ftt').forEach(function(x){x.textContent=mmss(l)});
 if(l<=0){FT.run=false;FT.left=0;renderFt();var tt=EL("toast");tt.textContent="Focus session finished";tt.hidden=false;setTimeout(function(){tt.hidden=true},5000)}},1000);
-buildWds("mail");buildWds("calendar");buildWds("weather");tickWds();
+buildWds("mail");buildWds("calendar");buildWds("weather");buildWds("spotify");tickWds();
 var TH=ls("wth","auto"),SUN='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',MOON='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg>';
 function themeUi(){var d=isDark(),b=document.getElementById("thbtn"),l=d?"Switch to light mode":"Switch to dark mode";b.innerHTML=d?MOON:SUN;b.setAttribute("aria-label",l);b.title=l;
 Array.prototype.forEach.call(document.querySelectorAll(".seg button"),function(x){x.setAttribute("aria-pressed",x.dataset.th===TH)})}
@@ -2891,11 +3024,11 @@ c.addEventListener("dragstart",function(e){var t=e.target.closest&&e.target.clos
 c.addEventListener("dragover",function(e){if(drag)e.preventDefault()});
 c.addEventListener("drop",function(e){var t=e.target.closest&&e.target.closest("[data-w]");if(!drag||!t)return;e.preventDefault();var a=WD[tab],id=drag,f=a.indexOf(id),to=a.indexOf(t.dataset.w);drag=null;if(f<0||to<0||f===to)return;a.splice(f,1);a.splice(to,0,id);saveWd();buildWds(tab);tickWds()});
 c.addEventListener("dragend",function(){drag=null})});
-function buildWg(){EL("wgsub").textContent=wgTab==="mail"?"For the Mail tab. Tap Add to put one on your page.":wgTab==="weather"?"For the Weather tab. Tap Add to put one on your page.":"For the Calendar tab. Tap Add to put one on your page.";
+function buildWg(){EL("wgsub").textContent=wgTab==="mail"?"For the Mail tab. Tap Add to put one on your page.":wgTab==="weather"?"For the Weather tab. Tap Add to put one on your page.":wgTab==="spotify"?"For the Spotify tab. Tap Add to put one on your page.":"For the Calendar tab. Tap Add to put one on your page.";
 EL("wgl").innerHTML='<div class="wgg">'+WG.filter(function(w){return w.tab===wgTab||w.tab==="both"}).map(function(w){var on=WD[wgTab].indexOf(w.id)>-1;
 return '<div class="wgc"><div class="wgp" aria-hidden="true"><div class="wd zs" style="--tn:'+TN(w.id)+'"><div class="wb">'+w.r()+'</div></div></div><div class="wgi"><b>'+esc(w.name)+'</b><span>'+esc(w.desc)+'</span></div><button class="btn'+(on?'':' pri')+'" type="button" data-id="'+w.id+'">'+(on?"Remove":"Add")+'</button></div>'}).join("")+'</div><button type="button" class="btn wreset" id="wreset">Reset to defaults</button>'}
-EL("wgl").addEventListener("click",function(e){if(!e.target.closest("#wreset"))return;WD={mail:["unread","important"],calendar:["next","week"],weather:["sun","world","clock"]};WS().sz={};ss("wd-size","{}");saveWd();buildWds("mail");buildWds("calendar");buildWds("weather");tickWds();buildWg()});
-buildWds("mail");buildWds("calendar");buildWds("weather");tickWds();
+EL("wgl").addEventListener("click",function(e){if(!e.target.closest("#wreset"))return;WD={mail:["unread","important"],calendar:["next","week"],weather:["sun","world","clock"],spotify:[]};WS().sz={};ss("wd-size","{}");saveWd();buildWds("mail");buildWds("calendar");buildWds("weather");buildWds("spotify");tickWds();buildWg()});
+buildWds("mail");buildWds("calendar");buildWds("weather");buildWds("spotify");tickWds();
 EL("v-mail").addEventListener("click",function(e){var b=e.target.closest("[data-notspam],[data-isspam]");if(!b)return;
 var tid=b.dataset.notspam||b.dataset.isspam,row=lastL.filter(function(x){return x[6]===tid})[0];if(!row)return;
 var addr=(addrOf(row[5]||"")||row[0]||"").toLowerCase();if(!addr)return;
@@ -3062,7 +3195,7 @@ var gq="",gcat="All",tools=document.createElement("div");tools.className="wgtool
 tools.innerHTML='<input id="wgq" type="search" placeholder="Search widgets" aria-label="Search widgets" autocomplete="off"><div class="wgcats" role="group" aria-label="Category"></div>';
 EL("wgl").parentNode.insertBefore(tools,EL("wgl"));
 function cats(){var s={};WG.forEach(function(w){if(w.tab===wgTab||w.tab==="both")s[CAT[w.id]||"Info"]=1});return ["All"].concat(["Smart","Mail","Calendar","Time","Productivity","Wellbeing","Personal","Info"].filter(function(k){return s[k]}))}
-buildWg=function(){EL("wgsub").textContent=(wgTab==="mail"?"For the Mail tab.":wgTab==="weather"?"For the Weather tab.":"For the Calendar tab.")+" Tap Add to put one on your page.";
+buildWg=function(){EL("wgsub").textContent=(wgTab==="mail"?"For the Mail tab.":wgTab==="weather"?"For the Weather tab.":wgTab==="spotify"?"For the Spotify tab.":"For the Calendar tab.")+" Tap Add to put one on your page.";
 var cs=cats();if(cs.indexOf(gcat)<0)gcat="All";tools.querySelector(".wgcats").innerHTML=cs.map(function(k){return '<button type="button" class="wbtn'+(k===gcat?' on':'')+'" data-gc="'+k+'" aria-pressed="'+(k===gcat)+'">'+k+'</button>'}).join("");
 var q=gq.toLowerCase(),list=WG.filter(function(w){return (w.tab===wgTab||w.tab==="both")&&(gcat==="All"||(CAT[w.id]||"Info")===gcat)&&(!q||(w.name+" "+w.desc+" "+(CAT[w.id]||"Info")).toLowerCase().indexOf(q)>-1)});
 EL("wgl").innerHTML='<div class="wgg">'+(list.length?list.map(function(w){var on=WD[wgTab].indexOf(w.id)>-1;
@@ -3070,7 +3203,7 @@ return '<div class="wgc'+(on?' added':'')+'"><div class="wgp" aria-hidden="true"
 EL("wgq").addEventListener("input",function(){gq=this.value;buildWg()});
 tools.addEventListener("click",function(e){var b=e.target.closest("[data-gc]");if(!b)return;gcat=b.dataset.gc;buildWg()});
 
-buildWds("mail");buildWds("calendar");buildWds("weather");
+buildWds("mail");buildWds("calendar");buildWds("weather");buildWds("spotify");
 document.addEventListener("visibilitychange",function(){if(!document.hidden)paintW("weather")});
 })();
 /* ===== UI 3 ===== */
@@ -3562,7 +3695,7 @@ EL("wgl").addEventListener("keydown",function(e){if(e.key==="Escape"&&ED&&e.targ
 /* a closed gallery forgets an unfinished pack */
 (function(){var g=EL("wg");if(!g)return;new MutationObserver(function(){if(g.hidden&&ED)ED=null}).observe(g,{attributes:true,attributeFilter:["hidden"]})})();
 
-buildWds("mail");buildWds("calendar");buildWds("weather");
+buildWds("mail");buildWds("calendar");buildWds("weather");buildWds("spotify");
 setInterval(function(){if(!document.hidden)["rings","sun","agenda"].forEach(function(id){if(document.querySelector('.wds [data-w="'+id+'"]'))repaint3(id)})},60000);
 })();
 /* ===== Custom emoji: one original set drawn for this app ===== */
@@ -3645,7 +3778,7 @@ c.addEventListener("keydown",function(e){if(!(e.key==="ContextMenu"||(e.shiftKey
 var _bw=buildWds;buildWds=function(tab){_bw(tab);var c=EL("wds-"+tab);if(!c)return;
 c.querySelectorAll(".wgrid>.wd[data-w]").forEach(function(t){if(!t.hasAttribute("tabindex"))t.tabIndex=0;var w=wgById(t.dataset.w);if(w&&!t.getAttribute("aria-label"))t.setAttribute("aria-label",w.name+" widget. Press Shift+F10 for options")});
 var bar=c.querySelector(".wbar"),ed=c.classList.contains("edit");if(bar&&!ed&&!bar.querySelector(".wrch")&&WD[tab].length)bar.querySelector(".wsp").insertAdjacentHTML("afterend",'<span class="wrch">Right-click a widget to edit it</span>')};
-buildWds("mail");buildWds("calendar");buildWds("weather");tickWds();
+buildWds("mail");buildWds("calendar");buildWds("weather");buildWds("spotify");tickWds();
 })();
 /* ===== Wallpaper studio ===== */
 (function(){
@@ -3856,7 +3989,7 @@ var _rm4=renderMail;renderMail=function(L,n){_rm4(L,n);["unread","latest","deliv
 var ch=false;WTABS.forEach(function(tab){var out=[];(WD[tab]||[]).forEach(function(id){var n=id in GONE?GONE[id]:id;if(n&&out.indexOf(n)<0&&wgById(n))out.push(n);if(n!==id)ch=true});WD[tab]=out});
 if(ch)saveWd();
 try{var w3=JSON.parse(localStorage.getItem("wd-w3")||"{}");if(w3.stack&&w3.stack.ids){var s=w3.stack.ids.map(function(id){return id in GONE?GONE[id]:id}).filter(function(id,i,a){return id&&a.indexOf(id)===i});if(s.join()!==w3.stack.ids.join()){w3.stack.ids=s;localStorage.setItem("wd-w3",JSON.stringify(w3))}}}catch(e){}
-buildWds("mail");buildWds("calendar");buildWds("weather");tickWds();
+buildWds("mail");buildWds("calendar");buildWds("weather");buildWds("spotify");tickWds();
 })();
 /* ===== Resize widgets by dragging the corner, like on iPhone and iPad ===== */
 (function(){
@@ -3868,7 +4001,7 @@ function handles(tab){var c=EL("wds-"+tab);if(!c||!c.classList.contains("edit"))
 c.querySelectorAll(".wgrid>.wd[data-w]").forEach(function(t){if(t.querySelector(".wrz"))return;var id=t.dataset.w,z=sizeOf(tab,id),n=(wgById(id)||{}).name||id;
 t.insertAdjacentHTML("beforeend",'<button type="button" class="wrz" data-rz="'+id+'" aria-label="Resize '+esc(n)+', now '+NAME[z]+'. Drag, or use the arrow keys" title="Drag to resize">'+ARC+'</button>')})}
 var _bw=buildWds;buildWds=function(tab){_bw(tab);handles(tab)};
-var _tw=tickWds;tickWds=function(){_tw();handles("mail");handles("calendar");handles("weather")};
+var _tw=tickWds;tickWds=function(){_tw();handles("mail");handles("calendar");handles("weather");handles("spotify")};
 
 /* spring the tiles from where they were to where they are now */
 function flipAll(grid,before,except){var M=window.motionOn&&motionOn();grid.querySelectorAll(":scope>.wd[data-w]").forEach(function(t){var a=before[t.dataset.w];if(!a||!M)return;var b=t.getBoundingClientRect();
@@ -3906,7 +4039,7 @@ var t=hd.closest(".wd"),tab=t.closest(".wds").id.replace("wds-",""),id=t.dataset
 /* clicks on the handle never reach the widget */
 document.addEventListener("click",function(e){if(e.target.closest&&e.target.closest(".wrz")){e.stopPropagation();e.preventDefault()}},true);
 /* the old S/M/L button gives way to the handle */
-handles("mail");handles("calendar");handles("weather");
+handles("mail");handles("calendar");handles("weather");handles("spotify");
 window.__wrz={apply:apply};
 })();
 /* ===== Settings 3: one place for each setting, in plain words ===== */
@@ -4017,7 +4150,7 @@ var _TN=TN;TN=function(id){var l=jparse("wd-look",{})[id];return l&&l.col&&/^#[0
 var d=WP.filter(function(w){return w.id==="default"})[0];
 if(d){d.n="Calm";d.l=["#f4f3f7","#e4dcff","#f3e6f1","#e2ecf4","#ece6ff","#f6eef0"];d.d=["#09090d","#2a1f55","#1a1330","#0f1a2c","#22183f","#140f24"]}
 if(typeof applyWp==="function"&&(jparse("wpx",{}).mode||"scene")==="scene")applyWp(ls("wp","default"),false);
-buildWds("mail");buildWds("calendar");buildWds("weather");tickWds();
+buildWds("mail");buildWds("calendar");buildWds("weather");buildWds("spotify");tickWds();
 })();
 /* ===== Premium 2: a sidebar on desktop ===== */
 (function(){
@@ -4168,7 +4301,7 @@ function apply(){raf=0;if(!cur)return;var r=cur.getBoundingClientRect(),x=(lx-r.
 document.addEventListener("pointermove",function(e){if(e.pointerType!=="mouse")return;var t=e.target.closest&&e.target.closest(".wds:not(.edit) .wgrid>.wd[data-w]");if(t!==cur){if(cur){cur.classList.remove("hov");cur.style.removeProperty("--rx");cur.style.removeProperty("--ry")}cur=t;if(cur&&on())cur.classList.add("hov")}if(!cur||!on())return;lx=e.clientX;ly=e.clientY;if(!raf)raf=requestAnimationFrame(apply)},{passive:true});
 document.addEventListener("pointerleave",function(){if(cur){cur.classList.remove("hov");cur=null}},true);
 window.addEventListener("blur",function(){if(cur){cur.classList.remove("hov");cur=null}});
-buildWds("mail");buildWds("calendar");buildWds("weather");tickWds();
+buildWds("mail");buildWds("calendar");buildWds("weather");buildWds("spotify");tickWds();
 })();
 /* ===== Progress rings 2 ===== */
 (function(){
@@ -4191,7 +4324,7 @@ ringsHtml=function(){var D=data(),first=!seen&&!document.querySelector(".rg2");s
  var rows=D.map(function(d,i){var pc=Math.floor(d.p*100);return '<div class="rgr" style="--a:'+COL[i][0]+';--b:'+COL[i][1]+';--p:'+(d.p*100).toFixed(2)+'%;--i:'+i+'"><div class="rgh"><span class="rgk"><i></i>'+d.k+'</span><b>'+pc+'%</b></div><div class="rgb"><i></i></div><small>'+d.t+'</small></div>'}).join("");
  return '<div class="wl">Progress</div><div class="rg2'+(first?' in':'')+(document.querySelector('.wd.hov[data-w="rings"]')?' still':'')+'" role="img" aria-label="'+D.map(function(d){return d.k+" "+Math.floor(d.p*100)+"%"}).join(", ")+'">'+svg+'<div class="rgl">'+rows+'</div></div>'};
 var w=wgById("rings");if(w)w.r=function(){return ringsHtml()};
-buildWds("mail");buildWds("calendar");buildWds("weather");
+buildWds("mail");buildWds("calendar");buildWds("weather");buildWds("spotify");
 })();
 /* ===== Sun 2: the day as a curve, the tile as the sky ===== */
 (function(){
@@ -4226,7 +4359,7 @@ function sun2(){var h0=old(),SUN=jparse("wd-sun",null),pl=(jparse("wd-cfg",{}).w
  '<div class="sn2r"><span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 10V3M5 6l3-3 3 3M2 13h12"/></svg>'+hhmm(SUN.rise[0])+'</span><span class="mid">'+lh+' h '+lm+' min of light</span><span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v7M5 7l3 3 3-3M2 13h12"/></svg>'+hhmm(SUN.set[0])+'</span></div>'+
  (diff!=null?'<div class="sn2x">'+(left?hm(st-now)+' of daylight left · ':'')+'Tomorrow '+(diff===0?"about the same":Math.abs(diff)+' min '+(diff>0?"longer":"shorter"))+'</div>':'')+'</div>'}
 w.r=sun2;
-buildWds("mail");buildWds("calendar");buildWds("weather");
+buildWds("mail");buildWds("calendar");buildWds("weather");buildWds("spotify");
 })();
 /* ===== Wallpapers 2: soft, glossy, layered scenes ===== */
 (function(){
@@ -4420,7 +4553,7 @@ var tn=EL("tnotes");tn.parentNode.insertBefore(tb,tn.nextSibling);
 var sec=EL("v-weather");
 var ORDER=["mail","calendar","notes","weather"];
 function cur(){var s=document.querySelector("main>section:not([hidden])");return s?s.id.slice(2):"mail"}
-var _sh=show;show=function(v){var from=cur();if(v==="weather"){["mail","calendar","notes"].forEach(function(n){var s=EL("v-"+n);if(s)s.hidden=true;var t=EL("t"+n);if(t)t.classList.remove("on")});sec.hidden=false;tb.classList.add("on");
+var _sh=show;show=function(v){var from=cur();if(v==="weather"){["mail","calendar","notes","spotify"].forEach(function(n){var s=EL("v-"+n);if(s)s.hidden=true;var t=EL("t"+n);if(t)t.classList.remove("on")});sec.hidden=false;tb.classList.add("on");
   if(typeof moveInd==="function")moveInd();try{if(location.hash!=="#weather")history.replaceState(null,"","#weather")}catch(e){}
   if(window.motionOn&&motionOn()&&from!=="weather"){sec.getAnimations().forEach(function(a){a.cancel()});sec.animate([{opacity:0,transform:"translateX(36px)"},{opacity:1,transform:"none"}],{duration:420,easing:"cubic-bezier(.2,.8,.2,1)"})}
   draw();load(false);return}
@@ -4539,7 +4672,182 @@ sec.addEventListener("keydown",function(e){if(e.target.id==="wxpq"&&e.key==="Esc
 document.addEventListener("pointerdown",function(e){var r=EL("wxpres");if(r&&!r.hidden&&!e.target.closest(".wxpadd"))r.hidden=true});
 /* redraw when the theme or the widget's city changes */
 var _st=window.setTheme;if(typeof _st==="function")setTheme=function(){var x=_st.apply(this,arguments);if(!sec.hidden)draw();return x};
-if(location.hash==="#weather")show("weather");
+if((window.__hash0||location.hash)==="#weather")show("weather");
+})();
+/* ===== Spotify tab ===== */
+(function(){
+var nav=document.querySelector("nav.top"),sec=EL("v-spotify");if(!nav||!sec||EL("tspotify"))return;
+var tb=document.createElement("button");tb.id="tspotify";tb.type="button";
+tb.innerHTML='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg><span>Spotify</span>';
+var after=EL("tweather")||EL("tnotes");after.parentNode.insertBefore(tb,after.nextSibling);
+var box=EL("spx");
+var _sh=show;show=function(v){if(v==="spotify"){["mail","calendar","notes","weather"].forEach(function(n){var s=EL("v-"+n);if(s)s.hidden=true;var t=EL("t"+n);if(t)t.classList.remove("on")});
+  var was=!sec.hidden;sec.hidden=false;tb.classList.add("on");if(typeof moveInd==="function")moveInd();try{if(location.hash!=="#spotify")history.replaceState(null,"",location.pathname+"#spotify")}catch(e){}
+  if(!was&&window.motionOn&&motionOn()){sec.getAnimations().forEach(function(a){a.cancel()});sec.animate([{opacity:0,transform:"translateX(36px)"},{opacity:1,transform:"none"}],{duration:420,easing:"cubic-bezier(.2,.8,.2,1)"})}
+  enter();return}
+ sec.hidden=true;tb.classList.remove("on");_sh(v)};
+tb.onclick=function(){show("spotify")};
+document.addEventListener("keydown",function(e){if(e.key==="5"&&!kbBlocked(e))show("spotify")});
+
+/* ---------- sign-in (PKCE: no secret needed) ---------- */
+var AUTH="https://accounts.spotify.com/authorize",TOKEN="https://accounts.spotify.com/api/token",API="https://api.spotify.com/v1";
+var SCOPES="user-read-playback-state user-modify-playback-state user-read-currently-playing user-read-recently-played playlist-read-private playlist-read-collaborative user-library-read user-library-modify";
+function cid(){return ((window.APP_CONFIG||{}).spotifyClientId||ls("sp-cid","")||"").trim()}
+function redirect(){return location.origin+location.pathname}
+function tok(){return jparse("sp-tok",null)}
+function setTok(t){if(t)ss("sp-tok",JSON.stringify(t));else try{localStorage.removeItem("sp-tok")}catch(e){}}
+function rnd(n){var a=new Uint8Array(n);crypto.getRandomValues(a);return Array.from(a,function(b){return ("0"+b.toString(16)).slice(-2)}).join("")}
+function b64u(buf){return btoa(String.fromCharCode.apply(null,new Uint8Array(buf))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}
+function connect(){var id=cid();if(!id){draw();return}var v=rnd(48),st=rnd(12);
+ try{sessionStorage.setItem("sp-pkce",JSON.stringify({v:v,s:st}))}catch(e){}
+ crypto.subtle.digest("SHA-256",new TextEncoder().encode(v)).then(function(h){
+  location.href=AUTH+"?"+new URLSearchParams({response_type:"code",client_id:id,scope:SCOPES,code_challenge_method:"S256",code_challenge:b64u(h),redirect_uri:redirect(),state:st}).toString()})}
+function tokenReq(params){return fetch(TOKEN,{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:new URLSearchParams(params).toString()}).then(function(r){return r.json().then(function(j){j._s=r.status;return j},function(){return {_s:r.status}})})}
+function keep(j,old){if(!j||!j.access_token)return null;var t={a:j.access_token,r:j.refresh_token||(old&&old.r),exp:Date.now()+(Number(j.expires_in)||3600)*1000};setTok(t);return t}
+var refreshing=null;
+function fresh(force){var t=tok();if(!t)return Promise.resolve(null);if(!force&&t.exp-Date.now()>60e3)return Promise.resolve(t);if(!t.r)return Promise.resolve(null);
+ if(refreshing)return refreshing;
+ refreshing=tokenReq({grant_type:"refresh_token",refresh_token:t.r,client_id:cid()}).then(function(j){refreshing=null;if(j.access_token)return keep(j,t);if(j.error==="invalid_grant"){setTok(null);ERR="Spotify signed you out. Connect again to keep going."}return null},function(){refreshing=null;return null});
+ return refreshing}
+/* coming back from Spotify's sign-in page */
+var back=(function(){var q=new URLSearchParams(location.search);if(!q.has("code")&&!q.has("error"))return Promise.resolve(false);
+ var p=null;try{p=JSON.parse(sessionStorage.getItem("sp-pkce")||"null")}catch(e){}
+ var clean=function(){try{history.replaceState(null,"",location.pathname+"#spotify")}catch(e){}};
+ if(!p||q.get("state")!==p.s){if(q.has("code")&&p===null)return Promise.resolve(false);clean();ERR="That sign-in didn’t match. Try Connect again.";return Promise.resolve(true)}
+ try{sessionStorage.removeItem("sp-pkce")}catch(e){}
+ if(q.has("error")){clean();ERR=q.get("error")==="access_denied"?"You didn’t allow access, so nothing was connected.":"Spotify said: "+q.get("error");return Promise.resolve(true)}
+ return tokenReq({grant_type:"authorization_code",code:q.get("code"),redirect_uri:redirect(),client_id:cid(),code_verifier:p.v}).then(function(j){clean();if(!keep(j))ERR="Spotify didn’t accept the sign-in"+(j.error_description?": "+j.error_description:".");return true},function(){clean();ERR="Couldn’t reach Spotify to finish signing in.";return true})})();
+
+/* ---------- API ---------- */
+var ERR="",ME=null;
+function sp(path,opt,again){opt=opt||{};return fresh().then(function(t){if(!t)throw {code:"signin"};
+ return fetch(API+path,{method:opt.method||"GET",headers:Object.assign({Authorization:"Bearer "+t.a},opt.body?{"Content-Type":"application/json"}:{}),body:opt.body?JSON.stringify(opt.body):undefined})}).then(function(r){
+ if(r.status===401&&!again)return fresh(true).then(function(t){if(!t)throw {code:"signin"};return sp(path,opt,true)});
+ if(r.status===204||r.status===202)return null;
+ return r.json().catch(function(){return {}}).then(function(j){if(!r.ok){var e=j&&j.error||{};throw {code:r.status===403&&/premium/i.test(e.reason||e.message||"")?"premium":r.status===404&&/device/i.test(e.reason||e.message||"")?"nodevice":r.status===429?"slow":"api",status:r.status,msg:e.message||""}}return j})})}
+function say2(t){if(typeof say==="function")say(t,4000)}
+function why(e){return e&&e.code==="premium"?"Playing and skipping need Spotify Premium.":e&&e.code==="nodevice"?"Open Spotify on your phone or computer first, or pick a device below.":e&&e.code==="slow"?"Spotify asked us to slow down. Try again in a moment.":e&&e.code==="signin"?"Connect Spotify again.":"Spotify didn’t do that"+(e&&e.msg?": "+e.msg:".")}
+function act(p){return p.then(function(){setTimeout(poll,350);setTimeout(poll,1500)},function(e){say2(why(e));if(e&&e.code==="nodevice")loadDevices(true)})}
+
+/* ---------- state ---------- */
+var S={pb:null,at:0,dev:[],q:[],recent:[],lists:[],liked:{},res:null,qs:""},pollT=0,tickT=0,lastTrack="";
+function poll(){if(sec.hidden||!tok())return;clearTimeout(pollT);
+ sp("/me/player?additional_types=episode").then(function(j){S.pb=j;S.at=Date.now();paintNow();var id=j&&j.item&&j.item.id;if(id&&id!==lastTrack){lastTrack=id;loadQueue();checkLiked(id)}},function(e){if(e&&e.code==="signin"){draw();return}});
+ pollT=setTimeout(poll,document.hidden?30000:5000)}
+function loadQueue(){sp("/me/player/queue").then(function(j){S.q=(j&&j.queue||[]).slice(0,8);paintQueue()},function(){})}
+function loadDevices(open){sp("/me/player/devices").then(function(j){S.dev=j&&j.devices||[];paintDevices(open)},function(){})}
+function checkLiked(id){if(!id)return;sp("/me/tracks/contains?ids="+id).then(function(j){S.liked[id]=!!(j&&j[0]);paintLike()},function(){})}
+function loadLists(){Promise.all([sp("/me/playlists?limit=50").catch(function(){return null}),sp("/me/player/recently-played?limit=20").catch(function(){return null}),ME?null:sp("/me").catch(function(){return null})]).then(function(r){
+ if(r[0])S.lists=r[0].items||[];if(r[1]){var seen={};S.recent=(r[1].items||[]).filter(function(x){var k=x.track&&x.track.id;if(!k||seen[k])return false;seen[k]=1;return true}).slice(0,12)}if(r[2])ME=r[2];paintLists();paintRecent();paintMe()})}
+var loaded=false;
+function enter(){back.then(function(){draw();if(!tok())return;if(!loaded){loaded=true;loadLists();loadDevices()}poll()})}
+document.addEventListener("visibilitychange",function(){if(!document.hidden&&!sec.hidden)poll()});
+
+/* ---------- drawing ---------- */
+var IC={play:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.9l10.5-6.5a1 1 0 0 0 0-1.8L9.5 4.6A1 1 0 0 0 8 5.5z" fill="currentColor"/></svg>',
+ pause:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1.2" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1.2" fill="currentColor"/></svg>',
+ next:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6.2v11.6a.9.9 0 0 0 1.4.8l8.4-5.8a1 1 0 0 0 0-1.6L6.4 5.4A.9.9 0 0 0 5 6.2z" fill="currentColor"/><rect x="16.5" y="5" width="2.6" height="14" rx="1.2" fill="currentColor"/></svg>',
+ prev:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 6.2v11.6a.9.9 0 0 1-1.4.8l-8.4-5.8a1 1 0 0 1 0-1.6l8.4-5.8a.9.9 0 0 1 1.4.8z" fill="currentColor"/><rect x="4.9" y="5" width="2.6" height="14" rx="1.2" fill="currentColor"/></svg>',
+ shuf:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>',
+ rep:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14M7 22l-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg>',
+ heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7.5-4.4-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10c0 5.6-7.5 10-7.5 10z"/></svg>',
+ vol:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>',
+ dev:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="10" height="18" rx="2"/><path d="M18 8v8M21 6v12"/></svg>',
+ search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
+ note:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg>'};
+function img(o,size){var a=o&&(o.images||(o.album&&o.album.images)||(o.show&&o.show.images))||[];if(!a.length)return "";var best=a[0];a.forEach(function(x){if(x.width&&x.width>=size&&x.width<(best.width||9999))best=x});return best.url||""}
+function artists(o){return o&&o.artists?o.artists.map(function(a){return a.name}).join(", "):o&&o.show?o.show.name:""}
+function mmss(ms){ms=Math.max(0,ms||0);var s=Math.floor(ms/1000);return Math.floor(s/60)+":"+("0"+s%60).slice(-2)}
+function draw(){var id=cid(),t=tok();
+ if(!t){box.innerHTML=setup(id);return}
+ if(box.querySelector(".spm"))return;
+ box.innerHTML='<div class="spm">'+
+  '<div class="spk sph" id="sphero"><div class="sphbg" id="sphbg"></div><div class="sphi" id="spnow"><div class="spempty">'+IC.note+'<b>Loading your Spotify…</b></div></div></div>'+
+  '<div class="spcol"><div class="spk"><div class="sptitle">Up next</div><div id="spq" class="splist"><p class="spnone">Nothing queued.</p></div></div>'+
+  '<div class="spk"><div class="sptitle">Recently played</div><div id="sprec" class="splist"></div></div></div>'+
+  '<div class="spk spwide"><div class="sphead"><div class="sptitle">Your playlists</div><label class="spq">'+IC.search+'<input id="spsearch" type="search" placeholder="Search Spotify" aria-label="Search Spotify" autocomplete="off"></label></div><div id="spres"></div><div id="splists" class="spgrid"></div></div>'+
+  '<div class="spfoot"><span id="spme"></span><button type="button" class="btn sm" data-sp="out">Disconnect Spotify</button></div></div>';
+ paintLists();paintRecent();paintQueue();paintMe()}
+function setup(id){var r=redirect(),both=[location.origin+"/"];var alt=/^preview--/.test(location.host)?location.origin.replace("preview--",""):location.origin.replace("://","://preview--");both=[r];if(alt.indexOf("netlify.app")>-1)both.push(alt+location.pathname);
+ return '<div class="spk spsetup">'+(ERR?'<p class="sperr">'+esc(ERR)+'</p>':'')+
+ '<div class="spsh"><span class="spbadge">'+IC.note+'</span><div><h3>Connect Spotify</h3><p>See what’s playing, control it on any of your devices, and play your playlists from here. A one-time setup on Spotify’s site, about 5 minutes.</p></div></div>'+
+ '<ol class="spsteps">'+
+ '<li><b>Create a Spotify app.</b> Open the <a href="https://developer.spotify.com/dashboard" target="_blank" rel="noopener">Spotify developer dashboard</a>, sign in with your Spotify account and press <i>Create app</i>. Any name and description work.</li>'+
+ '<li><b>Add these Redirect URIs</b>, exactly as written, one at a time with <i>Add</i>:'+both.map(function(u,i){return '<div class="spuri"><code>'+esc(u)+'</code><button type="button" class="btn sm" data-copy="'+esc(u)+'">Copy</button></div>'}).join("")+'Under <i>Which API/SDKs are you planning to use?</i> tick <i>Web API</i>, accept the terms and press <i>Save</i>.</li>'+
+ '<li><b>Copy the Client ID</b> from the app’s page (not the client secret) and paste it here:<form class="spcid" id="spcidf"><input id="spcid" placeholder="Client ID, 32 letters and numbers" autocomplete="off" spellcheck="false" value="'+esc(id)+'" aria-label="Spotify Client ID"><button type="submit" class="btn pri">Connect Spotify</button></form></li>'+
+ '</ol><p class="spnote">Spotify then asks you to allow access. Playing, pausing and skipping need Spotify Premium; everything else works on a free account too. The Client ID is saved in this browser.</p></div>'}
+function paintMe(){var e=EL("spme");if(!e)return;e.textContent=ME?("Connected as "+(ME.display_name||ME.id)+(ME.product&&ME.product!=="premium"?" · Free account: play controls need Premium":"")):""}
+function paintNow(){var el=EL("spnow"),bg=EL("sphbg");if(!el)return;var pb=S.pb,it=pb&&pb.item;
+ if(!it){el.innerHTML='<div class="spempty">'+IC.note+'<b>Nothing playing</b><span>Pick a playlist below, or start something in Spotify.</span><button type="button" class="btn" data-sp="devices">'+IC.dev+' Choose a device</button><div id="spdev" class="spdev" hidden></div></div>';if(bg)bg.style.backgroundImage="";el.dataset.k="";return}
+ var k=it.id+"|"+pb.is_playing+"|"+pb.shuffle_state+"|"+pb.repeat_state+"|"+(pb.device&&pb.device.id)+"|"+(pb.device&&pb.device.volume_percent);
+ if(el.dataset.k!==k){var u=img(it,300);
+  el.innerHTML='<div class="spart">'+(u?'<img src="'+esc(u)+'" alt="" crossorigin="anonymous">':IC.note)+'</div><div class="spinfo"><div class="spdevn">'+(pb.is_playing?'<i class="speq"><b></b><b></b><b></b></i>':'')+esc(pb.device?("Playing on "+pb.device.name):"")+'</div>'+
+  '<div class="sptn">'+esc(it.name)+'</div><div class="spta">'+esc(artists(it))+'</div><div class="spal">'+esc(it.album?it.album.name:"")+'</div>'+
+  '<div class="spprog"><span id="spt0">0:00</span><input type="range" id="spseek" min="0" max="'+(it.duration_ms||1)+'" value="0" aria-label="Position"><span id="spt1">'+mmss(it.duration_ms)+'</span></div>'+
+  '<div class="spctl"><button type="button" class="spb sm'+(pb.shuffle_state?' on':'')+'" data-sp="shuffle" aria-pressed="'+!!pb.shuffle_state+'" title="Shuffle" aria-label="Shuffle">'+IC.shuf+'</button>'+
+  '<button type="button" class="spb" data-sp="prev" title="Previous" aria-label="Previous">'+IC.prev+'</button>'+
+  '<button type="button" class="spb big" data-sp="toggle" title="'+(pb.is_playing?"Pause":"Play")+'" aria-label="'+(pb.is_playing?"Pause":"Play")+'">'+(pb.is_playing?IC.pause:IC.play)+'</button>'+
+  '<button type="button" class="spb" data-sp="next" title="Next" aria-label="Next">'+IC.next+'</button>'+
+  '<button type="button" class="spb sm'+(pb.repeat_state!=="off"?' on':'')+'" data-sp="repeat" title="Repeat: '+(pb.repeat_state==="track"?"this song":pb.repeat_state==="context"?"on":"off")+'" aria-label="Repeat">'+IC.rep+(pb.repeat_state==="track"?'<em>1</em>':'')+'</button></div>'+
+  '<div class="spx2"><button type="button" class="spb sm spheart" id="splike" data-sp="like" title="Save to Liked Songs" aria-label="Save to Liked Songs">'+IC.heart+'</button>'+
+  '<label class="spvol" title="Volume">'+IC.vol+'<input type="range" id="spvol" min="0" max="100" value="'+(pb.device&&pb.device.volume_percent!=null?pb.device.volume_percent:50)+'" style="--p:'+(pb.device&&pb.device.volume_percent!=null?pb.device.volume_percent:50)+'%" aria-label="Volume"'+(pb.device&&pb.device.supports_volume===false?' disabled':'')+'></label>'+
+  '<button type="button" class="btn sm spdevb" data-sp="devices">'+IC.dev+' Devices</button></div><div id="spdev" class="spdev" hidden></div></div>';
+  el.dataset.k=k;paintLike();
+  if(bg){bg.style.backgroundImage=u?'url("'+u+'")':"";tint(u)}
+  var im=el.querySelector(".spart img");if(im&&window.motionOn&&motionOn()&&el.dataset.last!==it.id)im.animate([{opacity:0,transform:"scale(.92)"},{opacity:1,transform:"none"}],{duration:500,easing:"cubic-bezier(.2,.8,.2,1)"});el.dataset.last=it.id}
+ tick()}
+function tick(){clearTimeout(tickT);var pb=S.pb,it=pb&&pb.item;if(!it||sec.hidden)return;var pos=Math.min(it.duration_ms,(pb.progress_ms||0)+(pb.is_playing?Date.now()-S.at:0));
+ var r=EL("spseek"),t0=EL("spt0");if(r&&!r._drag){r.value=pos;r.style.setProperty("--p",(pos/(it.duration_ms||1)*100).toFixed(2)+"%")}if(t0&&!(r&&r._drag))t0.textContent=mmss(pos);
+ if(pb.is_playing&&pos>=it.duration_ms-300)setTimeout(poll,800);
+ tickT=setTimeout(tick,1000-(Date.now()%1000)+5)}
+function tint(u){var h=EL("sphero");if(!h||!u)return;var im=new Image();im.crossOrigin="anonymous";im.onload=function(){try{var c=document.createElement("canvas");c.width=c.height=24;var g=c.getContext("2d");g.drawImage(im,0,0,24,24);var d=g.getImageData(0,0,24,24).data,best=null,bs=-1,acc=[0,0,0],n=0;
+ for(var i=0;i<d.length;i+=4){var mx=Math.max(d[i],d[i+1],d[i+2]),mn=Math.min(d[i],d[i+1],d[i+2]),s=mx-mn;if(s>40&&mx>60){acc[0]+=d[i]*s;acc[1]+=d[i+1]*s;acc[2]+=d[i+2]*s;n+=s}}
+ if(n)h.style.setProperty("--spc","rgb("+[0,1,2].map(function(j){return Math.round(acc[j]/n)}).join(",")+")")}catch(e){}};im.src=u}
+function paintLike(){var b=EL("splike"),id=S.pb&&S.pb.item&&S.pb.item.id;if(!b||!id)return;var on=!!S.liked[id];b.classList.toggle("on",on);b.setAttribute("aria-pressed",on);b.title=on?"Remove from Liked Songs":"Save to Liked Songs"}
+function row(it,uri,ctx,sub,extra){var u=img(it,64);return '<button type="button" class="sprow" data-play="'+esc(uri)+'"'+(ctx?' data-ctx="'+esc(ctx)+'"':'')+'><span class="spth">'+(u?'<img src="'+esc(u)+'" alt="" loading="lazy">':IC.note)+'<i>'+IC.play+'</i></span><span class="sprt"><b>'+esc(it.name)+'</b><small>'+esc(sub)+'</small></span>'+(extra?'<em>'+esc(extra)+'</em>':'')+'</button>'}
+function paintQueue(){var e=EL("spq");if(!e)return;e.innerHTML=S.q.length?S.q.map(function(it){return row(it,it.uri,null,artists(it),mmss(it.duration_ms))}).join(""):'<p class="spnone">Nothing queued.</p>'}
+function paintRecent(){var e=EL("sprec");if(!e)return;e.innerHTML=S.recent.length?S.recent.map(function(x){var it=x.track;return row(it,it.uri,x.context&&x.context.uri,artists(it),"")}).join(""):'<p class="spnone">Nothing yet.</p>'}
+function paintLists(){var e=EL("splists");if(!e)return;e.innerHTML=S.lists.length?S.lists.filter(Boolean).map(function(pl){var u=img(pl,300);return '<button type="button" class="sppl" data-ctxplay="'+esc(pl.uri)+'"><span class="sppc">'+(u?'<img src="'+esc(u)+'" alt="" loading="lazy">':IC.note)+'<i>'+IC.play+'</i></span><b>'+esc(pl.name)+'</b><small>'+esc((pl.owner&&pl.owner.display_name)||"")+(pl.tracks&&pl.tracks.total!=null?" · "+pl.tracks.total+" songs":"")+'</small></button>'}).join(""):'<p class="spnone">No playlists yet.</p>'}
+function paintDevices(open){var e=EL("spdev");if(!e)return;var cur=S.pb&&S.pb.device&&S.pb.device.id;
+ e.innerHTML=S.dev.length?S.dev.map(function(d){return '<button type="button" class="spdv'+(d.id===cur||d.is_active?' on':'')+'" data-dev="'+esc(d.id)+'">'+esc(d.name)+'<small>'+esc(d.type)+(d.is_active?" · playing":"")+'</small></button>'}).join(""):'<p class="spnone">No devices found. Open Spotify on your phone, computer or speaker, then try again.</p>';
+ if(open)e.hidden=false}
+function paintResults(){var e=EL("spres");if(!e)return;var r=S.res;if(!r){e.innerHTML="";return}
+ var tr=(r.tracks&&r.tracks.items||[]).filter(Boolean),al=(r.albums&&r.albums.items||[]).filter(Boolean),ar=(r.artists&&r.artists.items||[]).filter(Boolean),pl=(r.playlists&&r.playlists.items||[]).filter(Boolean);
+ if(!tr.length&&!al.length&&!ar.length&&!pl.length){e.innerHTML='<p class="spnone">No results for “'+esc(S.qs)+'”.</p>';return}
+ e.innerHTML='<div class="spres">'+(tr.length?'<div><div class="spsub">Songs</div>'+tr.slice(0,6).map(function(it){return row(it,it.uri,null,artists(it),mmss(it.duration_ms))}).join("")+'</div>':'')+
+  '<div>'+(ar.length?'<div class="spsub">Artists</div><div class="spchips">'+ar.slice(0,4).map(function(a){var u=img(a,64);return '<button type="button" class="spart2" data-ctxplay="'+esc(a.uri)+'"><span>'+(u?'<img src="'+esc(u)+'" alt="">':IC.note)+'</span>'+esc(a.name)+'</button>'}).join("")+'</div>':'')+
+  (al.length?'<div class="spsub">Albums</div>'+al.slice(0,3).map(function(a){return '<button type="button" class="sprow" data-ctxplay="'+esc(a.uri)+'"><span class="spth">'+(img(a,64)?'<img src="'+esc(img(a,64))+'" alt="">':IC.note)+'<i>'+IC.play+'</i></span><span class="sprt"><b>'+esc(a.name)+'</b><small>'+esc(artists(a))+'</small></span></button>'}).join(""):'')+
+  (pl.length?'<div class="spsub">Playlists</div>'+pl.slice(0,3).map(function(a){return '<button type="button" class="sprow" data-ctxplay="'+esc(a.uri)+'"><span class="spth">'+(img(a,64)?'<img src="'+esc(img(a,64))+'" alt="">':IC.note)+'<i>'+IC.play+'</i></span><span class="sprt"><b>'+esc(a.name)+'</b><small>'+esc((a.owner&&a.owner.display_name)||"")+'</small></span></button>'}).join(""):'')+'</div></div>'}
+
+/* ---------- interaction ---------- */
+function devQ(){return ""}
+sec.addEventListener("click",function(e){var b=e.target.closest("button,[data-copy]");if(!b)return;var pb=S.pb||{};
+ if(b.dataset.copy){try{navigator.clipboard.writeText(b.dataset.copy).then(function(){b.textContent="Copied";setTimeout(function(){b.textContent="Copy"},1500)})}catch(x){}return}
+ var a=b.dataset.sp;
+ if(a==="toggle"){var was=!!pb.is_playing;if(S.pb){S.pb.progress_ms=(pb.progress_ms||0)+(was?Date.now()-S.at:0);S.at=Date.now();S.pb.is_playing=!was}var k=EL("spnow");if(k)k.dataset.k="";paintNow();act(sp(was?"/me/player/pause":"/me/player/play",{method:"PUT"}));return}
+ if(a==="next"){act(sp("/me/player/next",{method:"POST"}));return}
+ if(a==="prev"){act(sp("/me/player/previous",{method:"POST"}));return}
+ if(a==="shuffle"){act(sp("/me/player/shuffle?state="+!pb.shuffle_state,{method:"PUT"}));return}
+ if(a==="repeat"){var nx={off:"context",context:"track",track:"off"}[pb.repeat_state||"off"];act(sp("/me/player/repeat?state="+nx,{method:"PUT"}));return}
+ if(a==="like"){var id=pb.item&&pb.item.id;if(!id)return;var on=!S.liked[id];S.liked[id]=on;paintLike();if(on&&window.motionOn&&motionOn())b.animate([{transform:"scale(1)"},{transform:"scale(1.35)"},{transform:"none"}],{duration:420,easing:"cubic-bezier(.3,1.4,.5,1)"});
+  sp("/me/tracks?ids="+id,{method:on?"PUT":"DELETE"}).then(function(){say2(on?"Saved to Liked Songs":"Removed from Liked Songs")},function(x){S.liked[id]=!on;paintLike();say2(why(x))});return}
+ if(a==="devices"){var d=EL("spdev");if(d&&!d.hidden){d.hidden=true;return}loadDevices(true);return}
+ if(a==="out"){setTok(null);ME=null;loaded=false;S={pb:null,at:0,dev:[],q:[],recent:[],lists:[],liked:{},res:null,qs:""};box.innerHTML="";draw();return}
+ if(b.dataset.dev){act(sp("/me/player",{method:"PUT",body:{device_ids:[b.dataset.dev],play:true}}).then(function(){var d=EL("spdev");if(d)d.hidden=true}));return}
+ if(b.dataset.ctxplay){act(sp("/me/player/play",{method:"PUT",body:{context_uri:b.dataset.ctxplay}}));return}
+ if(b.dataset.play){var body=b.dataset.ctx&&!/^spotify:artist:/.test(b.dataset.ctx)?{context_uri:b.dataset.ctx,offset:{uri:b.dataset.play}}:{uris:[b.dataset.play]};act(sp("/me/player/play",{method:"PUT",body:body}));return}});
+sec.addEventListener("submit",function(e){if(e.target.id!=="spcidf")return;e.preventDefault();var v=(EL("spcid").value||"").trim();if(!/^[0-9a-f]{32}$/i.test(v)){ERR="That doesn’t look like a Client ID. It’s 32 letters and numbers from your Spotify app’s page.";draw();return}ss("sp-cid",v);ERR="";connect()});
+var sT=0;
+sec.addEventListener("input",function(e){var t=e.target;
+ if(t.id==="spseek"){t._drag=true;t.style.setProperty("--p",(t.value/(t.max||1)*100).toFixed(2)+"%");var t0=EL("spt0");if(t0)t0.textContent=mmss(+t.value)}
+ if(t.id==="spvol"){t.style.setProperty("--p",t.value+"%");clearTimeout(t._k);t._k=setTimeout(function(){act(sp("/me/player/volume?volume_percent="+t.value,{method:"PUT"}))},250)}
+ if(t.id==="spsearch"){clearTimeout(sT);var q=t.value.trim();if(!q){S.res=null;S.qs="";paintResults();return}sT=setTimeout(function(){S.qs=q;sp("/search?"+new URLSearchParams({q:q,type:"track,artist,album,playlist",limit:"6"}).toString()).then(function(j){if(S.qs!==q)return;S.res=j;paintResults()},function(x){say2(why(x))})},300)}});
+sec.addEventListener("change",function(e){var t=e.target;if(t.id==="spseek"){t._drag=false;var v=+t.value;if(S.pb){S.pb.progress_ms=v;S.at=Date.now()}act(sp("/me/player/seek?position_ms="+Math.round(v),{method:"PUT"}))}});
+sec.addEventListener("keydown",function(e){if(e.target.id==="spsearch"&&e.key==="Escape"){e.stopPropagation();e.target.value="";S.res=null;paintResults()}});
+/* space bar plays or pauses while you're on this tab */
+document.addEventListener("keydown",function(e){if(sec.hidden||kbBlocked(e)||!tok())return;if(e.key===" "&&!e.target.closest("button")){e.preventDefault();var b=sec.querySelector('[data-sp="toggle"]');if(b)b.click()}});
+
+back.then(function(r){if(r||(window.__hash0||location.hash)==="#spotify"||location.hash==="#spotify")show("spotify");else draw()});
 })();
 </script>
 </body>
