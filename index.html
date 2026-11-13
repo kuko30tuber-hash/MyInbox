@@ -1102,6 +1102,89 @@ html.finept .wrch{display:inline}
 html.motion .brand img{transition:transform .35s cubic-bezier(.3,1.5,.5,1)}
 html.motion .brand:hover img{transform:rotate(-8deg) scale(1.06)}
 @media(max-width:600px){.brand{font-size:15px}.brand img{width:24px;height:24px;border-radius:7px}}
+/* ===== Wallpaper studio ===== */
+html.wpblur #bg .lyr{scale:1.08}
+#bg .lyr{filter:blur(var(--wpb,0px)) brightness(var(--wpd,1))}
+.lv-photo{background-size:cover;background-position:center}
+.lv-orb{position:absolute;width:13vmin;height:13vmin;margin:-6.5vmin 0 0 -6.5vmin;border-radius:50%;transition:left 2s,top 2s}
+.lv-orb.sun{background:radial-gradient(circle,#fffbe8 0,#ffe08a 34%,rgba(255,196,90,.55) 52%,rgba(255,180,90,0) 72%);box-shadow:0 0 120px 40px rgba(255,200,120,.35)}
+.lv-orb.moon{width:9vmin;height:9vmin;margin:-4.5vmin 0 0 -4.5vmin;background:radial-gradient(circle at 38% 36%,#ffffff,#dfe5f7 55%,#b8c2dd);box-shadow:0 0 60px 18px rgba(200,215,255,.25)}
+.lv-cls{position:absolute;inset:0 0 45% 0}
+.lv-cl{position:absolute;width:60vmax;height:16vmax;border-radius:50%;background:radial-gradient(closest-side,rgba(255,255,255,.95),rgba(255,255,255,0));filter:blur(8px);animation:lvDrift 70s linear infinite}
+.lv-cls.dark .lv-cl{background:radial-gradient(closest-side,rgba(150,160,180,.95),rgba(150,160,180,0))}
+@keyframes lvDrift{from{translate:-30vmax 0}to{translate:60vmax 0}}
+.lv-rain{position:absolute;inset:-20% 0 0;background:repeating-linear-gradient(100deg,transparent 0 11px,rgba(255,255,255,.22) 11px 12px,transparent 12px 26px);background-size:100% 120px;animation:lvRain .5s linear infinite;mask-image:linear-gradient(transparent,#000 30%)}
+@keyframes lvRain{to{background-position:-20px 120px}}
+.lv-snow{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.95) 0 1.6px,transparent 2.4px);background-size:46px 46px;animation:lvSnow 9s linear infinite}
+.lv-snow.b{background-size:83px 83px;opacity:.7;animation-duration:15s;filter:blur(.6px)}
+@keyframes lvSnow{to{background-position:30px 460px}}
+.lv-fog{position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.55) 60%,rgba(255,255,255,.75))}
+html[data-theme="dark"] .lv-fog{background:linear-gradient(180deg,rgba(160,170,190,.05),rgba(160,170,190,.3))}
+.lv-flash{position:absolute;inset:0;background:#fff;opacity:0;animation:lvFlash 9s infinite}
+@keyframes lvFlash{0%,92%,100%{opacity:0}93%{opacity:.45}94%{opacity:.05}95.5%{opacity:.3}}
+/* panel */
+.wps[hidden]{display:none!important}
+.wps{position:fixed;top:12px;right:12px;bottom:12px;z-index:70;width:min(400px,calc(100vw - 24px));display:flex;flex-direction:column;border-radius:28px;background:color-mix(in srgb,var(--panel) 78%,transparent);border:1px solid var(--line);-webkit-backdrop-filter:blur(40px) saturate(180%);backdrop-filter:blur(40px) saturate(180%);box-shadow:0 30px 80px rgba(0,0,0,.3),inset 0 1px 0 var(--glass-hi);color:var(--ink);overflow:hidden}
+html.motion .wps.in{animation:wpsIn .4s cubic-bezier(.2,.9,.3,1)}
+@keyframes wpsIn{from{opacity:0;translate:40px 0}}
+@media(max-width:600px){.wps{top:auto;left:8px;right:8px;bottom:8px;width:auto;height:min(78vh,680px)}@keyframes wpsIn{from{opacity:0;translate:0 60px}}}
+.wpsh{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:20px 20px 0}
+.wpsh h3{margin:0;font-size:22px;letter-spacing:-.02em}
+.wpstabs{display:flex;gap:2px;margin:14px 20px 0;padding:3px;border-radius:999px;background:var(--glass-lo);border:1px solid var(--line)}
+.wpstabs button{flex:1;padding:8px 4px;border:0;border-radius:999px;background:none;color:color-mix(in srgb,var(--ink) 70%,transparent);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;transition:background .2s,color .2s}
+.wpstabs button.on{background:var(--pill);color:var(--ink);box-shadow:0 1px 8px rgba(0,0,0,.16)}
+.wpstabs button:focus-visible{outline:2px solid var(--accent)}
+.wpsb{flex:1;overflow:auto;padding:16px 20px 22px;overscroll-behavior:contain}
+.wpgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.wpgrid.two{grid-template-columns:1fr}
+.wpc{position:relative;display:flex;flex-direction:column;gap:6px;padding:0;border:0;background:none;color:var(--ink);font:inherit;font-size:12.5px;font-weight:600;text-align:left;cursor:pointer}
+.wpt{position:relative;display:block;aspect-ratio:3/4;border-radius:16px;overflow:hidden;container-type:size;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08),0 4px 14px rgba(0,0,0,.12);transition:box-shadow .2s,translate .2s}
+.wpc.big .wpt{aspect-ratio:16/8}
+.wptin{position:absolute;inset:0}
+.wptin .sky,.wptin .mesh,.wptin .sv{position:absolute;inset:0;width:100%;height:100%}
+.wptin .lv-orb{width:16cqmin;height:16cqmin;margin:-8cqmin 0 0 -8cqmin;box-shadow:none}
+.wptin .lv-cl{width:70cqmax;height:20cqmax}
+.wpc:hover .wpt{translate:0 -2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08),0 10px 24px rgba(0,0,0,.18)}
+.wpc.on .wpt{box-shadow:0 0 0 2.5px var(--panel),0 0 0 5px var(--accent),0 8px 20px rgba(0,0,0,.18)}
+.wpc:focus-visible{outline:none}.wpc:focus-visible .wpt{box-shadow:0 0 0 3px var(--accent)}
+.wpck{position:absolute;top:8px;right:8px;width:22px;height:22px;display:grid;place-items:center;border-radius:50%;background:var(--accent);box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.wpn{display:flex;flex-direction:column;padding:0 2px}
+.wpn small{font-weight:500;color:var(--mute);font-size:12px;margin-top:1px}
+.wpnote{font-size:12.5px;color:var(--mute);margin:12px 2px}
+.wpl{font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--mute);margin:18px 2px 8px}
+.wpcolprev .wpt{aspect-ratio:16/9}
+.wpsws{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:7px}
+.wpcw{position:relative;width:100%;aspect-ratio:1;padding:0;border:0;border-radius:50%;background:var(--w);cursor:pointer;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12);transition:scale .15s}
+.wpcw:hover{scale:1.1}
+.wpcw.on{box-shadow:0 0 0 2px var(--panel),0 0 0 4px var(--w)}
+.wpcw.acc::after{content:"A";position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:11px;font-weight:800}
+.wpcw.any{display:block;background:conic-gradient(#ff3b30,#ffcc00,#34c759,#32ade6,#5856d6,#ff2d55,#ff3b30)}
+.wpcw.any input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer}
+.wpcw:focus-visible,.wpcw.any:focus-within{outline:2px solid var(--accent);outline-offset:3px}
+.wps .wpseg{display:flex;gap:2px;padding:3px;border-radius:14px;background:var(--glass-lo);border:1px solid var(--line)}
+.wps .wpseg button{flex:1;padding:8px 6px;border:0;border-radius:11px;background:none;color:color-mix(in srgb,var(--ink) 72%,transparent);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.wps .wpseg button.on{background:var(--pill);color:var(--ink);box-shadow:0 1px 6px rgba(0,0,0,.14)}
+.wpuse{width:100%;margin-top:14px;justify-content:center}
+.wpdrop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:34px 16px;border-radius:20px;border:2px dashed color-mix(in srgb,var(--ink) 22%,transparent);background:var(--glass-lo);color:var(--ink);cursor:pointer;text-align:center;transition:border-color .2s,background .2s}
+.wpdrop svg{color:var(--accent);margin-bottom:4px}
+.wpdrop small{color:var(--mute)}
+.wpdrop.over,.wpdrop:hover{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,var(--glass-lo))}
+.wpdrop:focus-within{outline:2px solid var(--accent)}
+.wprow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.wprow label.btn{cursor:pointer;margin:0}
+.wpsl{display:grid;grid-template-columns:80px 1fr 40px;align-items:center;gap:10px;margin:0 0 10px;font-size:13.5px;color:var(--ink)}
+.wpsl b{font-size:12px;font-weight:600;color:var(--mute);text-align:right;font-variant-numeric:tabular-nums}
+.wpsl input{width:100%;accent-color:var(--accent);margin:0;padding:0;border:0;background:none;box-shadow:none}
+.wpsw{display:flex;align-items:center;gap:12px;padding:10px 0;cursor:pointer;color:var(--ink)}
+.wpsw>span{flex:1;display:flex;flex-direction:column}
+.wpsw b{font-size:14px;font-weight:600}.wpsw small{font-size:12px;color:var(--mute)}
+.wpsw input{position:absolute;opacity:0;width:1px;height:1px}
+.wpsw i{flex:none;position:relative;width:44px;height:26px;border-radius:99px;background:color-mix(in srgb,var(--mute) 40%,transparent);transition:background .2s}
+.wpsw i::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.3);transition:transform .22s}
+.wpsw input:checked+i{background:#30d158}.wpsw input:checked+i::after{transform:translateX(18px)}
+.wpsw input:focus-visible+i{outline:2px solid var(--accent);outline-offset:2px}
+.wpacc{display:flex;align-items:center;gap:8px;width:100%;justify-content:center;margin-top:10px}
+.wpacc i{width:12px;height:12px;border-radius:50%}
 </style>
 <script>try{var t=localStorage.getItem("wth");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);var a=localStorage.getItem("wacc");if(/^#[0-9a-f]{6}$/i.test(a||"")){var r=document.documentElement.style;r.setProperty("--accent",a);r.setProperty("--dot",a);r.setProperty("--today",a)}}catch(e){}</script>
 </head>
@@ -2470,6 +2553,138 @@ var _bw=buildWds;buildWds=function(tab){_bw(tab);var c=EL("wds-"+tab);if(!c)retu
 c.querySelectorAll(".wgrid>.wd[data-w]").forEach(function(t){if(!t.hasAttribute("tabindex"))t.tabIndex=0;var w=wgById(t.dataset.w);if(w&&!t.getAttribute("aria-label"))t.setAttribute("aria-label",w.name+" widget. Press Shift+F10 for options")});
 var bar=c.querySelector(".wbar"),ed=c.classList.contains("edit");if(bar&&!ed&&!bar.querySelector(".wrch")&&WD[tab].length)bar.querySelector(".wsp").insertAdjacentHTML("afterend",'<span class="wrch">Right-click a widget to edit it</span>')};
 buildWds("mail");buildWds("calendar");tickWds();
+})();
+/* ===== Wallpaper studio ===== */
+(function(){
+var X=jparse("wpx",{});X.mode=X.mode||"scene";if(X.blur==null)X.blur=0;if(X.dim==null)X.dim=100;
+function saveX(){ss("wpx",JSON.stringify(X))}
+var root=document.documentElement;
+function full(h){h=String(h).replace("#","");if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];return "#"+h}
+function mix(a,b,t){var x=hex2rgb(full(a)),y=hex2rgb(full(b));return rgb2hex(x[0]+(y[0]-x[0])*t,x[1]+(y[1]-x[1])*t,x[2]+(y[2]-x[2])*t)}
+function sat(h){var l=hex2hsl(h);return l[1]*(1-Math.abs(l[2]-50)/50)}
+
+/* ---------- living sky: follows the clock and the weather ---------- */
+var SKY=[[0,"#0b1030","#1d2456"],[5,"#141a45","#3b3f86"],[6.2,"#3a3f8f","#f2a38a"],[7.5,"#7fb4ff","#ffd9b0"],[10,"#4f9dff","#bfe0ff"],[14,"#3f8ff7","#cde6ff"],[17,"#6f9be8","#ffcf9e"],[18.6,"#5b4aa8","#ff8a7a"],[20,"#241f5c","#6a4a9a"],[21.5,"#0f1338","#26285e"],[24,"#0b1030","#1d2456"]];
+function skyAt(h){for(var i=0;i<SKY.length-1;i++){var a=SKY[i],b=SKY[i+1];if(h>=a[0]&&h<=b[0]){var t=(h-a[0])/(b[0]-a[0]);return [mix(a[1],b[1],t),mix(a[2],b[2],t)]}}return [SKY[0][1],SKY[0][2]]}
+function sunTimes(){var s=jparse("wd-sun",null),r=6.5,st=18.5;if(s&&s.rise&&s.rise[0]){r=+s.rise[0].slice(11,13)+s.rise[0].slice(14,16)/60;st=+s.set[0].slice(11,13)+s.set[0].slice(14,16)/60}return [r,st]}
+function wxNow(){var c=jparse("wd-wx",null);try{var code=c.d.c.weather_code;return {code:code,fresh:Date.now()-c.at<6*3600e3}}catch(e){return null}}
+function wxKind(code){if(code==null)return "clear";if(code<=1)return "clear";if(code<=3)return "cloudy";if(code<=48)return "fog";if(code<=67||(code>=80&&code<=82))return "rain";if(code<=77||code===85||code===86)return "snow";if(code>=95)return "storm";return "cloudy"}
+var WXN={clear:"Clear",cloudy:"Cloudy",fog:"Fog",rain:"Rain",snow:"Snow",storm:"Storm"};
+function hourNow(){var d=new Date();return d.getHours()+d.getMinutes()/60}
+function living(withWx,forThumb){var h=hourNow(),c=skyAt(h),dk=isDark(),st=sunTimes(),day=h>=st[0]-.3&&h<=st[1]+.3,kind=withWx?wxKind((wxNow()||{}).code):"clear";
+if(kind==="rain"||kind==="storm"){c=[mix(c[0],"#3c4659",.55),mix(c[1],"#6b778c",.5)]}else if(kind==="cloudy"||kind==="fog"||kind==="snow"){c=[mix(c[0],"#8c97ab",.35),mix(c[1],"#c9d1de",.35)]}
+var top=dk?mix(c[0],"#000",.22):mix(c[0],"#fff",.32),bot=dk?mix(c[1],"#000",.3):mix(c[1],"#fff",.4),bg=dk?mix(top,"#000",.4):mix(bot,"#fff",.3);
+var h2='<div class="sky" style="background:linear-gradient(180deg,'+top+' 0%,'+bot+' 100%)"></div>';
+var f=day?(h-st[0])/(st[1]-st[0]):((h<st[0]?h+24:h)-st[1])/(24-st[1]+st[0]),x=6+Math.max(0,Math.min(1,f))*88,y=72-Math.sin(Math.max(0,Math.min(1,f))*Math.PI)*58;
+if(kind!=="rain"&&kind!=="storm"&&kind!=="fog")h2+='<div class="lv-orb '+(day?"sun":"moon")+'" style="left:'+x.toFixed(1)+'%;top:'+y.toFixed(1)+'%"></div>';
+var night=day?0:1;if(night&&kind==="clear"){var R=rnd(5),s="";for(var i=0;i<(forThumb?40:120);i++){s+='<circle cx="'+(R()*160).toFixed(1)+'" cy="'+(R()*70).toFixed(1)+'" r="'+(R()*.32+.08).toFixed(2)+'" fill="#fff" opacity="'+(R()*.6+.3).toFixed(2)+'"'+(R()<.25?' class="tw" style="animation-delay:'+(-R()*4).toFixed(1)+'s"':'')+'/>'}h2+='<svg class="sv" viewBox="0 0 160 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'+s+'</svg>'}
+if(kind!=="clear"){var cl="";for(var j=0;j<6;j++)cl+='<i class="lv-cl" style="top:'+(4+j*9)+'%;left:'+(j*19-10)+'%;animation-delay:'+(-j*11)+'s;opacity:'+(kind==="storm"?.9:.7)+'"></i>';h2+='<div class="lv-cls'+(kind==="storm"||kind==="rain"?" dark":"")+'">'+cl+'</div>'}
+if(kind==="rain"||kind==="storm")h2+='<div class="lv-rain"></div>';
+if(kind==="snow")h2+='<div class="lv-snow"></div><div class="lv-snow b"></div>';
+if(kind==="fog")h2+='<div class="lv-fog"></div>';
+if(kind==="storm")h2+='<div class="lv-flash"></div>';
+return {html:h2,bg:bg,kind:kind,acc:sat(top)>sat(bot)?top:bot}}
+function liveLabel(withWx){var h=hourNow(),p=h<5?"Night":h<8?"Dawn":h<12?"Morning":h<17?"Afternoon":h<19.5?"Evening":h<22?"Dusk":"Night",w=wxNow(),c=jparse("wd-cfg",{}),city=c.weather&&c.weather.place&&c.weather.place.name;
+return p+(withWx?(w?" · "+WXN[wxKind(w.code)]+(city?" in "+city:""):" · add the Weather widget for live weather"):"")}
+
+/* ---------- colour blend ---------- */
+var HARM=[["soft","Soft blend"],["bold","Contrast"],["mono","One colour"]];
+function colourPal(c,harm){var hsl=hex2hsl(c),H=hsl[0],S=Math.max(45,hsl[1]),dk=isDark(),L=dk?[10,42,34,30,38,26]:[94,74,80,82,76,86];
+var hues=harm==="mono"?[H,H,H,H,H,H]:harm==="bold"?[H,H,H+180,H+30,H+200,H-30]:[H,H,H+35,H-35,H+60,H-60];
+return hues.map(function(h,i){return hsl2hex(((h%360)+360)%360,i===0?(dk?30:35):S,L[i])})}
+function colourScene(){var c=X.color||getAccent()||ACC_DEF,p=colourPal(c,X.harm||"soft");return {html:mesh(p),bg:p[0],acc:c}}
+
+/* ---------- your photo ---------- */
+function photoScene(){var d=ls("wp-photo","");if(!d)return null;return {html:'<div class="sky lv-photo" style="background-image:url('+d+')"></div>',bg:isDark()?"#0b0b10":"#e8ecf4"}}
+
+/* ---------- painting ---------- */
+function layer(sc){var bg=EL("bg");root.style.setProperty("--bg",sc.bg);if(!bg)return;var old=bg.querySelectorAll(".lyr"),ly=document.createElement("div");ly.className="lyr";ly.innerHTML=sc.html;bg.insertBefore(ly,bg.querySelector(".vig"));
+requestAnimationFrame(function(){requestAnimationFrame(function(){ly.classList.add("in")})});setTimeout(function(){Array.prototype.forEach.call(old,function(o){o.remove()})},1100)}
+function current(){if(X.mode==="live")return living(true);if(X.mode==="time")return living(false);if(X.mode==="color")return colourScene();if(X.mode==="photo")return photoScene();return null}
+function adjust(){root.style.setProperty("--wpb",(X.blur||0)+"px");root.style.setProperty("--wpd",(X.dim||100)/100);root.classList.toggle("wpblur",(X.blur||0)>0)}
+var _aw=applyWp;applyWp=function(id,save){if(save){X.mode="scene";X.id=id;saveX();_aw(id,save);mark();return}if(X.mode!=="scene"){var sc=current();if(sc){layer(sc);mark();return}X.mode="scene"}_aw(id,save);mark()};
+function render(){if(X.mode==="scene")_aw(X.id||cur,false);else{var sc=current();if(sc)layer(sc);else{X.mode="scene";_aw(X.id||cur,false)}}adjust();mark()}
+/* a new scene every day */
+function doy(){var d=new Date();return Math.floor((d-new Date(d.getFullYear(),0,0))/864e5)}
+if(X.rot&&X.mode==="scene"){X.id=WP[doy()%WP.length].id;try{localStorage.setItem("wp",X.id)}catch(e){}}
+/* the living sky moves with the clock */
+setInterval(function(){if(!document.hidden&&(X.mode==="live"||X.mode==="time"))render()},5*60e3);
+document.addEventListener("visibilitychange",function(){if(!document.hidden&&(X.mode==="live"||X.mode==="time"))render()});
+
+/* ---------- accent from the wallpaper ---------- */
+function photoColour(cb){var d=ls("wp-photo","");if(!d)return cb(null);var im=new Image();im.onload=function(){var cv=document.createElement("canvas");cv.width=cv.height=40;var g=cv.getContext("2d");g.drawImage(im,0,0,40,40);var px=g.getImageData(0,0,40,40).data,best=null,bs=-1,acc=[0,0,0],n=0;
+for(var i=0;i<px.length;i+=4){var h=rgb2hex(px[i],px[i+1],px[i+2]),s=sat(h);if(s>18){acc[0]+=px[i]*s;acc[1]+=px[i+1]*s;acc[2]+=px[i+2]*s;n+=s}if(s>bs){bs=s;best=h}}cb(n?rgb2hex(acc[0]/n,acc[1]/n,acc[2]/n):best)};im.onerror=function(){cb(null)};im.src=d}
+function sceneColour(){if(X.mode==="scene"){var w=WP.filter(function(x){return x.id===(X.id||cur)})[0]||WP[0],p=pal(w).slice(1);p.sort(function(a,b){return sat(b)-sat(a)});return p[0]}var sc=current();return sc&&sc.acc}
+function usable(c){var l=hex2hsl(c);return hsl2hex(l[0],Math.max(55,Math.min(90,l[1])),isDark()?66:52)}
+function accentFromWp(){var prev=getAccent();function set(c){if(!c){say("Couldn’t find a colour in this wallpaper.",4000);return}c=usable(c);ss("wacc",c);applyAccent();if(typeof renderMail==="function")renderMail(lastL,lastNote);
+var tt=EL("toast");tt.innerHTML='Accent changed to match the wallpaper <button type="button" class="undo" id="wpaundo">Undo</button>';tt.hidden=false;clearTimeout(tt._k);tt._k=setTimeout(function(){tt.hidden=true},6000);
+EL("wpaundo").onclick=function(){if(prev)ss("wacc",prev);else try{localStorage.removeItem("wacc")}catch(e){}applyAccent();tt.hidden=true;draw()};draw()}
+if(X.mode==="photo")photoColour(set);else set(sceneColour())}
+
+/* ---------- the studio panel ---------- */
+var P=document.createElement("aside");P.id="wps";P.className="wps";P.setAttribute("role","dialog");P.setAttribute("aria-modal","false");P.setAttribute("aria-labelledby","wpsh");P.hidden=true;
+P.innerHTML='<div class="wpsh"><div><h3 id="wpsh">Wallpaper</h3><p class="shsub">Changes show on the page right away</p></div><button class="x" id="wpsx" type="button" aria-label="Close">×</button></div><div class="wpstabs" id="wpstabs" role="tablist" aria-label="Kind of wallpaper"></div><div id="wpsb" class="wpsb" role="tabpanel"></div>';
+document.body.appendChild(P);
+var TABS=[["scene","Scenes"],["live","Living"],["color","Colour"],["photo","Photo"]],tab=X.mode==="time"?"live":X.mode;
+function thumb(sc,bg){return '<span class="wpt" style="background:'+bg+'"><span class="wptin">'+sc+'</span></span>'}
+function chk(on){return on?'<i class="wpck" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i>':''}
+function slider(id,label,min,max,val,unit){return '<label class="wpsl"><span>'+label+'</span><input type="range" id="'+id+'" min="'+min+'" max="'+max+'" value="'+val+'"><b id="'+id+'v">'+val+unit+'</b></label>'}
+function sw(id,label,sub,on){return '<label class="wpsw"><span><b>'+label+'</b>'+(sub?'<small>'+sub+'</small>':'')+'</span><input type="checkbox" role="switch" id="'+id+'"'+(on?' checked':'')+'><i aria-hidden="true"></i></label>'}
+function draw(){EL("wpstabs").innerHTML=TABS.map(function(t){var on=t[0]===tab;return '<button type="button" role="tab" aria-selected="'+on+'" tabindex="'+(on?0:-1)+'" data-wt="'+t[0]+'"'+(on?' class="on"':'')+'>'+t[1]+'</button>'}).join("");
+var h="";
+if(tab==="scene"){h='<div class="wpgrid">'+WP.map(function(w){var on=X.mode==="scene"&&(X.id||cur)===w.id,p=pal(w);return '<button type="button" class="wpc'+(on?' on':'')+'" data-sc="'+w.id+'" aria-pressed="'+on+'">'+thumb(scene(w,p),p[0])+chk(on)+'<span class="wpn">'+esc(w.n)+'</span></button>'}).join("")+'</div>'+
+'<p class="wpnote">Each scene has a day and a night version and switches with your theme.</p>'+sw("wprot","New scene every day","Picks the next scene each morning",!!X.rot)}
+else if(tab==="live"){var a=living(true,true),b=living(false,true);h='<div class="wpgrid two">'+
+'<button type="button" class="wpc big'+(X.mode==="live"?' on':'')+'" data-md="live" aria-pressed="'+(X.mode==="live")+'">'+thumb(a.html,a.bg)+chk(X.mode==="live")+'<span class="wpn">Sky now<small>'+esc(liveLabel(true))+'</small></span></button>'+
+'<button type="button" class="wpc big'+(X.mode==="time"?' on':'')+'" data-md="time" aria-pressed="'+(X.mode==="time")+'">'+thumb(b.html,b.bg)+chk(X.mode==="time")+'<span class="wpn">Time of day<small>'+esc(liveLabel(false))+'</small></span></button></div>'+
+'<p class="wpnote">The sky follows your clock, from dawn to night with the sun and moon in the right place. Sky now also shows clouds, rain, snow or fog from your Weather widget’s city.</p>'}
+else if(tab==="color"){var c=X.color||getAccent()||ACC_DEF,hm=X.harm||"soft",sel=X.mode==="color";
+h='<div class="wpcolprev">'+thumb(mesh(colourPal(c,hm)),colourPal(c,hm)[0])+'</div>'+
+'<div class="wpl">Colour</div><div class="wpsws" role="radiogroup" aria-label="Colour"><button type="button" role="radio" class="wpcw acc'+(!X.color?' on':'')+'" aria-checked="'+!X.color+'" data-col="" style="--w:'+(getAccent()||ACC_DEF)+'" title="Your accent colour" aria-label="Your accent colour"></button>'+PALS[0][1].concat(PALS[1][1].slice(0,5)).map(function(p){var on=X.color===p[0];return '<button type="button" role="radio" class="wpcw'+(on?' on':'')+'" aria-checked="'+on+'" data-col="'+p[0]+'" style="--w:'+p[0]+'" title="'+p[1]+'" aria-label="'+p[1]+'"></button>'}).join("")+'<label class="wpcw any" title="Any colour" style="--w:'+c+'"><input type="color" id="wpany" value="'+c+'" aria-label="Any colour"></label></div>'+
+'<div class="wpl">Blend</div><div class="stseg wpseg" role="radiogroup" aria-label="Blend">'+HARM.map(function(o){var on=o[0]===hm;return '<button type="button" role="radio" aria-checked="'+on+'" data-hm="'+o[0]+'"'+(on?' class="on"':'')+'>'+o[1]+'</button>'}).join("")+'</div>'+
+(sel?'':'<button type="button" class="btn pri wpuse" data-md="color">Use this wallpaper</button>')}
+else{var ph=ls("wp-photo","");h=(ph?'<div class="wpcolprev">'+thumb('<div class="sky lv-photo" style="background-image:url('+ph+')"></div>',"#000")+'</div>':'<label class="wpdrop" id="wpdrop"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg><b>Choose a photo</b><small>or drop one here</small><input type="file" id="wpfile" accept="image/*" hidden></label>')+
+(ph?'<div class="wprow"><label class="btn">Change photo<input type="file" id="wpfile" accept="image/*" hidden></label><button type="button" class="btn del" id="wpphrm">Remove</button>'+(X.mode==="photo"?'':'<button type="button" class="btn pri" data-md="photo">Use this photo</button>')+'</div>':'')+
+'<p class="wpnote">Your photo is shrunk and saved in this browser only.</p>'}
+h+='<div class="wpl">Adjust</div>'+slider("wpbl","Blur",0,40,X.blur||0,"")+slider("wpdi","Brightness",40,120,X.dim||100,"%")+slider("wpgl","Glass",0,100,typeof GL==="number"?GL:50,"")+
+sw("wpmo2","Motion","Clouds, waves and stars drift slowly",!!(window.WO?WO.a:true))+sw("wpgr2","Grain","A fine film texture",!!(window.WO?WO.g:true))+
+'<button type="button" class="btn wpacc" id="wpacc"><i style="background:'+(getAccent()||ACC_DEF)+'"></i>Use a wallpaper colour as my accent</button>';
+EL("wpsb").innerHTML=h;fixDrop()}
+function mark(){if(!P.hidden&&tab==="scene")P.querySelectorAll("[data-sc]").forEach(function(b){var on=X.mode==="scene"&&(X.id||cur)===b.dataset.sc;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on);var c=b.querySelector(".wpck");if(on&&!c)b.querySelector(".wpt").insertAdjacentHTML("afterend",chk(true));if(!on&&c)c.remove()})}
+function fixDrop(){var d=EL("wpdrop");if(!d)return;["dragenter","dragover"].forEach(function(n){d.addEventListener(n,function(e){e.preventDefault();d.classList.add("over")})});["dragleave","drop"].forEach(function(n){d.addEventListener(n,function(){d.classList.remove("over")})});d.addEventListener("drop",function(e){e.preventDefault();var f=e.dataTransfer&&e.dataTransfer.files[0];if(f)loadPhoto(f)})}
+function loadPhoto(f){if(!/^image\//.test(f.type)){say("That file isn’t an image.",4000);return}var u=URL.createObjectURL(f),im=new Image();im.onload=function(){var mx=1920,sc=Math.min(1,mx/Math.max(im.width,im.height)),cv=document.createElement("canvas");cv.width=Math.round(im.width*sc);cv.height=Math.round(im.height*sc);cv.getContext("2d").drawImage(im,0,0,cv.width,cv.height);URL.revokeObjectURL(u);
+var q=.82,d=cv.toDataURL("image/jpeg",q);while(d.length>2.6e6&&q>.4){q-=.12;d=cv.toDataURL("image/jpeg",q)}try{localStorage.setItem("wp-photo",d)}catch(x){say("That photo is too big to save here. Try a smaller one.",5000);return}X.mode="photo";saveX();render();draw()};im.onerror=function(){say("Couldn’t open that image.",4000)};im.src=u}
+function setMode(m){X.mode=m;saveX();render();draw()}
+function openP(){tab=X.mode==="time"?"live":X.mode;draw();P.hidden=false;P.classList.remove("in");void P.offsetWidth;P.classList.add("in");EL("wpbtn").setAttribute("aria-expanded","true");var f=EL("wpstabs").querySelector(".on");if(f)f.focus()}
+function closeP(){if(P.hidden)return;P.hidden=true;EL("wpbtn").setAttribute("aria-expanded","false");EL("wpbtn").focus()}
+/* the header button opens the studio instead of the old pop-up */
+EL("wpbtn").addEventListener("click",function(e){e.stopImmediatePropagation();e.preventDefault();if(P.hidden)openP();else closeP()},true);
+EL("wpbtn").setAttribute("aria-controls","wps");EL("wpbtn").setAttribute("aria-label","Wallpaper");EL("wpbtn").title="Wallpaper";
+EL("wpsx").onclick=closeP;
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!P.hidden&&!document.querySelector(".modal:not([hidden])")){e.stopPropagation();closeP()}},true);
+document.addEventListener("pointerdown",function(e){if(!P.hidden&&!P.contains(e.target)&&!e.target.closest("#wpbtn,.modal,#toast"))closeP()},true);
+EL("wpstabs").addEventListener("keydown",function(e){var d={ArrowRight:1,ArrowLeft:-1}[e.key];if(!d)return;var i=TABS.findIndex(function(t){return t[0]===tab});tab=TABS[(i+d+TABS.length)%TABS.length][0];draw();EL("wpstabs").querySelector(".on").focus()});
+P.addEventListener("click",function(e){var t=e.target,b;
+if((b=t.closest("[data-wt]"))){tab=b.dataset.wt;draw();EL("wpstabs").querySelector(".on").focus();return}
+if((b=t.closest("[data-sc]"))){applyWp(b.dataset.sc,true);adjust();return}
+if((b=t.closest("[data-md]"))){setMode(b.dataset.md);return}
+if((b=t.closest("[data-col]"))){X.color=b.dataset.col||"";X.mode="color";saveX();render();draw();var n=P.querySelector('[data-col="'+X.color+'"]');if(n)n.focus();return}
+if((b=t.closest("[data-hm]"))){X.harm=b.dataset.hm;X.mode="color";saveX();render();draw();var n2=P.querySelector('[data-hm="'+X.harm+'"]');if(n2)n2.focus();return}
+if(t.id==="wpphrm"){try{localStorage.removeItem("wp-photo")}catch(x){}if(X.mode==="photo"){X.mode="scene";saveX();render()}draw();return}
+if(t.closest("#wpacc")){accentFromWp();return}});
+P.addEventListener("input",function(e){var t=e.target;
+if(t.id==="wpbl"){X.blur=+t.value;EL("wpblv").textContent=t.value;adjust();saveX()}
+else if(t.id==="wpdi"){X.dim=+t.value;EL("wpdiv").textContent=t.value+"%";adjust();saveX()}
+else if(t.id==="wpgl"){EL("wpglv").textContent=t.value;if(typeof setGl==="function")setGl(t.value,true)}
+else if(t.id==="wpany"){X.color=t.value;X.mode="color";saveX();render();var pv=P.querySelector(".wpcolprev");if(pv){var pp=colourPal(t.value,X.harm||"soft");pv.innerHTML=thumb(mesh(pp),pp[0])}}});
+P.addEventListener("change",function(e){var t=e.target;
+if(t.id==="wprot"){X.rot=t.checked;saveX()}
+else if(t.id==="wpmo2"){var a=EL("wpmo");if(a){a.checked=t.checked;a.onchange&&a.onchange()}}
+else if(t.id==="wpgr2"){var g=EL("wpgr");if(g){g.checked=t.checked;g.onchange&&g.onchange()}}
+else if(t.id==="wpany"){draw()}
+else if(t.id==="wpfile"&&t.files&&t.files[0])loadPhoto(t.files[0])});
+render();
+window.__wps={open:openP,close:closeP,X:X,render:render};
 })();
 </script>
 </body>
