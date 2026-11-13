@@ -854,6 +854,80 @@ body.dense #mail .av{width:34px;height:34px;font-size:14px}
 body.dense #mail li:not(:last-child)::after{left:58px}
 body.dense #mail li a .when{top:9px}
 body.dense #mail .snip{-webkit-line-clamp:1}
+/* ===== Motion ===== */
+@keyframes mRise{from{opacity:0;translate:0 16px}}
+@keyframes mRow{from{opacity:0;translate:0 10px}}
+@keyframes mView{from{opacity:0;translate:0 12px;scale:.99}}
+@keyframes mFade{from{opacity:0}}
+@keyframes mNew{0%{opacity:0;translate:-14px 0}30%{opacity:1;translate:0 0}}
+@keyframes mGlow{0%,40%{background:color-mix(in srgb,var(--accent) 22%,transparent)}100%{background:transparent}}
+@keyframes mGone{to{opacity:0;scale:.96;translate:24px 0}}
+@keyframes mNext{from{opacity:0;translate:36px 0}}
+@keyframes mPrev{from{opacity:0;translate:-36px 0}}
+@keyframes mBump{30%{scale:1.35}60%{scale:.92}}
+@keyframes mToast{from{opacity:0;translate:0 26px;scale:.9}}
+@keyframes mDrop{from{opacity:0;translate:0 -20px;scale:.94}}
+@keyframes mSheet{from{opacity:0;translate:0 24px;scale:.94}}
+@keyframes mOpen{from{opacity:0;translate:0 -6px}}
+/* first load */
+html.motion body.boot header{animation:mRise .6s cubic-bezier(.2,.8,.2,1) both}
+html.motion body.boot .wds{animation:mRise .6s .08s cubic-bezier(.2,.8,.2,1) both}
+html.motion body.boot .wgrid>*{animation:mRise .55s cubic-bezier(.2,.8,.2,1) both}
+html.motion body.boot .wgrid>*:nth-child(1){animation-delay:.12s}
+html.motion body.boot .wgrid>*:nth-child(2){animation-delay:.17s}
+html.motion body.boot .wgrid>*:nth-child(3){animation-delay:.22s}
+html.motion body.boot .wgrid>*:nth-child(4){animation-delay:.27s}
+html.motion body.boot .wgrid>*:nth-child(n+5){animation-delay:.32s}
+html.motion body.boot .mcol,html.motion body.boot .cal,html.motion body.boot .nl{animation:mRise .65s .2s cubic-bezier(.2,.8,.2,1) both}
+html.motion body.boot #mpane,html.motion body.boot .ne{animation:mRise .65s .3s cubic-bezier(.2,.8,.2,1) both}
+html.motion body.boot .top{animation:mFade .8s .25s ease both}
+html.motion body.boot .hact,html.motion body.boot #conn{animation:mFade .7s .35s ease both}
+/* views */
+html.motion main>section.vin{animation:mView .45s cubic-bezier(.2,.8,.2,1) both}
+html.motion #stbody.vin{animation:mFade .3s ease both}
+/* mail rows */
+#mail{position:relative}
+html.motion #mail>li.rin{animation:mRow .45s cubic-bezier(.2,.8,.2,1) both}
+html.motion #mail>li.rnew{animation:mNew .6s cubic-bezier(.2,.8,.2,1) both}
+html.motion #mail>li.rnew>a{animation:mGlow 1.8s ease both}
+html.motion #mail>li.rgone{position:absolute;left:0;right:0;pointer-events:none;animation:mGone .45s cubic-bezier(.4,0,1,1) forwards;z-index:0}
+html.motion #mail li a{transition:background .2s,translate .2s}
+html.motion #mail li a:hover{translate:2px 0}
+html.motion #mail li a[aria-expanded="true"]{transition:background .3s}
+/* reading an email */
+html.motion .inl.rdin{animation:mRise .4s cubic-bezier(.2,.8,.2,1) both}
+html.motion .inl.rdfill .rd{animation:mFade .35s ease both}
+/* badges, chips */
+html.motion .bump{animation:mBump .6s cubic-bezier(.3,1.5,.5,1)}
+/* tabs: a highlight that slides */
+.segw,#sttabs,#st .stseg{position:relative;isolation:isolate}
+.sgi{position:absolute;left:0;top:0;z-index:0;pointer-events:none;background:var(--pill);box-shadow:0 1px 8px rgba(0,0,0,.16);transition:transform .42s cubic-bezier(.3,1.25,.5,1),width .42s cubic-bezier(.3,1.25,.5,1),height .3s,opacity .2s}
+.segw>button,#sttabs>button,#st .stseg>button{position:relative;z-index:1}
+html:not(.motion) .sgi{display:none}
+html.motion .segw>button.on,html.motion #sttabs>button.on,html.motion #st .stseg>button.on{background:none!important;box-shadow:none!important}
+html.motion .segw>button,html.motion #sttabs>button,html.motion #st .stseg>button{transition:color .25s}
+/* calendar */
+html.motion #grid.gnext,html.motion #monthname.gnext{animation:mNext .4s cubic-bezier(.2,.8,.2,1) both}
+html.motion #grid.gprev,html.motion #monthname.gprev{animation:mPrev .4s cubic-bezier(.2,.8,.2,1) both}
+html.motion #agenda .rin{animation:mRow .4s cubic-bezier(.2,.8,.2,1) both}
+html.motion .grid button{transition:background .2s,scale .18s,box-shadow .2s}
+html.motion .grid button:active{scale:.93}
+/* windows, toasts, popovers */
+html.motion .modal:not([hidden]){animation:mFade .25s ease both}
+html.motion .modal:not([hidden])>.sheet{animation:mSheet .42s cubic-bezier(.2,1.1,.3,1) both}
+html.motion .toast:not([hidden]){animation:mToast .45s cubic-bezier(.2,1.3,.4,1) both}
+html.motion .gexp{animation:mDrop .45s cubic-bezier(.2,1.3,.4,1) both}
+html.motion #st .stcard.open .stcb{animation:mOpen .3s cubic-bezier(.2,.8,.2,1) both}
+html.motion #st .stcard{transition:border-color .25s,box-shadow .25s,background .25s}
+html.motion #accf button{transition:background .2s,box-shadow .2s,scale .15s}
+/* press feedback */
+html.motion .btn,html.motion .cc,html.motion .wpbtn,html.motion .top button,html.motion .tabs button,html.motion #accf button,html.motion .accpick button,html.motion .stseg button,html.motion #sttabs button{transition:background .2s,color .2s,box-shadow .2s,scale .15s cubic-bezier(.3,1.4,.5,1)}
+html.motion .btn:active,html.motion .cc:active,html.motion .wpbtn:active,html.motion .top button:active,html.motion .tabs button:active,html.motion #accf button:active,html.motion .accpick button:active{scale:.94}
+/* the theme switch: a circle that spreads out */
+::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
+::view-transition-old(root){z-index:1}
+::view-transition-new(root){z-index:2}
+@media(prefers-reduced-motion:reduce){html.motion *{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 <script>try{var t=localStorage.getItem("wth");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);var a=localStorage.getItem("wacc");if(/^#[0-9a-f]{6}$/i.test(a||"")){var r=document.documentElement.style;r.setProperty("--accent",a);r.setProperty("--dot",a);r.setProperty("--today",a)}}catch(e){}</script>
 </head>
@@ -1912,6 +1986,78 @@ EL("st").addEventListener("submit",function(e){var f=e.target.closest(".stladd")
 var key=f.dataset.l,a=listOf(key);if(a.indexOf(v)<0)a.push(v);ss(key,JSON.stringify(a));
 var opp={"wd-spamfrom":"wd-notspam","wd-imp":"wd-notimp"}[key];if(opp)ss(opp,JSON.stringify(listOf(opp).filter(function(x){return x!==v})));
 if(key==="wd-spamfrom")FORCE=mkForce();renderMail(lastL,lastNote);drawSettings();var nf=EL("st").querySelector('.stladd[data-l="'+key+'"] input');if(nf)nf.focus()});
+/* ===== Motion ===== */
+(function(){
+var root=document.documentElement,RM=window.matchMedia?matchMedia("(prefers-reduced-motion: reduce)"):null;
+PDEF.anim=1;
+function on(){try{return !!P().anim&&!(RM&&RM.matches)}catch(e){return false}}
+window.motionOn=on;
+function setMotion(){root.classList.toggle("motion",on())}
+setMotion();try{RM&&RM.addEventListener("change",setMotion)}catch(e){}
+var _ap=applyPrefs;applyPrefs=function(){_ap();setMotion()};
+function raf2(f){requestAnimationFrame(function(){requestAnimationFrame(f)})}
+function once(el,cls,ms){el.classList.remove(cls);void el.offsetWidth;el.classList.add(cls);clearTimeout(el["_t"+cls]);el["_t"+cls]=setTimeout(function(){el.classList.remove(cls);el.style.animationDelay=""},ms||900)}
+
+/* first load: everything rises in, one after another */
+if(on()){document.body.classList.add("boot");setTimeout(function(){document.body.classList.remove("boot")},1600)}
+
+/* sliding highlight behind the selected tab of a segmented control */
+function pill(box){if(!box||!box.offsetParent)return;var cur=box.querySelector(":scope>button.on");var ind=box.querySelector(":scope>.sgi"),fresh=false;
+if(!ind){ind=document.createElement("span");ind.className="sgi";ind.setAttribute("aria-hidden","true");box.insertBefore(ind,box.firstChild);fresh=true}
+if(!cur){ind.style.opacity="0";return}
+var g={x:cur.offsetLeft,y:cur.offsetTop,w:cur.offsetWidth,h:cur.offsetHeight,r:getComputedStyle(cur).borderTopLeftRadius},p=box._pill;
+function put(o){ind.style.width=o.w+"px";ind.style.height=o.h+"px";ind.style.transform="translate("+o.x+"px,"+o.y+"px)";ind.style.borderRadius=o.r}
+if(fresh&&p){ind.style.transition="none";put(p);void ind.offsetWidth;ind.style.transition=""}
+else if(fresh){ind.style.transition="none";put(g);void ind.offsetWidth;ind.style.transition=""}
+ind.style.opacity="1";put(g);box._pill=g}
+function pills(){document.querySelectorAll(".segw,#sttabs,#st .stseg").forEach(pill)}
+window.addEventListener("resize",function(){document.querySelectorAll(".sgi").forEach(function(i){i.style.transition="none"});pills();raf2(function(){document.querySelectorAll(".sgi").forEach(function(i){i.style.transition=""})})});
+document.addEventListener("click",function(){requestAnimationFrame(pills)});
+var _tb=tabs;tabs=function(){_tb();pills()};
+
+/* mail list: stagger when the list changes, glide when rows move, fade out what leaves, glow on new mail */
+var lastCtx=null,seen=null,lastRd="",lastBadge=-1;
+var _rm=renderMail;renderMail=function(L,note){var ul=EL("mail"),M=on(),before={};
+if(M&&ul)ul.querySelectorAll(":scope>li").forEach(function(li){var a=li.querySelector(":scope>a[data-k]");if(a)before[a.dataset.k]={top:li.offsetTop,h:li.offsetHeight,el:li}});
+_rm(L,note);
+var ctx=view+"|"+(typeof acctF==="string"?acctF:""),ids={},n=0;(L||[]).forEach(function(m){ids[m[6]||m[4]]=1;n++});
+var bd=EL("tmailb"),bv=bd&&!bd.hidden?parseInt(bd.textContent)||0:0;if(M&&bd&&lastBadge>-1&&bv>lastBadge)once(bd,"bump",700);lastBadge=bv;
+var rk=(typeof openTid==="string"&&openTid?openTid:"")+"|"+(/class="rh"/.test(typeof openHTML==="string"?openHTML.slice(0,40):"")?"wait":"full");
+if(!M||!ul){lastCtx=ctx;if(n)seen=ids;lastRd=rk;pills();return}
+var rows=[].slice.call(ul.querySelectorAll(":scope>li")),fresh=ctx!==lastCtx||!seen||!Object.keys(seen).length;
+if(fresh&&n){rows.slice(0,16).forEach(function(li,i){li.style.animationDelay=(i*32)+"ms";once(li,"rin",900+i*32)})}
+else if(!fresh){
+ rows.forEach(function(li){var a=li.querySelector(":scope>a[data-k]");if(!a)return;var k=a.dataset.k,b=before[k];
+  if(b){var dy=b.top-li.offsetTop;if(Math.abs(dy)>1){li.style.transition="none";li.style.translate="0 "+dy+"px";raf2(function(){li.style.transition="translate .42s cubic-bezier(.2,.8,.2,1)";li.style.translate="";setTimeout(function(){li.style.transition=""},460)})}}
+  else if(seen&&!seen[k])once(li,"rnew",1800)});
+ var gone=Object.keys(before).filter(function(k){return !ul.querySelector(':scope>li>a[data-k="'+k.replace(/"/g,'\\"')+'"]')});
+ if(gone.length&&gone.length<6)gone.forEach(function(k){var b=before[k],g=b.el;g.classList.add("rgone");g.style.top=b.top+"px";g.style.height=b.h+"px";g.setAttribute("aria-hidden","true");var ga=g.querySelector("a[data-k]");if(ga)ga.removeAttribute("data-k");g.querySelectorAll("a,button").forEach(function(x){x.tabIndex=-1});ul.appendChild(g);setTimeout(function(){g.remove()},520)})}
+if(rk!==lastRd&&rk.charAt(0)!=="|"){var pane=document.querySelector("#mpane .inl.pane")||ul.querySelector(".inl");if(pane)once(pane,rk.slice(-4)==="full"&&lastRd.split("|")[0]===rk.split("|")[0]?"rdfill":"rdin",700)}
+lastCtx=ctx;if(n)seen=ids;lastRd=rk;pills()};
+
+/* switching between Mail, Calendar and Notes */
+var _sh=show;show=function(v){var cur=document.querySelector("main>section:not([hidden])");_sh(v);var nw=document.querySelector("main>section:not([hidden])");if(on()&&nw&&cur&&nw!==cur)once(nw,"vin",700);requestAnimationFrame(pills)};
+
+/* calendar: the month slides in from the side it came from, the agenda cascades */
+var lastOff=typeof off==="number"?off:0;
+var _dg=drawGrid;drawGrid=function(){_dg();var g=EL("grid");if(on()&&g&&typeof off==="number"&&off!==lastOff){once(g,off>lastOff?"gnext":"gprev",600);var t=EL("monthname");if(t)once(t,off>lastOff?"gnext":"gprev",600)}if(typeof off==="number")lastOff=off};
+var lastAg="";
+if(typeof renderAg==="function"){var _ra=renderAg;renderAg=function(){_ra();var a=EL("agenda");if(!a)return;var sig=[].slice.call(a.querySelectorAll(".ev")).slice(0,6).map(function(x){return x.textContent}).join("|");if(on()&&sig!==lastAg)a.querySelectorAll(".day,.ev").forEach(function(x,i){if(i<14){x.style.animationDelay=(i*30)+"ms";once(x,"rin",800+i*30)}});lastAg=sig}}
+
+/* settings: tab content fades in, pills follow */
+var _ds=drawSettings;drawSettings=function(){var prev=EL("stbody").getAttribute("aria-labelledby");_ds();if(on()&&prev!==EL("stbody").getAttribute("aria-labelledby"))once(EL("stbody"),"vin",600);requestAnimationFrame(pills)};
+
+/* theme change: the new theme spreads out in a circle from where you tapped */
+var px=innerWidth-60,py=60;document.addEventListener("pointerdown",function(e){px=e.clientX;py=e.clientY},true);
+var _st=setTheme;setTheme=function(m,save){if(!save||!on()||!document.startViewTransition)return _st(m,save);
+var r=Math.hypot(Math.max(px,innerWidth-px),Math.max(py,innerHeight-py));
+try{var t=document.startViewTransition(function(){_st(m,save)});t.ready.then(function(){root.animate({clipPath:["circle(0px at "+px+"px "+py+"px)","circle("+r+"px at "+px+"px "+py+"px)"]},{duration:600,easing:"cubic-bezier(.4,0,.2,1)",pseudoElement:"::view-transition-new(root)"})}).catch(function(){})}catch(e){_st(m,save)}};
+
+/* Appearance: an Animations switch */
+var _ds2=drawSettings;drawSettings=function(){_ds2();if(stTab!=="look")return;var b=EL("stbody");if(b.querySelector('[data-p="anim"]'))return;
+var reduced=RM&&RM.matches;b.insertAdjacentHTML("beforeend",'<div class="stgrp"><div class="stgl">Motion</div>'+sw("anim","Animations",reduced?"Your device asks for reduced motion, so animations stay off":"Smooth transitions when things open, move and change",P().anim)+'</div>')};
+requestAnimationFrame(pills);setTimeout(pills,400);
+})();
 </script>
 </body>
 </html>
