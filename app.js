@@ -2651,7 +2651,7 @@ function apply(r){var d=r.data||{},diff=false;applying=true;
  if(diff){try{sessionStorage.setItem("sync-applied","1")}catch(e){}
   var a=document.activeElement;if(a&&/INPUT|TEXTAREA/.test(a.tagName)&&a.value){setTimeout(function(){location.reload()},45000)}else location.reload();return true}
  paint();return false}
-function fail(e){var x=st();x.err=e&&e.code==="not_in_manifest"?"perm":e&&e.code==="needs_signin"?"signin":"net";saveSt(x);paint()}
+function fail(e){var x=st();x.err=e&&/has not been used|is disabled|accessNotConfigured|SERVICE_DISABLED/i.test((e.detail||"")+(e.message||""))?"api":e&&e.code==="not_in_manifest"?"perm":e&&e.code==="needs_signin"?"signin":"net";saveSt(x);paint()}
 function turnOn(){var email=gAuth.primary();if(!email){say("Sign in with Google first.",4000);return}
  gAuth.grant(SCOPE,email).then(function(){var x=st();x.on=true;x.email=email;x.err="";saveSt(x);paint();return pull(true)}).then(function(applied){if(!applied)say("Sync is on. Your settings are saved to your Google account.",5000)},function(){say("Sync needs that permission to work. Nothing was changed.",5000);paint()})}
 function turnOff(){var x=st();x.on=false;saveSt(x);paint();say("Sync is off. Settings stay as they are on this device.",4000)}
@@ -2666,7 +2666,7 @@ try{if(sessionStorage.getItem("sync-applied")){sessionStorage.removeItem("sync-a
 function ago(t){if(!t)return "not yet";var m=Math.round((Date.now()-t)/60000);return m<1?"just now":m<60?m+" min ago":new Intl.DateTimeFormat("en-GB",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}).format(new Date(t))}
 function html(){var x=st(),on=!!x.on;
  var msg=!on?"Keep widgets, packs, wallpaper, colours, filters, notes and your to-do list the same on every device. Saved privately in your Google account, where only this app can read it.":
-  x.err==="perm"?"Google didn’t allow access. Turn sync off and on again to give permission.":x.err==="signin"?"Sign in again to keep syncing.":x.err==="net"?"Couldn’t reach Google. It’ll try again soon.":"Synced with "+esc(x.email||"")+" · "+ago(x.last);
+  x.err==="api"?"Almost there: the Google Drive API needs to be turned on for this app in Google Cloud Console (APIs & Services → Library → Google Drive API → Enable).":x.err==="perm"?"Google didn’t allow access. Turn sync off and on again to give permission.":x.err==="signin"?"Sign in again to keep syncing.":x.err==="net"?"Couldn’t reach Google. It’ll try again soon.":"Synced with "+esc(x.email||"")+" · "+ago(x.last);
  return '<div class="s3g" id="s3sync"><div class="s3h">Sync</div><div class="s3r"><div class="s3l"><b>Same settings on every device</b><small>'+msg+'</small></div><div class="s3c"><label class="s3t"><input type="checkbox" role="switch" id="syncsw"'+(on?' checked':'')+' aria-label="Sync settings across devices"><i aria-hidden="true"></i></label></div></div>'+(on?'<button type="button" class="s3link" id="syncnow">Sync now</button>':'')+'</div>'}
 function paint(){var b=EL("stbody");if(!b||typeof stTab==="undefined"||stTab!=="acc")return;var g=EL("s3sync");if(g)g.outerHTML=html();else b.insertAdjacentHTML("beforeend",html())}
 var _ds=drawSettings;drawSettings=function(){_ds.apply(this,arguments);paint()};
