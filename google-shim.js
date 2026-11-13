@@ -11,16 +11,43 @@
   ].join(" ");
   var GM = "https://gmail.googleapis.com/gmail/v1/users/me/";
   var CA = "https://www.googleapis.com/calendar/v3/";
-  var TOK_KEY = "gtok";
 
-  /* ---------- sign-in ---------- */
-  function readTok() {
-    try { var t = JSON.parse(sessionStorage.getItem(TOK_KEY) || "null"); return t && t.exp > Date.now() + 30000 ? t : null; }
-    catch (e) { return null; }
+  /* ---------- accounts and sign-in ----------
+     Several Google accounts can be signed in at once.
+     localStorage "gaccts": the account emails, first one also gives the calendar.
+     sessionStorage "gtoks": { email: { t: token, exp: time } } */
+  var ACC_KEY = "gaccts", TOKS_KEY = "gtoks", OLD_KEY = "gtok";
+  function lsGet(k, d) { try { var v = JSON.parse(localStorage.getItem(k) || "null"); return v == null ? d : v; } catch (e) { return d; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  function ssGet(k, d) { try { var v = JSON.parse(sessionStorage.getItem(k) || "null"); return v == null ? d : v; } catch (e) { return d; } }
+  function ssSet(k, v) { try { sessionStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  function accounts() { var a = lsGet(ACC_KEY, []); return Array.isArray(a) ? a.filter(function (x) { return typeof x === "string" && x; }) : []; }
+  function setAccounts(a) { lsSet(ACC_KEY, a); }
+  function toks() { var t = ssGet(TOKS_KEY, {}); return t && typeof t === "object" ? t : {}; }
+  function readTok(email) { var t = toks()[email]; return t && t.exp > Date.now() + 30000 ? t : null; }
+  function saveTok(email, t) { var all = toks(); all[email] = t; ssSet(TOKS_KEY, all); }
+  function clearTok(email) { var all = toks(); delete all[email]; ssSet(TOKS_KEY, all); }
+  function primary() { return accounts()[0] || ""; }
+  function live() { return accounts().filter(function (e) { return !!readTok(e); }); }
+
+  function profile(token) {
+    return fetch(GM + "profile", { headers: { Authorization: "Bearer " + token } })
+      .then(function (r) { return r.ok ? r.json() : {}; })
+      .then(function (j) { return String(j.emailAddress || "").toLowerCase(); }, function () { return ""; });
   }
-  function saveTok(t) { try { sessionStorage.setItem(TOK_KEY, JSON.stringify(t)); } catch (e) {} }
-  function clearTok() { try { sessionStorage.removeItem(TOK_KEY); } catch (e) {} }
-  var hadToken = !!readTok();
+  function remember(email, tok) {
+    saveTok(email, tok);
+    var a = accounts(); if (a.indexOf(email) < 0) { a.push(email); setAccounts(a); }
+    try { localStorage.setItem("gsigned", "1"); } catch (e) {}
+  }
+
+  /* Older versions kept a single token in "gtok": move it over once */
+  var ready = (function () {
+    var old = null; try { old = JSON.parse(sessionStorage.getItem(OLD_KEY) || "null"); } catch (e) {}
+    try { sessionStorage.removeItem(OLD_KEY); } catch (e) {}
+    if (!old || !(old.exp > Date.now() + 30000)) return Promise.resolve();
+    return profile(old.t).then(function (email) { if (email) remember(email, old); });
+  })();
 
   function gisReady() {
     return new Promise(function (res, rej) {
@@ -32,74 +59,112 @@
       })();
     });
   }
-  function signIn() {
+  /* signIn()            sign in again (first account whose session ended)
+     signIn(email)       sign in again as that account
+     signIn({add:true})  pick another Google account and add it */
+  function signIn(opt) {
     if (!CLIENT_ID || CLIENT_ID.indexOf("PASTE") === 0) {
       alert("Add your Google client ID to config.js first. The README explains how to get one.");
       return Promise.reject(new Error("no client id"));
     }
+    var add = opt && typeof opt === "object" && opt.add;
+    var hint = typeof opt === "string" ? opt : "";
+    if (!add && !hint) hint = accounts().filter(function (e) { return !readTok(e); })[0] || "";
+    var prompt = add ? "select_account" : (hint || localStorage.getItem("gsigned")) ? "" : "consent";
     return gisReady().then(function () {
       return new Promise(function (res, rej) {
-        var client = google.accounts.oauth2.initTokenClient({
+        var cfg = {
           client_id: CLIENT_ID,
           scope: SCOPES,
           callback: function (r) {
-            if (r && r.access_token) {
-              saveTok({ t: r.access_token, exp: Date.now() + (Number(r.expires_in) || 3600) * 1000 });
-              try { localStorage.setItem("gsigned", "1"); } catch (e) {}
-              res();
-            } else rej(r);
+            if (!(r && r.access_token)) return rej(r);
+            var tok = { t: r.access_token, exp: Date.now() + (Number(r.expires_in) || 3600) * 1000 };
+            profile(r.access_token).then(function (email) {
+              if (!email) return rej(new Error("Couldn’t read which account this is"));
+              remember(email, tok);
+              res(email);
+            });
           },
           error_callback: function (e) { rej(e); }
-        });
-        client.requestAccessToken({ prompt: localStorage.getItem("gsigned") ? "" : "consent" });
+        };
+        if (hint) cfg.hint = hint;
+        google.accounts.oauth2.initTokenClient(cfg).requestAccessToken({ prompt: prompt, hint: hint || undefined });
       });
     });
   }
-  function signOut() {
-    var t = readTok();
-    clearTok();
-    try { localStorage.removeItem("gsigned"); } catch (e) {}
-    if (t && window.google && google.accounts && google.accounts.oauth2) {
-      return new Promise(function (r) { google.accounts.oauth2.revoke(t.t, r); });
-    }
+  /* signOut(email) removes one account; signOut() removes all */
+  function signOut(email) {
+    var list = email ? [email] : accounts(), all = toks();
+    list.forEach(function (e) {
+      var t = all[e];
+      if (t && window.google && google.accounts && google.accounts.oauth2) { try { google.accounts.oauth2.revoke(t.t, function () {}); } catch (x) {} }
+      clearTok(e);
+    });
+    var rest = accounts().filter(function (e) { return list.indexOf(e) < 0; });
+    setAccounts(rest);
+    if (!rest.length) { try { localStorage.removeItem("gsigned"); } catch (e) {} }
     return Promise.resolve();
   }
-  window.gAuth = { signIn: signIn, signOut: signOut, signedIn: function () { return !!readTok(); } };
+  window.gAuth = {
+    signIn: signIn,
+    addAccount: function () { return signIn({ add: true }); },
+    signOut: signOut,
+    signedIn: function () { return live().length > 0; },
+    accounts: function () { return accounts().map(function (e) { return { email: e, on: !!readTok(e) }; }); },
+    primary: primary,
+    ready: ready
+  };
 
-  /* Small floating prompt when the 1-hour Google session runs out */
-  var promptEl = null;
-  function showExpired() {
-    if (promptEl || !hadToken) return;
-    promptEl = document.createElement("div");
-    promptEl.className = "gexp";
-    promptEl.innerHTML = '<span>Your Google session ended.</span><button type="button" class="btn pri">Sign in again</button>';
-    promptEl.querySelector("button").onclick = function () { signIn().then(function () { location.reload(); }); };
-    document.body.appendChild(promptEl);
+  /* Small floating prompt, one line per account whose 1-hour Google session ran out */
+  var promptEl = null, expired = {};
+  function showExpired(email) {
+    if (!email || accounts().indexOf(email) < 0 || expired[email]) return;
+    expired[email] = 1;
+    if (!promptEl) {
+      promptEl = document.createElement("div");
+      promptEl.className = "gexp";
+      document.body.appendChild(promptEl);
+    }
+    var keys = Object.keys(expired), many = accounts().length > 1;
+    promptEl.innerHTML = keys.map(function (e) {
+      return '<div class="gexr"><span>' + (many ? "Session ended for " + e.replace(/[<>&"]/g, "") : "Your Google session ended.") + '</span><button type="button" class="btn pri" data-e="' + e.replace(/[<>&"]/g, "") + '">Sign in again</button></div>';
+    }).join("");
+    promptEl.querySelectorAll("button").forEach(function (b) {
+      b.onclick = function () { signIn(b.dataset.e).then(function () { location.reload(); }); };
+    });
   }
 
   /* ---------- HTTP ---------- */
   function err(code, detail) { var e = new Error(code); e.code = code; e.detail = detail; return e; }
-  function api(url, opt) {
-    var t = readTok();
-    if (!t) { showExpired(); return Promise.reject(err("needs_signin")); }
-    opt = opt || {};
-    var h = { Authorization: "Bearer " + t.t };
-    if (opt.body) h["Content-Type"] = "application/json";
-    return fetch(url, { method: opt.method || "GET", headers: h, body: opt.body ? JSON.stringify(opt.body) : undefined })
-      .then(function (r) {
-        if (r.status === 401) { clearTok(); showExpired(); throw err("needs_signin"); }
-        if (r.status === 204) return {};
-        return r.json().catch(function () { return {}; }).then(function (j) {
-          if (!r.ok) {
-            var msg = j && j.error && j.error.message;
-            console.error("Google API error", r.status, msg || j);
-            if (r.status === 403 && /insufficient|scope/i.test(msg || "")) throw err("not_in_manifest", msg);
-            if (r.status === 429 || r.status >= 500) throw err("upstream_error", msg);
-            throw err("tool_error", msg);
-          }
-          return j;
-        });
-      }, function (e) { throw err("server_unavailable", String(e)); });
+  function api(url, opt, email) {
+    return ready.then(function () {
+      email = email || primary();
+      var t = email && readTok(email);
+      if (!t) { showExpired(email); return Promise.reject(err("needs_signin")); }
+      opt = opt || {};
+      var h = { Authorization: "Bearer " + t.t };
+      if (opt.body) h["Content-Type"] = "application/json";
+      return fetch(url, { method: opt.method || "GET", headers: h, body: opt.body ? JSON.stringify(opt.body) : undefined })
+        .then(function (r) {
+          if (r.status === 401) { clearTok(email); showExpired(email); throw err("needs_signin"); }
+          if (r.status === 204) return {};
+          return r.json().catch(function () { return {}; }).then(function (j) {
+            if (!r.ok) {
+              var msg = j && j.error && j.error.message;
+              console.error("Google API error", r.status, msg || j);
+              if (r.status === 403 && /insufficient|scope/i.test(msg || "")) throw err("not_in_manifest", msg);
+              if (r.status === 429 || r.status >= 500) throw err("upstream_error", msg);
+              throw err("tool_error", msg);
+            }
+            return j;
+          });
+        }, function (e) { throw err("server_unavailable", String(e)); });
+    });
+  }
+  /* thread ids carry their account: "me@gmail.com~18c3f..." */
+  function split(id) {
+    id = String(id || ""); var k = id.indexOf("~");
+    return k > 0 ? { email: id.slice(0, k), id: id.slice(k + 1) } : { email: primary(), id: id };
   }
   function qs(o) {
     return Object.keys(o).filter(function (k) { return o[k] != null && o[k] !== ""; })
@@ -175,37 +240,57 @@
     };
   }
 
+  function searchOne(email, i) {
+    return api(GM + "threads?" + qs({ q: i.query, maxResults: i.pageSize || 25 }), null, email).then(function (r) {
+      var ids = (r.threads || []).map(function (t) { return t.id; });
+      return pool(ids, 6, function (id) {
+        return api(GM + "threads/" + id + "?" + qs({ format: "metadata", metadataHeaders: ["From", "Subject", "List-Unsubscribe"] }), null, email);
+      }).then(function (ts) {
+        return ts.filter(Boolean).map(function (t) {
+          var ms = t.messages || [], first = ms[0] || {}, last = ms[ms.length - 1] || {}, labels = {};
+          ms.forEach(function (m) { (m.labelIds || []).forEach(function (l) { labels[l] = 1; }); });
+          return {
+            id: email + "~" + t.id,
+            account: email,
+            viewUrl: "https://mail.google.com/mail/?authuser=" + encodeURIComponent(email) + "#all/" + t.id,
+            messages: [{
+              sender: hdr(last, "From"),
+              subject: hdr(first, "Subject"),
+              date: new Date(Number(last.internalDate) || Date.now()).toISOString(),
+              labelIds: Object.keys(labels),
+              snippet: decodeEntities(last.snippet || ""),
+              listUnsub: ms.some(function (x) { return !!hdr(x, "List-Unsubscribe"); })
+            }]
+          };
+        });
+      });
+    });
+  }
+
   /* ---------- the tools the app calls ---------- */
   var TOOLS = {
     "Gmail/search_threads": function (i) {
-      return api(GM + "threads?" + qs({ q: i.query, maxResults: i.pageSize || 25 })).then(function (r) {
-        var ids = (r.threads || []).map(function (t) { return t.id; });
-        return pool(ids, 6, function (id) {
-          return api(GM + "threads/" + id + "?" + qs({ format: "metadata", metadataHeaders: ["From", "Subject", "List-Unsubscribe"] }));
-        }).then(function (ts) {
-          return {
-            threads: ts.filter(Boolean).map(function (t) {
-              var ms = t.messages || [], first = ms[0] || {}, last = ms[ms.length - 1] || {}, labels = {};
-              ms.forEach(function (m) { (m.labelIds || []).forEach(function (l) { labels[l] = 1; }); });
-              return {
-                id: t.id,
-                viewUrl: "https://mail.google.com/mail/#all/" + t.id,
-                messages: [{
-                  sender: hdr(last, "From"),
-                  subject: hdr(first, "Subject"),
-                  date: new Date(Number(last.internalDate) || Date.now()).toISOString(),
-                  labelIds: Object.keys(labels),
-                  snippet: decodeEntities(last.snippet || ""),
-                  listUnsub: ms.some(function (x) { return !!hdr(x, "List-Unsubscribe"); })
-                }]
-              };
-            })
-          };
+      return ready.then(function () {
+        var all = accounts();
+        if (!all.length) return Promise.reject(err("needs_signin"));
+        all.forEach(function (e) { if (!readTok(e)) showExpired(e); });
+        var on = live();
+        if (!on.length) return Promise.reject(err("needs_signin"));
+        var firstErr = null;
+        return Promise.all(on.map(function (email) {
+          return searchOne(email, i).catch(function (e) { firstErr = firstErr || e; return null; });
+        })).then(function (parts) {
+          var ok = parts.filter(Boolean);
+          if (!ok.length) throw firstErr || err("tool_error");
+          var threads = [].concat.apply([], ok);
+          threads.sort(function (a, b) { return new Date(b.messages[0].date) - new Date(a.messages[0].date); });
+          return { threads: threads, accounts: on };
         });
       });
     },
     "Gmail/get_thread": function (i) {
-      return api(GM + "threads/" + encodeURIComponent(i.threadId) + "?format=full").then(function (t) {
+      var x = split(i.threadId);
+      return api(GM + "threads/" + encodeURIComponent(x.id) + "?format=full", null, x.email).then(function (t) {
         return {
           messages: (t.messages || []).map(function (m) {
             return {
@@ -230,12 +315,15 @@
         "",
         (b64(i.body || "").match(/.{1,76}/g) || [""]).join("\r\n")
       ];
-      return api(GM + "messages/send", { method: "POST", body: { raw: b64url(lines.join("\r\n")) } });
+      var from = String(i.from || "").toLowerCase();
+      if (accounts().indexOf(from) < 0) from = primary();
+      return api(GM + "messages/send", { method: "POST", body: { raw: b64url(lines.join("\r\n")) } }, from);
     },
-    "Gmail/trash_thread": function (i) { return api(GM + "threads/" + encodeURIComponent(i.threadId) + "/trash", { method: "POST" }); },
-    "Gmail/untrash_thread": function (i) { return api(GM + "threads/" + encodeURIComponent(i.threadId) + "/untrash", { method: "POST" }); },
+    "Gmail/trash_thread": function (i) { var x = split(i.threadId); return api(GM + "threads/" + encodeURIComponent(x.id) + "/trash", { method: "POST" }, x.email); },
+    "Gmail/untrash_thread": function (i) { var x = split(i.threadId); return api(GM + "threads/" + encodeURIComponent(x.id) + "/untrash", { method: "POST" }, x.email); },
     "Gmail/unlabel_thread": function (i) {
-      return api(GM + "threads/" + encodeURIComponent(i.threadId) + "/modify", { method: "POST", body: { removeLabelIds: i.labelIds || [] } });
+      var x = split(i.threadId);
+      return api(GM + "threads/" + encodeURIComponent(x.id) + "/modify", { method: "POST", body: { removeLabelIds: i.labelIds || [] } }, x.email);
     },
     "Google Calendar/list_calendars": function () {
       return api(CA + "users/me/calendarList?" + qs({ maxResults: 50 })).then(function (r) {
