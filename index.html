@@ -1275,6 +1275,60 @@ html.motion .wps.in{animation:wpsIn .4s cubic-bezier(.2,.9,.3,1)}
 .wrzt{position:fixed;z-index:90;pointer-events:none;padding:4px 11px;border-radius:99px;background:var(--accent);color:#fff;font-size:12.5px;font-weight:700;box-shadow:0 6px 16px rgba(0,0,0,.25)}
 html.motion .wrzt.pop{animation:wrzPop .3s cubic-bezier(.3,1.6,.5,1)}
 @keyframes wrzPop{40%{scale:1.18}}
+/* ===== Settings 3 ===== */
+#st .s3g{margin:0 0 18px;padding:4px 16px;border-radius:20px;background:var(--glass-lo);border:1px solid var(--line)}
+#st .s3h{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--mute);margin:12px 0 2px}
+#st .s3r{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-top:1px solid var(--line)}
+#st .s3h+.s3r,#st .s3h+.s3wpr{border-top:0}
+#st .s3r.col{flex-direction:column;align-items:stretch;gap:10px}
+#st .s3l{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+#st .s3l b{font-size:15px;font-weight:600;color:var(--ink)}
+#st .s3l small{font-size:12.5px;color:var(--mute);line-height:1.35}
+#st .s3c{flex:none;min-width:0}
+#st .s3r.col .s3c{width:100%}
+#st .s3r .stseg{min-width:220px}
+#st .s3r.col .stseg{min-width:0}
+#st .s3t{position:relative;display:block;cursor:pointer}
+#st .s3t input{position:absolute;opacity:0;width:1px;height:1px}
+#st .s3t i{display:block;position:relative;width:48px;height:29px;border-radius:99px;background:color-mix(in srgb,var(--mute) 40%,transparent);transition:background .2s}
+#st .s3t i::after{content:"";position:absolute;left:3px;top:3px;width:23px;height:23px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.3);transition:transform .22s cubic-bezier(.2,.9,.3,1.2)}
+#st .s3t input:checked+i{background:#30d158}
+#st .s3t input:checked+i::after{transform:translateX(19px)}
+#st .s3t input:focus-visible+i{outline:2px solid var(--accent);outline-offset:2px}
+#st .s3sw{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+#st .s3d{position:relative;width:30px;height:30px;padding:0;border:0;border-radius:50%;background:var(--w);cursor:pointer;box-shadow:inset 0 0 0 1px rgba(0,0,0,.14);transition:scale .15s}
+#st .s3d:hover{scale:1.1}
+#st .s3d.on{box-shadow:0 0 0 2px var(--panel),0 0 0 4px var(--w)}
+#st .s3d.on::after{content:"";position:absolute;left:50%;top:45%;width:7px;height:12px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:translate(-50%,-50%) rotate(45deg);filter:drop-shadow(0 0 1px rgba(0,0,0,.5))}
+#st .s3d.any{display:block;background:conic-gradient(#ff3b30,#ffcc00,#34c759,#32ade6,#5856d6,#ff2d55,#ff3b30)}
+#st .s3d.any.on{background:var(--w)}
+#st .s3d.any input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;margin:0;padding:0;border:0}
+#st .s3d:focus-visible,#st .s3d.any:focus-within{outline:2px solid var(--accent);outline-offset:4px}
+#st .s3mini{margin-left:auto;padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:var(--glass);color:var(--ink);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+#st .s3mini:hover{background:color-mix(in srgb,var(--accent) 12%,var(--glass))}
+#st .s3mini.quiet{border:0;background:none;color:var(--mute);font-weight:500}
+#st .s3mini.quiet:hover{color:#ff453a}
+#st .s3wpr{display:flex;align-items:center;gap:14px;width:100%;padding:12px 0;border:0;border-top:1px solid var(--line);background:none;color:inherit;font:inherit;text-align:left;cursor:pointer}
+#st .s3wpr:hover .s3go{color:var(--accent)}
+#st .s3wpr:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:12px}
+#st .s3wp{flex:none;width:72px;height:48px;aspect-ratio:auto;border-radius:12px}
+#st .s3wpin{position:absolute;left:0;top:0;width:1440px;height:960px;transform:scale(.05);transform-origin:0 0;container-type:size}
+#st .s3wpin>*{position:absolute;inset:0}
+#st .s3go{display:flex;align-items:center;gap:2px;font-size:14px;font-weight:600;color:var(--mute);transition:color .15s}
+#st .s3rng{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--mute)}
+#st .s3rng input{flex:1;accent-color:var(--accent);margin:0;padding:0;border:0;background:none;box-shadow:none}
+#st .s3p{margin:0 2px 14px;font-size:13.5px;color:var(--mute);line-height:1.45}
+#st .s3acc{padding:14px 0;border-top:1px solid var(--line)}
+#st .s3acc:first-child{border-top:0}
+#st .s3ah{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+#st .s3dot{flex:none;width:14px;height:14px;border-radius:50%;background:var(--ac);box-shadow:0 0 0 4px color-mix(in srgb,var(--ac) 22%,transparent)}
+#st .s3link{display:flex;align-items:center;justify-content:space-between;width:100%;padding:12px 0;border:0;border-top:1px solid var(--line);background:none;color:var(--accent);font:inherit;font-size:14px;font-weight:600;cursor:pointer;text-align:left}
+@media(max-width:600px){#st .s3r{flex-wrap:wrap}#st .s3r .stseg{min-width:0;width:100%}#st .s3g{padding:4px 14px}}
+/* wallpaper studio, simpler */
+.wpintro{margin:0 2px 14px;font-size:13.5px;color:var(--mute);line-height:1.45}
+.wpladj{display:flex;align-items:center;justify-content:space-between}
+.wpreset{border:0;background:none;color:var(--accent);font:inherit;font-size:12.5px;font-weight:700;letter-spacing:0;text-transform:none;cursor:pointer;padding:0}
+.wpsws{grid-template-columns:repeat(6,minmax(0,1fr))!important}
 </style>
 <script>try{var t=localStorage.getItem("wth");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);var a=localStorage.getItem("wacc");if(/^#[0-9a-f]{6}$/i.test(a||"")){var r=document.documentElement.style;r.setProperty("--accent",a);r.setProperty("--dot",a);r.setProperty("--today",a)}}catch(e){}</script>
 </head>
@@ -2678,7 +2732,7 @@ function liveLabel(withWx){var h=hourNow(),p=h<5?"Night":h<8?"Dawn":h<12?"Mornin
 return p+(withWx?(w?" · "+WXN[wxKind(w.code)]+(city?" in "+city:""):" · add the Weather widget for live weather"):"")}
 
 /* ---------- colour blend ---------- */
-var HARM=[["soft","Soft blend"],["bold","Contrast"],["mono","One colour"]];
+var HARM=[["soft","Soft"],["bold","Two colours"],["mono","One colour"]];
 function colourPal(c,harm){var hsl=hex2hsl(c),H=hsl[0],S=Math.max(45,hsl[1]),dk=isDark(),L=dk?[10,42,34,30,38,26]:[94,74,80,82,76,86];
 var hues=harm==="mono"?[H,H,H,H,H,H]:harm==="bold"?[H,H,H+180,H+30,H+200,H-30]:[H,H,H+35,H-35,H+60,H-60];
 return hues.map(function(h,i){return hsl2hex(((h%360)+360)%360,i===0?(dk?30:35):S,L[i])})}
@@ -2713,32 +2767,30 @@ if(X.mode==="photo")photoColour(set);else set(sceneColour())}
 
 /* ---------- the studio panel ---------- */
 var P=document.createElement("aside");P.id="wps";P.className="wps";P.setAttribute("role","dialog");P.setAttribute("aria-modal","false");P.setAttribute("aria-labelledby","wpsh");P.hidden=true;
-P.innerHTML='<div class="wpsh"><div><h3 id="wpsh">Wallpaper</h3><p class="shsub">Changes show on the page right away</p></div><button class="x" id="wpsx" type="button" aria-label="Close">×</button></div><div class="wpstabs" id="wpstabs" role="tablist" aria-label="Kind of wallpaper"></div><div id="wpsb" class="wpsb" role="tabpanel"></div>';
+P.innerHTML='<div class="wpsh"><div><h3 id="wpsh">Wallpaper</h3><p class="shsub">Pick one and the page changes right away</p></div><button class="x" id="wpsx" type="button" aria-label="Close">×</button></div><div class="wpstabs" id="wpstabs" role="tablist" aria-label="Kind of wallpaper"></div><div id="wpsb" class="wpsb" role="tabpanel"></div>';
 document.body.appendChild(P);
-var TABS=[["scene","Scenes"],["live","Living"],["color","Colour"],["photo","Photo"]],tab=X.mode==="time"?"live":X.mode;
+var TABS=[["scene","Pictures"],["live","Live sky"],["color","Colour"],["photo","Photo"]],tab=X.mode==="time"?"live":X.mode;
 function thumb(sc,bg){return '<span class="wpt" style="background:'+bg+'"><span class="wptin">'+sc+'</span></span>'}
 function chk(on){return on?'<i class="wpck" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i>':''}
 function slider(id,label,min,max,val,unit){return '<label class="wpsl"><span>'+label+'</span><input type="range" id="'+id+'" min="'+min+'" max="'+max+'" value="'+val+'"><b id="'+id+'v">'+val+unit+'</b></label>'}
 function sw(id,label,sub,on){return '<label class="wpsw"><span><b>'+label+'</b>'+(sub?'<small>'+sub+'</small>':'')+'</span><input type="checkbox" role="switch" id="'+id+'"'+(on?' checked':'')+'><i aria-hidden="true"></i></label>'}
 function draw(){EL("wpstabs").innerHTML=TABS.map(function(t){var on=t[0]===tab;return '<button type="button" role="tab" aria-selected="'+on+'" tabindex="'+(on?0:-1)+'" data-wt="'+t[0]+'"'+(on?' class="on"':'')+'>'+t[1]+'</button>'}).join("");
 var h="";
-if(tab==="scene"){h='<div class="wpgrid">'+WP.map(function(w){var on=X.mode==="scene"&&(X.id||cur)===w.id,p=pal(w);return '<button type="button" class="wpc'+(on?' on':'')+'" data-sc="'+w.id+'" aria-pressed="'+on+'">'+thumb(scene(w,p),p[0])+chk(on)+'<span class="wpn">'+esc(w.n)+'</span></button>'}).join("")+'</div>'+
-'<p class="wpnote">Each scene has a day and a night version and switches with your theme.</p>'+sw("wprot","New scene every day","Picks the next scene each morning",!!X.rot)}
-else if(tab==="live"){var a=living(true,true),b=living(false,true);h='<div class="wpgrid two">'+
-'<button type="button" class="wpc big'+(X.mode==="live"?' on':'')+'" data-md="live" aria-pressed="'+(X.mode==="live")+'">'+thumb(a.html,a.bg)+chk(X.mode==="live")+'<span class="wpn">Sky now<small>'+esc(liveLabel(true))+'</small></span></button>'+
-'<button type="button" class="wpc big'+(X.mode==="time"?' on':'')+'" data-md="time" aria-pressed="'+(X.mode==="time")+'">'+thumb(b.html,b.bg)+chk(X.mode==="time")+'<span class="wpn">Time of day<small>'+esc(liveLabel(false))+'</small></span></button></div>'+
-'<p class="wpnote">The sky follows your clock, from dawn to night with the sun and moon in the right place. Sky now also shows clouds, rain, snow or fog from your Weather widget’s city.</p>'}
+if(tab==="scene"){h='<p class="wpintro">Each picture has a day and a night look that follows your theme.</p><div class="wpgrid">'+WP.map(function(w){var on=X.mode==="scene"&&(X.id||cur)===w.id,p=pal(w);return '<button type="button" class="wpc'+(on?' on':'')+'" data-sc="'+w.id+'" aria-pressed="'+on+'">'+thumb(scene(w,p),p[0])+chk(on)+'<span class="wpn">'+esc(w.n)+'</span></button>'}).join("")+'</div>'+
+sw("wprot","A different picture every day","",!!X.rot)}
+else if(tab==="live"){var a=living(true,true),b=living(false,true);h='<p class="wpintro">A sky that changes through the day, with the sun and moon where they really are.</p><div class="wpgrid two">'+
+'<button type="button" class="wpc big'+(X.mode==="live"?' on':'')+'" data-md="live" aria-pressed="'+(X.mode==="live")+'">'+thumb(a.html,a.bg)+chk(X.mode==="live")+'<span class="wpn">Sky and weather<small>'+esc(liveLabel(true))+'</small></span></button>'+
+'<button type="button" class="wpc big'+(X.mode==="time"?' on':'')+'" data-md="time" aria-pressed="'+(X.mode==="time")+'">'+thumb(b.html,b.bg)+chk(X.mode==="time")+'<span class="wpn">Sky only<small>'+esc(liveLabel(false))+'</small></span></button></div>'+
+'<p class="wpnote">Weather comes from the city in your Weather widget.</p>'}
 else if(tab==="color"){var c=X.color||getAccent()||ACC_DEF,hm=X.harm||"soft",sel=X.mode==="color";
-h='<div class="wpcolprev">'+thumb(mesh(colourPal(c,hm)),colourPal(c,hm)[0])+'</div>'+
-'<div class="wpl">Colour</div><div class="wpsws" role="radiogroup" aria-label="Colour"><button type="button" role="radio" class="wpcw acc'+(!X.color?' on':'')+'" aria-checked="'+!X.color+'" data-col="" style="--w:'+(getAccent()||ACC_DEF)+'" title="Your accent colour" aria-label="Your accent colour"></button>'+PALS[0][1].concat(PALS[1][1].slice(0,5)).map(function(p){var on=X.color===p[0];return '<button type="button" role="radio" class="wpcw'+(on?' on':'')+'" aria-checked="'+on+'" data-col="'+p[0]+'" style="--w:'+p[0]+'" title="'+p[1]+'" aria-label="'+p[1]+'"></button>'}).join("")+'<label class="wpcw any" title="Any colour" style="--w:'+c+'"><input type="color" id="wpany" value="'+c+'" aria-label="Any colour"></label></div>'+
-'<div class="wpl">Blend</div><div class="stseg wpseg" role="radiogroup" aria-label="Blend">'+HARM.map(function(o){var on=o[0]===hm;return '<button type="button" role="radio" aria-checked="'+on+'" data-hm="'+o[0]+'"'+(on?' class="on"':'')+'>'+o[1]+'</button>'}).join("")+'</div>'+
-(sel?'':'<button type="button" class="btn pri wpuse" data-md="color">Use this wallpaper</button>')}
-else{var ph=ls("wp-photo","");h=(ph?'<div class="wpcolprev">'+thumb('<div class="sky lv-photo" style="background-image:url('+ph+')"></div>',"#000")+'</div>':'<label class="wpdrop" id="wpdrop"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg><b>Choose a photo</b><small>or drop one here</small><input type="file" id="wpfile" accept="image/*" hidden></label>')+
+h='<p class="wpintro">A soft blend made from one colour. The first one is your accent colour.</p><div class="wpcolprev">'+thumb(mesh(colourPal(c,hm)),colourPal(c,hm)[0])+'</div>'+
+'<div class="wpl">Colour</div><div class="wpsws" role="radiogroup" aria-label="Colour"><button type="button" role="radio" class="wpcw acc'+(!X.color?' on':'')+'" aria-checked="'+!X.color+'" data-col="" style="--w:'+(getAccent()||ACC_DEF)+'" title="Your accent colour" aria-label="Your accent colour"></button>'+[["#7c4dff","Purple"],["#0a84ff","Blue"],["#64d2ff","Sky"],["#30d158","Green"],["#ffcc00","Yellow"],["#ff9f0a","Orange"],["#ff375f","Pink"],["#bf5af2","Lilac"],["#a2845e","Brown"],["#8e8e93","Grey"]].map(function(p){var on=X.color===p[0];return '<button type="button" role="radio" class="wpcw'+(on?' on':'')+'" aria-checked="'+on+'" data-col="'+p[0]+'" style="--w:'+p[0]+'" title="'+p[1]+'" aria-label="'+p[1]+'"></button>'}).join("")+'<label class="wpcw any" title="Any colour" style="--w:'+c+'"><input type="color" id="wpany" value="'+c+'" aria-label="Any colour"></label></div>'+
+'<div class="wpl">Style</div><div class="stseg wpseg" role="radiogroup" aria-label="Blend">'+HARM.map(function(o){var on=o[0]===hm;return '<button type="button" role="radio" aria-checked="'+on+'" data-hm="'+o[0]+'"'+(on?' class="on"':'')+'>'+o[1]+'</button>'}).join("")+'</div>'+
+(sel?'':'<button type="button" class="btn pri wpuse" data-md="color">Use colour blend</button>')}
+else{var ph=ls("wp-photo","");h='<p class="wpintro">Use a photo of your own.</p>'+(ph?'<div class="wpcolprev">'+thumb('<div class="sky lv-photo" style="background-image:url('+ph+')"></div>',"#000")+'</div>':'<label class="wpdrop" id="wpdrop"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg><b>Choose a photo</b><small>or drop one here</small><input type="file" id="wpfile" accept="image/*" hidden></label>')+
 (ph?'<div class="wprow"><label class="btn">Change photo<input type="file" id="wpfile" accept="image/*" hidden></label><button type="button" class="btn del" id="wpphrm">Remove</button>'+(X.mode==="photo"?'':'<button type="button" class="btn pri" data-md="photo">Use this photo</button>')+'</div>':'')+
-'<p class="wpnote">Your photo is shrunk and saved in this browser only.</p>'}
-h+='<div class="wpl">Adjust</div>'+slider("wpbl","Blur",0,40,X.blur||0,"")+slider("wpdi","Brightness",40,120,X.dim||100,"%")+slider("wpgl","Glass",0,100,typeof GL==="number"?GL:50,"")+
-sw("wpmo2","Motion","Clouds, waves and stars drift slowly",!!(window.WO?WO.a:true))+sw("wpgr2","Grain","A fine film texture",!!(window.WO?WO.g:true))+
-'<button type="button" class="btn wpacc" id="wpacc"><i style="background:'+(getAccent()||ACC_DEF)+'"></i>Use a wallpaper colour as my accent</button>';
+'<p class="wpnote">It’s saved in this browser only.</p>'}
+h+='<div class="wpl wpladj">Adjust<button type="button" class="wpreset" id="wpreset"'+((X.blur||0)||(X.dim||100)!==100?'':' hidden')+'>Reset</button></div>'+slider("wpbl","Blur",0,40,X.blur||0,"")+slider("wpdi","Brightness",40,120,X.dim||100,"%")+'<p class="wpnote">Colours, panels and animations are in Settings › Look.</p>';
 EL("wpsb").innerHTML=h;fixDrop()}
 function mark(){if(!P.hidden&&tab==="scene")P.querySelectorAll("[data-sc]").forEach(function(b){var on=X.mode==="scene"&&(X.id||cur)===b.dataset.sc;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on);var c=b.querySelector(".wpck");if(on&&!c)b.querySelector(".wpt").insertAdjacentHTML("afterend",chk(true));if(!on&&c)c.remove()})}
 function fixDrop(){var d=EL("wpdrop");if(!d)return;["dragenter","dragover"].forEach(function(n){d.addEventListener(n,function(e){e.preventDefault();d.classList.add("over")})});["dragleave","drop"].forEach(function(n){d.addEventListener(n,function(){d.classList.remove("over")})});d.addEventListener("drop",function(e){e.preventDefault();var f=e.dataTransfer&&e.dataTransfer.files[0];if(f)loadPhoto(f)})}
@@ -2761,10 +2813,11 @@ if((b=t.closest("[data-md]"))){setMode(b.dataset.md);return}
 if((b=t.closest("[data-col]"))){X.color=b.dataset.col||"";X.mode="color";saveX();render();draw();var n=P.querySelector('[data-col="'+X.color+'"]');if(n)n.focus();return}
 if((b=t.closest("[data-hm]"))){X.harm=b.dataset.hm;X.mode="color";saveX();render();draw();var n2=P.querySelector('[data-hm="'+X.harm+'"]');if(n2)n2.focus();return}
 if(t.id==="wpphrm"){try{localStorage.removeItem("wp-photo")}catch(x){}if(X.mode==="photo"){X.mode="scene";saveX();render()}draw();return}
-if(t.closest("#wpacc")){accentFromWp();return}});
+if(t.closest("#wpacc")){accentFromWp();return}
+if(t.id==="wpreset"){X.blur=0;X.dim=100;saveX();adjust();draw();return}});
 P.addEventListener("input",function(e){var t=e.target;
-if(t.id==="wpbl"){X.blur=+t.value;EL("wpblv").textContent=t.value;adjust();saveX()}
-else if(t.id==="wpdi"){X.dim=+t.value;EL("wpdiv").textContent=t.value+"%";adjust();saveX()}
+if(t.id==="wpbl"){X.blur=+t.value;EL("wpblv").textContent=t.value;adjust();saveX();EL("wpreset").hidden=false}
+else if(t.id==="wpdi"){X.dim=+t.value;EL("wpdiv").textContent=t.value+"%";adjust();saveX();EL("wpreset").hidden=false}
 else if(t.id==="wpgl"){EL("wpglv").textContent=t.value;if(typeof setGl==="function")setGl(t.value,true)}
 else if(t.id==="wpany"){X.color=t.value;X.mode="color";saveX();render();var pv=P.querySelector(".wpcolprev");if(pv){var pp=colourPal(t.value,X.harm||"soft");pv.innerHTML=thumb(mesh(pp),pp[0])}}});
 P.addEventListener("change",function(e){var t=e.target;
@@ -2774,7 +2827,7 @@ else if(t.id==="wpgr2"){var g=EL("wpgr");if(g){g.checked=t.checked;g.onchange&&g
 else if(t.id==="wpany"){draw()}
 else if(t.id==="wpfile"&&t.files&&t.files[0])loadPhoto(t.files[0])});
 render();
-window.__wps={open:openP,close:closeP,X:X,render:render};
+window.__wps={open:openP,close:closeP,X:X,render:render,accent:accentFromWp};
 })();
 /* ===== Widgets 4: fewer, better widgets ===== */
 (function(){
@@ -2906,6 +2959,60 @@ document.addEventListener("click",function(e){if(e.target.closest&&e.target.clos
 /* the old S/M/L button gives way to the handle */
 handles("mail");handles("calendar");
 window.__wrz={apply:apply};
+})();
+/* ===== Settings 3: one place for each setting, in plain words ===== */
+(function(){
+var SW10=[["#7c4dff","Purple"],["#0a84ff","Blue"],["#64d2ff","Sky"],["#30d158","Green"],["#ffcc00","Yellow"],["#ff9f0a","Orange"],["#ff375f","Pink"],["#bf5af2","Lilac"],["#a2845e","Brown"],["#8e8e93","Grey"]];
+TABS=[["look","Look"],["mail","Mail"],["acc","Accounts"],["lists","Filters"]];
+if(!TABS.some(function(t){return t[0]===stTab}))stTab="look";stTab="look";
+function row(label,help,control,cls){return '<div class="s3r'+(cls?" "+cls:"")+'"><div class="s3l"><b>'+label+'</b>'+(help?'<small>'+help+'</small>':'')+'</div><div class="s3c">'+control+'</div></div>'}
+function seg(id,opts,cur,label){return '<div class="stseg" role="radiogroup" aria-label="'+label+'">'+opts.map(function(o){var on=o[0]===cur;return '<button type="button" role="radio" aria-checked="'+on+'" data-seg="'+id+'" data-v="'+o[0]+'"'+(on?' class="on"':'')+'>'+o[1]+'</button>'}).join("")+'</div>'}
+function tog(id,on,label){return '<label class="s3t"><input type="checkbox" role="switch" data-p="'+id+'"'+(on?' checked':'')+' aria-label="'+label+'"><i aria-hidden="true"></i></label>'}
+function swatches(key,cur,label,extra){cur=(cur||"").toLowerCase();var inList=SW10.some(function(s){return s[0]===cur});
+return '<div class="s3sw" role="radiogroup" aria-label="'+label+'">'+SW10.map(function(s){var on=s[0]===cur;return '<button type="button" role="radio" aria-checked="'+on+'" class="s3d'+(on?' on':'')+'" data-swk="'+esc(key)+'" data-swc="'+s[0]+'" style="--w:'+s[0]+'" title="'+s[1]+'" aria-label="'+s[1]+'"></button>'}).join("")+
+'<label class="s3d any'+(inList?'':' on')+'" style="--w:'+(inList?'#ffffff':cur)+'" title="Any colour"><input type="color" data-swi="'+esc(key)+'" value="'+(cur||"#7c4dff")+'" aria-label="Pick any colour"></label>'+(extra||"")+'</div>'}
+function wpName(){var X=jparse("wpx",{}),m=X.mode||"scene";if(m==="live")return "Live sky with weather";if(m==="time")return "Live sky";if(m==="color")return "Colour blend";if(m==="photo")return "Your photo";var w=WP.filter(function(x){return x.id===(X.id||ls("wp","default"))})[0];return w?w.n:"Default"}
+function wpThumb(){var bg=EL("bg"),L=bg?bg.querySelectorAll(".lyr"):[],ly=L[L.length-1];return '<span class="wpt s3wp" style="background:'+getComputedStyle(document.documentElement).getPropertyValue("--bg")+'"><span class="wptin">'+(ly?ly.innerHTML:"")+'</span></span>'}
+drawSettings=function(){var b=EL("stbody"),p=P(),A=accts(),h="";
+EL("sttabs").innerHTML=TABS.map(function(t){var on=t[0]===stTab;return '<button type="button" role="tab" id="stt-'+t[0]+'" aria-selected="'+on+'" tabindex="'+(on?0:-1)+'" data-tab="'+t[0]+'"'+(on?' class="on"':'')+'>'+t[1]+'</button>'}).join("");
+if(stTab==="look"){var acc=getAccent()||ACC_DEF;
+h='<div class="s3g"><div class="s3h">Colours</div>'+
+row("Theme","Automatic follows your device",seg("theme",[["auto","Automatic"],["light","Light"],["dark","Dark"]],typeof TH==="string"?TH:"auto","Theme"),"col")+
+row("Accent colour","Buttons, links and today’s date",swatches("accent",acc,"Accent colour",'<button type="button" class="s3mini" id="s3match">Match wallpaper</button>'),"col")+'</div>'+
+'<div class="s3g"><div class="s3h">Background</div>'+
+'<button type="button" class="s3wpr" id="s3wp">'+wpThumb()+'<span class="s3l"><b>Wallpaper</b><small>'+esc(wpName())+'</small></span><span class="s3go">Change<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></span></button>'+
+row("Panels","How much wallpaper shows through",'<div class="s3rng"><span>See-through</span><input type="range" id="s3glass" min="0" max="100" value="'+(typeof GL==="number"?GL:50)+'" aria-label="Panels, from see-through to solid"><span>Solid</span></div>',"col")+'</div>'+
+'<div class="s3g"><div class="s3h">Layout and motion</div>'+
+row("Email list",null,seg("dense",[["0","Roomy"],["1","Compact"]],String(p.dense?1:0),"Email list"))+
+row("Animations",(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)?"Off because your device asks for less motion":"Smooth movement, including the wallpaper",tog("anim",P().anim!==0,"Animations"))+
+row("Film grain","A fine texture over the wallpaper",'<label class="s3t"><input type="checkbox" role="switch" id="s3grain"'+((window.WO?WO.g:true)?' checked':'')+' aria-label="Film grain"><i aria-hidden="true"></i></label>')+'</div>'}
+else if(stTab==="mail"){h='<div class="s3g"><div class="s3h">Inbox</div>'+
+row("Open on","The tab you see first",seg("open",[["in","Inbox"],["imp","Important"]],p.open,"Open on"))+
+row("Message previews","A line of text under each subject",tog("snip",p.snip,"Message previews"))+
+row("Account labels","Which account each email came to",tog("accl",p.accl,"Account labels"))+
+row("Star important emails","★ in the Inbox next to emails that are also in Important",tog("star",p.star,"Star important emails"))+
+row("Mark as read when opened","Off keeps emails unread until you read them in Gmail",tog("mread",p.mread,"Mark as read when opened"))+'</div>'+
+'<div class="s3g"><div class="s3h">Spam</div>'+row("Spam filter","Moves promotions and discounts to Spam. TikTok and senders on your spam list always go there",tog("spamauto",p.spamauto,"Spam filter"))+
+'<button type="button" class="s3link" data-tab="lists">Edit your spam and important senders<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div>'+
+'<button type="button" class="btn sm" id="stkb">Keyboard shortcuts</button>'}
+else if(stTab==="acc"){h='<p class="s3p">Each account has a colour. It marks that account’s emails, filter button and calendar.</p>'+(A.length?'<div class="s3g">'+A.map(function(e,i){var a=(window.gAuth&&gAuth.accounts?gAuth.accounts():[]).filter(function(x){return x.email===e})[0],c=accColor(e);
+return '<div class="s3acc" style="--ac:'+c+'"><div class="s3ah"><span class="s3dot"></span><span class="s3l"><b>'+esc(e)+'</b><small>'+(i===0?"Calendar and main account":"")+(a&&!a.on?(i===0?" · ":"")+"Signed out":"")+'</small></span><button type="button" class="s3mini quiet" data-acout="'+esc(e)+'">Sign out</button></div>'+swatches("acc:"+e,c,"Colour for "+e)+'</div>'}).join("")+'</div>':'<p class="stempty">Sign in with Google to see your accounts here.</p>')+
+(window.gAuth&&gAuth.addAccount?'<button type="button" class="btn stadd" id="stadd"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Add another Gmail account</button>':'')}
+else{var L=[["wd-spamfrom","Always spam","Goes straight to Spam.",1],["wd-notspam","Never spam","Always stays in your Inbox.",0],["wd-imp","Always important","Always shows in Important.",1],["wd-notimp","Never important","Never shows in Important.",0]];
+h='<p class="s3p">You can add a full address (name@shop.com) or a whole website (shop.com). Senders also land here when you press Spam, Not spam, Important or Not important on an email.</p>'+L.map(function(l){var a=listOf(l[0]);return '<div class="stlist"><div class="stlh"><b>'+l[1]+'</b><span class="stlc">'+a.length+'</span></div><small>'+l[2]+'</small><div class="stchips">'+(a.length?a.map(function(x){return '<span class="stchip">'+esc(x)+'<button type="button" data-lrm="'+l[0]+'" data-v="'+esc(x)+'" aria-label="Remove '+esc(x)+'">×</button></span>'}).join(""):'<span class="stnone">No senders yet</span>')+'</div>'+(l[3]?'<form class="stladd" data-l="'+l[0]+'"><input type="text" placeholder="name@shop.com or shop.com" aria-label="Add to '+l[1]+'" autocomplete="off"><button type="submit" class="btn sm">Add</button></form>':'')+'</div>'}).join("")}
+b.innerHTML=h;b.setAttribute("aria-labelledby","stt-"+stTab)};
+/* colour swatches, the wallpaper row, panels, grain and "match wallpaper" */
+EL("st").addEventListener("click",function(e){var t=e.target,b;
+if((b=t.closest("[data-swc]"))){e.stopPropagation();setCol(b.dataset.swk,b.dataset.swc);drawSettings();var n=EL("st").querySelector('[data-swk="'+b.dataset.swk+'"][data-swc="'+b.dataset.swc+'"]');if(n)n.focus();return}
+if(t.closest("#s3wp")){closeSt();if(window.__wps)__wps.open();return}
+if(t.closest("#s3match")){if(window.__wps&&__wps.accent){__wps.accent();setTimeout(drawSettings,60)}return}},true);
+EL("st").addEventListener("input",function(e){var t=e.target;if(t.id==="s3glass"&&typeof setGl==="function"){setGl(t.value,true)}
+else if(t.dataset&&t.dataset.swi){setCol(t.dataset.swi,t.value,1);var l=t.closest(".s3d");if(l){l.style.setProperty("--w",t.value);l.parentNode.querySelectorAll(".s3d").forEach(function(x){x.classList.toggle("on",x===l)})}}},true);
+EL("st").addEventListener("change",function(e){var t=e.target;if(t.id==="s3grain"){var g=EL("wpgr");if(g){g.checked=t.checked;g.onchange&&g.onchange()}}
+else if(t.dataset&&t.dataset.swi){if(typeof pushRecent==="function")pushRecent(t.value);drawSettings()}
+else if(t.dataset&&t.dataset.p==="anim"){var a=EL("wpmo");if(a){a.checked=t.checked;a.onchange&&a.onchange()}}},true);
+/* one switch for motion: the wallpaper follows the Animations setting */
+(function(){var a=EL("wpmo"),on=P().anim!==0;if(a&&a.checked!==on){a.checked=on;a.onchange&&a.onchange()}})();
 })();
 </script>
 </body>
