@@ -509,6 +509,52 @@ header h1{padding-right:112px}
 .gexp{position:fixed;left:50%;top:16px;transform:translateX(-50%);z-index:80;display:flex;align-items:center;gap:12px;padding:8px 8px 8px 16px;border-radius:999px;background:var(--glass);-webkit-backdrop-filter:blur(30px) saturate(180%);backdrop-filter:blur(30px) saturate(180%);border:1px solid var(--line);box-shadow:inset 0 1px 0 var(--glass-hi),var(--shadow);font-size:14px;color:var(--ink)}
 .gexp .btn{padding:7px 14px;font-size:13px}
 .why{margin-left:6px;padding:0 7px;border-radius:99px;font-size:10px;font-weight:600;background:color-mix(in srgb,var(--accent) 16%,transparent);color:var(--accent);vertical-align:1px}
+.wd{-webkit-backdrop-filter:blur(var(--bl,35px)) saturate(190%);backdrop-filter:blur(var(--bl,35px)) saturate(190%);box-shadow:inset 0 1px 0 var(--glass-hi),inset 0 -1px 0 var(--glass-lo),0 10px 30px rgba(0,0,0,.14);transition:transform .2s cubic-bezier(.2,.9,.3,1),box-shadow .2s;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.wd::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(160deg,var(--gloss),transparent 38%);opacity:.7}
+.wds:not(.edit) .wd:hover{transform:translateY(-2px);box-shadow:inset 0 1px 0 var(--glass-hi),0 16px 40px rgba(0,0,0,.2)}
+.wds.edit .wd{touch-action:none;cursor:grab}
+.wd.dragging{z-index:20;cursor:grabbing;animation:none!important;box-shadow:0 26px 60px rgba(0,0,0,.4);opacity:.96}
+.wd .wb textarea,.wd .wb input{user-select:text;-webkit-user-select:text}
+.whint{font-size:12px;color:var(--mute)}
+.wmv button svg{display:block;margin:auto}
+.wxn{display:flex;align-items:center;gap:10px}
+.wxi{font-size:34px;line-height:1}
+.wxf{display:none;gap:6px;margin-top:10px}
+.zw .wxf,.zl .wxf{display:flex}
+.wxd{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;border-radius:12px;background:var(--glass-lo);font-size:12px}
+.wxd i{font-style:normal;font-size:18px}
+.wxd em{font-style:normal;color:var(--mute)}
+.wcr em{font-style:normal;font-size:11px;color:var(--mute);margin-left:4px}
+.hbr{display:flex;align-items:center;gap:8px;padding:4px 0}
+.hbk{flex:none;width:26px;height:26px;border-radius:50%;border:2px solid color-mix(in srgb,var(--tn) 70%,var(--mute));background:none;color:#fff;font:inherit;font-size:14px;font-weight:700;cursor:pointer;display:grid;place-items:center;transition:background .2s,transform .15s}
+.hbk.on{background:var(--tn);border-color:var(--tn)}
+.hbk:active{transform:scale(.9)}
+.hbk:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.hbn{flex:1;min-width:0;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hbd{display:flex;gap:3px}
+.hbd i{width:7px;height:7px;border-radius:50%;background:var(--glass-lo);box-shadow:inset 0 0 0 1px var(--line)}
+.hbd i.on{background:var(--tn);box-shadow:none}
+.hbs{width:34px;text-align:right;font-size:12px}
+.swt{font-variant-numeric:tabular-nums}
+.swl{margin-top:6px;font-size:12px;color:var(--mute)}
+.swl div{display:flex;justify-content:space-between}
+.mm{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-top:6px;text-align:center;font-size:11px}
+.mm b{font-weight:500;color:var(--mute);font-size:10px}
+.mm i{font-style:normal;padding:3px 0;border-radius:8px;position:relative}
+.mm i.e::after{content:"";position:absolute;left:50%;bottom:0;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--tn)}
+.mm i.t{background:var(--accent);color:#fff;font-weight:700}
+.zl .mm{font-size:14px;gap:4px}
+.wgtools{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.wgtools input{font:inherit;font-size:15px;padding:10px 16px;border-radius:999px;border:1px solid var(--line);background:var(--glass-lo);color:var(--ink);outline:none}
+.wgtools input:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
+.wgcats{display:flex;flex-wrap:wrap;gap:6px}
+.wgc.added{box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--accent) 45%,transparent)}
+.setgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:4px 10px;margin-top:6px}
+.setgrid .chk{margin:0;font-size:14px;color:var(--ink)}
+.setres{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.setres .wbtn.on{background:var(--accent);color:#fff;border-color:transparent}
+.setres em{font-style:normal;opacity:.7;font-size:12px}
+#wset textarea{width:100%;font:inherit;font-size:15px;padding:10px 12px;border-radius:14px;border:1px solid var(--line);background:var(--glass-lo);color:var(--ink);resize:vertical}
 </style>
 <script>try{var t=localStorage.getItem("wth");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 </head>
@@ -618,7 +664,7 @@ return [nm,dec(m.subject||"(no subject)"),m.date||"",(m.labelIds||[]).indexOf("U
 var ERR={needs_reauth:"reconnect Gmail in Settings > Connectors",server_not_connected:"Gmail is not connected",not_in_manifest:"Gmail access was not allowed",approval_required:"Gmail needs your approval"};
 (async function(){try{var mcp=window.claude&&await claude.use("mcp");if(!mcp)return;
 mcp.watchTool("Gmail","search_threads",{query:"in:inbox newer_than:14d",pageSize:25,view:"THREAD_VIEW_SUMMARY"},function(ev){connStat("gmail",ev);EL("rfmail").classList.remove("spin");
-if(ev.type==="data"){var L=fromThreads(ev.result.payload);if(L&&L.length){liveOk=1;var at=new Date((ev.result.cache&&ev.result.cache.storedAt)||Date.now());renderMail(L,"updated "+new Intl.DateTimeFormat("en-GB",{hour:"2-digit",minute:"2-digit",timeZone:tz}).format(at)+", every 5 min")}else if(!liveOk){renderMail(M,"not loaded: couldn’t read Gmail response")}}
+if(ev.type==="data"){var L=fromThreads(ev.result.payload);if(L){liveOk=1;var at=new Date((ev.result.cache&&ev.result.cache.storedAt)||Date.now());renderMail(L,"updated "+new Intl.DateTimeFormat("en-GB",{hour:"2-digit",minute:"2-digit",timeZone:tz}).format(at)+", every 5 min")}else if(!liveOk){renderMail(M,"not loaded: couldn’t read Gmail response")}}
 else if(ev.error&&!liveOk){renderMail(M,"not loaded: "+(ERR[ev.error.code]||"Gmail error "+ev.error.code))}
 },{refetchInterval:300000})}catch(e){}})();
 var y=now.getFullYear(),mo=now.getMonth(),first=new Date(y,mo,1),lead=(first.getDay()+6)%7,days=new Date(y,mo+1,0).getDate();
@@ -781,7 +827,7 @@ EL("add").hidden=true;editing=null;var tt=EL("toast");tt.textContent="Saved to "
 btn.disabled=false}
 EL("agenda").addEventListener("click",function(e){var r=e.target.closest&&e.target.closest(".ev[data-id]");if(r)openEdit(r.dataset.id)});
 EL("agenda").addEventListener("keydown",function(e){if((e.key==="Enter"||e.key===" ")&&e.target.matches&&e.target.matches(".ev[data-id]")){e.preventDefault();openEdit(e.target.dataset.id)}});
-function renderLive(p,ts){var L=fromThreads(p);if(L&&L.length){liveOk=1;renderMail(L,"updated "+hm(new Date(ts||Date.now()).toISOString())+", every 5 min");return true}return false}
+function renderLive(p,ts){var L=fromThreads(p);if(L){liveOk=1;renderMail(L,"updated "+hm(new Date(ts||Date.now()).toISOString())+", every 5 min");return true}return false}
 async function directRefresh(m){try{var r=await m.callTool("Gmail","search_threads",{query:"in:inbox newer_than:14d",pageSize:25,view:"THREAD_VIEW_SUMMARY"},{cache:{refresh:true}});if(!renderLive(r.payload,Date.now()))renderMail(lastL,"couldn’t read Gmail response")}catch(x){renderMail(lastL,"couldn’t refresh")}}
 EL("rfmail").onclick=async function(){var b=this;if(b.classList.contains("spin"))return;
 var m=mcpNS||(window.claude&&await claude.use("mcp"));if(!m){renderMail(lastL,"open the page in Claude to refresh");return}
@@ -1184,6 +1230,175 @@ if(b.dataset.notspam!=null){var a=notSpamList();if(a.indexOf(addr)<0){a.push(add
 var f=spamList().filter(function(x){return addr.indexOf(x)<0});ss("wd-spamfrom",JSON.stringify(f));FORCE=mkForce()}
 else{var n=notSpamList().filter(function(x){return x!==addr});ss("wd-notspam",JSON.stringify(n));var l=spamList();if(l.indexOf(addr)<0){l.push(addr);ss("wd-spamfrom",JSON.stringify(l))}FORCE=mkForce()}
 openTid=null;renderMail(lastL,lastNote);var tt=EL("toast");tt.textContent=b.dataset.notspam!=null?"Emails from "+addr+" stay in your Inbox":"Emails from "+addr+" go to Spam";tt.hidden=false;setTimeout(function(){tt.hidden=true},3500)});
+/* ===== Widgets 2.0 ===== */
+(function(){
+var CFG=jparse("wd-cfg",{});
+function saveCfg(){ss("wd-cfg",JSON.stringify(CFG))}
+function cfg(id,k,d){var c=CFG[id]||{};return c[k]==null?d:c[k]}
+var dk=function(d){return tk.format(d||new Date())};
+var CAT={unread:"Mail",spam:"Mail",senders:"Mail",orders:"Mail",latest:"Mail",activity:"Mail",
+next:"Calendar",f1:"Calendar",week:"Calendar",today:"Calendar",holiday:"Calendar",tomorrow:"Calendar",busiest:"Calendar",mix:"Calendar",month:"Calendar",
+clock:"Time",world:"Time",focus:"Time",countdown:"Time",year:"Time",stopwatch:"Time",
+notes:"Productivity",todo:"Productivity",habits:"Productivity",water:"Productivity",
+quote:"Info",weather:"Info"};
+var TINT={weather:"#64d2ff",month:"#ff453a",habits:"#30d158",water:"#0a84ff",stopwatch:"#ff9f0a"};
+var _TN=TN;TN=function(id){return TINT[id]||_TN(id)};
+
+/* ---------- world clocks: pick your cities ---------- */
+var CITIES=[["New York","America/New_York"],["Los Angeles","America/Los_Angeles"],["Chicago","America/Chicago"],["Toronto","America/Toronto"],["São Paulo","America/Sao_Paulo"],["London","Europe/London"],["Dublin","Europe/Dublin"],["Paris","Europe/Paris"],["Berlin","Europe/Berlin"],["Bratislava","Europe/Bratislava"],["Prague","Europe/Prague"],["Vienna","Europe/Vienna"],["Warsaw","Europe/Warsaw"],["Kyiv","Europe/Kyiv"],["Istanbul","Europe/Istanbul"],["Dubai","Asia/Dubai"],["Mumbai","Asia/Kolkata"],["Bangkok","Asia/Bangkok"],["Singapore","Asia/Singapore"],["Hong Kong","Asia/Hong_Kong"],["Shanghai","Asia/Shanghai"],["Seoul","Asia/Seoul"],["Tokyo","Asia/Tokyo"],["Sydney","Australia/Sydney"],["Auckland","Pacific/Auckland"]];
+function worldList(){var sel=cfg("world","cities",["New York","London","Tokyo"]);return CITIES.filter(function(c){return sel.indexOf(c[0])>-1})}
+function offTxt(z){try{var p=new Intl.DateTimeFormat("en-GB",{timeZone:z,timeZoneName:"shortOffset"}).formatToParts(new Date()).filter(function(x){return x.type==="timeZoneName"})[0];return p?p.value:""}catch(e){return ""}}
+
+/* ---------- focus timer length ---------- */
+FT.len=cfg("focus","min",25)*60;if(!FT.run)FT.left=FT.len;
+
+/* ---------- weather (Open-Meteo, free, no key) ---------- */
+var WX={data:null,at:0,busy:false,err:""};
+try{var wc=JSON.parse(localStorage.getItem("wd-wx")||"null");if(wc){WX.data=wc.d;WX.at=wc.at}}catch(e){}
+var WCODE={0:["Clear","☀️"],1:["Mostly clear","🌤️"],2:["Partly cloudy","⛅"],3:["Cloudy","☁️"],45:["Fog","🌫️"],48:["Fog","🌫️"],51:["Drizzle","🌦️"],53:["Drizzle","🌦️"],55:["Drizzle","🌦️"],56:["Freezing drizzle","🌧️"],57:["Freezing drizzle","🌧️"],61:["Light rain","🌦️"],63:["Rain","🌧️"],65:["Heavy rain","🌧️"],66:["Freezing rain","🌧️"],67:["Freezing rain","🌧️"],71:["Light snow","🌨️"],73:["Snow","🌨️"],75:["Heavy snow","❄️"],77:["Snow grains","🌨️"],80:["Showers","🌦️"],81:["Showers","🌧️"],82:["Heavy showers","⛈️"],85:["Snow showers","🌨️"],86:["Snow showers","❄️"],95:["Thunderstorm","⛈️"],96:["Thunderstorm","⛈️"],99:["Thunderstorm","⛈️"]};
+function wcode(c){return WCODE[c]||["—","🌡️"]}
+function wxPlace(){return cfg("weather","place",null)}
+function geocode(q){return fetch("https://geocoding-api.open-meteo.com/v1/search?count=6&language=en&name="+encodeURIComponent(q)).then(function(r){return r.json()}).then(function(j){return (j.results||[]).map(function(x){return {name:x.name,area:[x.admin1,x.country].filter(Boolean).join(", "),lat:x.latitude,lon:x.longitude}})})}
+function wxLoad(force){var pl=wxPlace();
+if(!pl){if(WX.busy)return;WX.busy=true;var guess=(tz.split("/").pop()||"").replace(/_/g," ");
+geocode(guess||"London").then(function(r){WX.busy=false;if(r[0]){CFG.weather=CFG.weather||{};CFG.weather.place=r[0];saveCfg();wxLoad(true)}else{WX.err="Choose a city in settings";paintW("weather")}},function(){WX.busy=false;WX.err="Weather is offline";paintW("weather")});return}
+if(!force&&WX.data&&WX.data.key===pl.lat+","+pl.lon&&Date.now()-WX.at<15*60e3)return;if(WX.busy)return;WX.busy=true;
+fetch("https://api.open-meteo.com/v1/forecast?latitude="+pl.lat+"&longitude="+pl.lon+"&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=5")
+.then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){WX.busy=false;WX.err="";WX.at=Date.now();WX.data={key:pl.lat+","+pl.lon,c:j.current,d:j.daily};ss("wd-wx",JSON.stringify({d:WX.data,at:WX.at}));paintW("weather")},
+function(){WX.busy=false;WX.err="Weather is offline";paintW("weather")})}
+function wxHtml(){var pl=wxPlace(),d=WX.data;wxLoad(false);
+if(!d||!pl||d.key!==pl.lat+","+pl.lon)return '<div class="wl">Weather</div><div class="ws" style="margin-top:8px">'+esc(WX.err||"Loading…")+'</div>';
+var c=d.c,w=wcode(c.weather_code),days=(d.d.time||[]).slice(1,5).map(function(t,i){var k=wcode(d.d.weather_code[i+1]);return '<div class="wxd"><span>'+new Intl.DateTimeFormat("en-GB",{weekday:"short",timeZone:"UTC"}).format(new Date(t+"T12:00:00Z"))+'</span><i>'+k[1]+'</i><b>'+Math.round(d.d.temperature_2m_max[i+1])+'°</b><em>'+Math.round(d.d.temperature_2m_min[i+1])+'°</em></div>'}).join("");
+return '<div class="wl">'+esc(pl.name)+'</div><div class="wxn"><span class="wn">'+Math.round(c.temperature_2m)+'°</span><span class="wxi">'+w[1]+'</span></div><div class="ws">'+w[0]+' · H '+Math.round(d.d.temperature_2m_max[0])+'° L '+Math.round(d.d.temperature_2m_min[0])+'°</div><div class="wxf">'+days+'</div>'}
+
+/* ---------- habits ---------- */
+function habList(){return cfg("habits","list",["Exercise","Read 20 min","Drink water"])}
+function habLog(){return jparse("wd-hab",{})}
+function habHtml(){var log=habLog(),td=dk(),days=[];for(var i=6;i>=0;i--)days.push(dk(new Date(Date.now()-i*864e5)));
+return '<div class="wl">Habits</div>'+habList().map(function(h,hi){var L=log[h]||{},st=0;for(var j=0;j<400;j++){var k=dk(new Date(Date.now()-j*864e5));if(L[k])st++;else if(j>0||!L[td])break;else continue}
+return '<div class="hbr"><button type="button" class="hbk'+(L[td]?' on':'')+'" data-hab="'+hi+'" aria-pressed="'+!!L[td]+'" aria-label="'+esc(h)+' done today">'+(L[td]?'✓':'')+'</button><span class="hbn">'+esc(h)+'</span><span class="hbd">'+days.map(function(k){return '<i class="'+(L[k]?'on':'')+'"></i>'}).join("")+'</span><span class="hbs">'+(st?st+'🔥':'')+'</span></div>'}).join("")}
+
+/* ---------- water ---------- */
+function waterHtml(){var g=cfg("water","goal",8),n=(jparse("wd-water",{})[dk()]||0),p=Math.min(100,Math.round(n/g*100));
+return '<div class="wl">Water</div><div class="wxn"><span class="wn">'+n+'</span><span class="ws" style="padding:0">/ '+g+' glasses</span></div><div class="bar"><i style="width:'+p+'%"></i></div><div class="fbt"><button type="button" class="btn" data-wat="-1" aria-label="Remove a glass">−</button><button type="button" class="btn pri" data-wat="1">+ Glass</button></div>'}
+
+/* ---------- stopwatch ---------- */
+var SW={t:0,run:false,t0:0,laps:[]};
+function swNow(){return SW.t+(SW.run?Date.now()-SW.t0:0)}
+function swFmt(ms){var s=Math.floor(ms/1000),h=Math.floor(s/3600),m=Math.floor(s/60)%60;return (h?h+":"+String(m).padStart(2,"0"):String(m).padStart(2,"0"))+":"+String(s%60).padStart(2,"0")+"."+Math.floor(ms%1000/100)}
+function swHtml(){return '<div class="wl">Stopwatch</div><div class="wn swt">'+swFmt(swNow())+'</div><div class="fbt"><button type="button" class="btn'+(SW.run?'':' pri')+'" data-sw="go">'+(SW.run?"Stop":"Start")+'</button><button type="button" class="btn" data-sw="'+(SW.run?"lap":"reset")+'">'+(SW.run?"Lap":"Reset")+'</button></div>'+(SW.laps.length?'<div class="swl">'+SW.laps.slice(-3).reverse().map(function(l,i){return '<div><span>Lap '+(SW.laps.length-i)+'</span><b>'+swFmt(l)+'</b></div>'}).join("")+'</div>':'')}
+setInterval(function(){if(!SW.run)return;document.querySelectorAll('[data-w="stopwatch"] .swt').forEach(function(x){x.textContent=swFmt(swNow())})},100);
+
+/* ---------- mini month ---------- */
+function monthHtml(){var n=new Date(),y=n.getFullYear(),m=n.getMonth(),f=new Date(y,m,1),ld=(f.getDay()+6)%7,nd=new Date(y,m+1,0).getDate(),td=dk(),busy={};
+(typeof E!=="undefined"?E:[]).forEach(function(e){if(!HID[e[2]])busy[K(e)]=1});
+var h='<div class="wl">'+new Intl.DateTimeFormat("en-GB",{month:"long",year:"numeric"}).format(f)+'</div><div class="mm">'+"MTWTFSS".split("").map(function(x){return '<b>'+x+'</b>'}).join("");
+for(var i=0;i<ld;i++)h+='<i></i>';
+for(var d=1;d<=nd;d++){var k=y+"-"+String(m+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");h+='<i class="'+(k===td?'t ':'')+(busy[k]?'e':'')+'">'+d+'</i>'}
+return h+'</div>'}
+
+/* ---------- configurable, upgraded and new widgets ---------- */
+function upd(id,o){var w=wgById(id);if(w)for(var k in o)w[k]=o[k]}
+upd("world",{desc:"Clocks for the cities you choose",r:function(){var L=worldList();return '<div class="wl">World clocks</div>'+(L.length?L.map(function(c){return '<div class="wcr"><span>'+esc(c[0])+' <em>'+esc(offTxt(c[1]))+'</em></span><b>'+new Intl.DateTimeFormat("en-GB",{hour:"2-digit",minute:"2-digit",timeZone:c[1]}).format(new Date())+'</b></div>'}).join(""):'<div class="ws">Pick cities in settings</div>')}});
+upd("focus",{desc:"A focus session of the length you choose"});
+WG.push(
+{id:"weather",tab:"both",live:1,name:"Weather",desc:"Current weather and a 4-day forecast for a city you choose",r:wxHtml},
+{id:"month",tab:"both",live:1,name:"This month",desc:"A month calendar with your busy days marked",r:monthHtml},
+{id:"habits",tab:"both",name:"Habits",desc:"Tick off daily habits and keep a streak",wide:1,r:habHtml},
+{id:"water",tab:"both",name:"Water",desc:"Count glasses of water toward a daily goal",r:waterHtml},
+{id:"stopwatch",tab:"both",name:"Stopwatch",desc:"A stopwatch with laps",r:swHtml});
+
+/* settings each configurable widget offers */
+var SETS={
+world:function(){var sel=cfg("world","cities",["New York","London","Tokyo"]);return '<p class="shsub">Choose up to 6 cities.</p><div class="setgrid">'+CITIES.map(function(c){return '<label class="chk"><input type="checkbox" name="city" value="'+esc(c[0])+'"'+(sel.indexOf(c[0])>-1?' checked':'')+'>'+esc(c[0])+'</label>'}).join("")+'</div>'},
+focus:function(){var m=cfg("focus","min",25);return '<label for="setmin">Session length</label><select id="setmin">'+[5,10,15,20,25,30,45,50,60,90].map(function(x){return '<option value="'+x+'"'+(x===m?' selected':'')+'>'+x+' minutes</option>'}).join("")+'</select>'},
+weather:function(){var p=wxPlace();return '<label for="setcity">City</label><input id="setcity" placeholder="Type a city, e.g. Bratislava" autocomplete="off" value="'+esc(p?p.name:"")+'"><div id="setres" class="setres"></div><p class="shsub" style="margin-top:8px">Now showing: '+esc(p?p.name+(p.area?", "+p.area:""):"your area")+'</p>'},
+habits:function(){return '<label for="sethab">One habit per line (up to 6)</label><textarea id="sethab" rows="6">'+esc(habList().join("\n"))+'</textarea>'},
+water:function(){var g=cfg("water","goal",8);return '<label for="setgoal">Daily goal</label><select id="setgoal">'+[4,5,6,7,8,9,10,12,14,16].map(function(x){return '<option value="'+x+'"'+(x===g?' selected':'')+'>'+x+' glasses</option>'}).join("")+'</select>'},
+countdown:function(){var c=jparse("wd-cd",null)||{};return '<label for="setcdn">Event name</label><input id="setcdn" maxlength="30" value="'+esc(c.n||"")+'"><label for="setcdd">Date</label><input id="setcdd" type="date" value="'+esc(c.d||"")+'">'}};
+var pickedPlace=null,setId=null;
+function openSet(id){setId=id;pickedPlace=null;var w=wgById(id);EL("setttl").textContent=w.name;EL("setbody").innerHTML=SETS[id]();EL("wset").hidden=false;var f=EL("setbody").querySelector("input,select,textarea");if(f)f.focus()}
+function closeSet(){EL("wset").hidden=true;setId=null}
+function saveSet(){var id=setId,b=EL("setbody");CFG[id]=CFG[id]||{};
+if(id==="world"){var c=Array.prototype.slice.call(b.querySelectorAll('input[name="city"]:checked')).map(function(x){return x.value}).slice(0,6);CFG.world.cities=c}
+else if(id==="focus"){CFG.focus.min=+EL("setmin").value;FT.len=CFG.focus.min*60;if(!FT.run)FT.left=FT.len}
+else if(id==="weather"){if(pickedPlace){CFG.weather.place=pickedPlace;WX.data=null;wxLoad(true)}}
+else if(id==="habits"){var L=EL("sethab").value.split("\n").map(function(x){return x.trim()}).filter(Boolean).slice(0,6);CFG.habits.list=L.length?L:habList()}
+else if(id==="water"){CFG.water.goal=+EL("setgoal").value}
+else if(id==="countdown"){var d=EL("setcdd").value;if(d)ss("wd-cd",JSON.stringify({d:d,n:EL("setcdn").value.trim()}));else{try{localStorage.removeItem("wd-cd")}catch(e){}}}
+saveCfg();closeSet();paintW(id)}
+var m=document.createElement("div");m.id="wset";m.className="modal";m.hidden=true;
+m.innerHTML='<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="setttl"><div class="shh"><div><h3 id="setttl">Settings</h3><p class="shsub">Widget settings</p></div><button class="x" id="setx" type="button" aria-label="Close">×</button></div><div id="setbody"></div><div class="acts"><button class="btn" id="setcancel" type="button">Cancel</button><button class="btn pri" id="setsave" type="button">Save</button></div></div>';
+document.body.appendChild(m);
+EL("setx").onclick=closeSet;EL("setcancel").onclick=closeSet;EL("setsave").onclick=saveSet;
+m.addEventListener("click",function(e){if(e.target===m)closeSet()});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!m.hidden)closeSet()});
+var gt=null;
+EL("setbody").addEventListener("input",function(e){if(e.target.id!=="setcity")return;clearTimeout(gt);var q=e.target.value.trim();if(q.length<2){EL("setres").innerHTML="";return}
+gt=setTimeout(function(){EL("setres").innerHTML='<span class="shsub">Searching…</span>';geocode(q).then(function(r){EL("setres").innerHTML=r.length?r.map(function(x,i){return '<button type="button" class="wbtn" data-pl="'+i+'">'+esc(x.name)+'<em> '+esc(x.area)+'</em></button>'}).join(""):'<span class="shsub">No city found</span>';EL("setres")._r=r},function(){EL("setres").innerHTML='<span class="shsub">Search is offline right now</span>'})},300)});
+EL("setbody").addEventListener("click",function(e){var b=e.target.closest("[data-pl]");if(!b)return;pickedPlace=EL("setres")._r[+b.dataset.pl];EL("setres").querySelectorAll("[data-pl]").forEach(function(x){x.classList.toggle("on",x===b)});EL("setcity").value=pickedPlace.name});
+EL("setbody").addEventListener("change",function(e){if(e.target.name!=="city")return;var n=EL("setbody").querySelectorAll('input[name="city"]:checked');if(n.length>6)e.target.checked=false});
+
+/* ---------- painting ---------- */
+var drag=null;
+function paintW(id){document.querySelectorAll('.wds [data-w="'+id+'"] .wb').forEach(function(b){var w=wgById(id);if(w)b.innerHTML=w.r()})}
+tickWds=function(){if(drag)return;var ae=document.activeElement;["mail","calendar"].forEach(function(tab){WD[tab].forEach(function(id){var w=wgById(id);if(!w||!w.live)return;var b=document.querySelector('#wds-'+tab+' [data-w="'+id+'"] .wb');if(b&&!(ae&&b.contains(ae)&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName)))b.innerHTML=w.r()})})};
+var GEAR='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>';
+buildWds=function(tab){var c=EL("wds-"+tab),W=WS(),ids=WD[tab],col=!!W.col[tab],ed=!!W.edit[tab];c.className="wds"+(ed?" edit":"")+(col?" col":"");
+var bar='<div class="wbar"><button type="button" class="wbtn wchev" data-wcol="'+tab+'" aria-expanded="'+!col+'" aria-label="'+(col?"Show":"Hide")+' widgets">'+CHEV+'</button><span class="wbt">Widgets</span><span class="wbn">'+ids.length+'</span><span class="wsp"></span>'+(col?'':(ed?'<span class="whint">Drag to move</span>':'')+'<button type="button" class="wbtn" data-add="'+tab+'">+ Add</button><button type="button" class="wbtn'+(ed?' on':'')+'" data-edit="'+tab+'">'+(ed?"Done":"Edit")+'</button>')+'</div>';
+var tiles=ids.map(function(id){var w=wgById(id);if(!w)return "";var z=W.sz[tab+":"+id]||(w.wide?"w":"s");
+return '<div class="wd z'+z+'" data-w="'+id+'" style="--tn:'+TN(id)+'"><button class="wx" type="button" data-rm="'+id+'" aria-label="Remove '+esc(w.name)+'">−</button>'+(ed?'<div class="wmv">'+(SETS[id]?'<button type="button" data-cfg="'+id+'" aria-label="'+esc(w.name)+' settings">'+GEAR+'</button>':'')+'<button type="button" data-mv="-1" data-i="'+id+'" aria-label="Move earlier">‹</button><button type="button" data-mv="1" data-i="'+id+'" aria-label="Move later">›</button><button type="button" data-sz="'+id+'" aria-label="Change size, now '+ZL[z]+'">'+ZL[z]+'</button></div>':'')+'<div class="wb">'+w.r()+'</div></div>'}).join("");
+c.innerHTML=bar+(col?'':'<div class="wgrid">'+tiles+(ids.length?'':'<div class="wemp">No widgets yet. Press + Add to pick some.</div>')+'</div>')};
+
+/* ---------- interactions: long-press, drag, tile buttons ---------- */
+function setEdit(tab,on){WS().edit[tab]=on;buildWds(tab);if(on&&navigator.vibrate)try{navigator.vibrate(12)}catch(e){}}
+["mail","calendar"].forEach(function(tab){var c=EL("wds-"+tab),lp=null,sx=0,sy=0;
+c.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
+if(b.dataset.cfg){openSet(b.dataset.cfg);return}
+if(b.dataset.hab!=null){var h=habList()[+b.dataset.hab],L=habLog(),td=dk();L[h]=L[h]||{};if(L[h][td])delete L[h][td];else L[h][td]=1;ss("wd-hab",JSON.stringify(L));paintW("habits");return}
+if(b.dataset.wat){var W2=jparse("wd-water",{}),k=dk();W2[k]=Math.max(0,(W2[k]||0)+(+b.dataset.wat));ss("wd-water",JSON.stringify(W2));paintW("water");return}
+if(b.dataset.sw){if(b.dataset.sw==="go"){if(SW.run){SW.t=swNow();SW.run=false}else{SW.t0=Date.now();SW.run=true}}else if(b.dataset.sw==="lap"){SW.laps.push(swNow())}else{SW={t:0,run:false,t0:0,laps:[]}}paintW("stopwatch")}});
+c.addEventListener("keydown",function(e){if(e.key==="Escape"&&WS().edit[tab]){setEdit(tab,false)}});
+c.addEventListener("pointerdown",function(e){var t=e.target.closest(".wd");if(!t||e.button>0||e.target.closest("button,input,textarea,select,a"))return;sx=e.clientX;sy=e.clientY;
+if(!WS().edit[tab]){clearTimeout(lp);lp=setTimeout(function(){lp=null;setEdit(tab,true)},550);return}
+startDrag(tab,t,e)});
+c.addEventListener("pointermove",function(e){if(lp&&Math.hypot(e.clientX-sx,e.clientY-sy)>8){clearTimeout(lp);lp=null}});
+["pointerup","pointercancel","pointerleave"].forEach(function(n){c.addEventListener(n,function(){clearTimeout(lp);lp=null})});
+c.addEventListener("contextmenu",function(e){if(e.target.closest(".wd")&&(lp||WS().edit[tab]))e.preventDefault()})});
+function flip(grid,fn){var els=Array.prototype.slice.call(grid.children).filter(function(x){return x.classList.contains("wd")&&!x.classList.contains("dragging")}),r0=new Map();
+els.forEach(function(x){r0.set(x,x.getBoundingClientRect())});fn();
+if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+els.forEach(function(x){var a=r0.get(x),b=x.getBoundingClientRect(),dx=a.left-b.left,dy=a.top-b.top;if(!dx&&!dy)return;x.style.transition="none";x.style.transform="translate("+dx+"px,"+dy+"px)";requestAnimationFrame(function(){x.style.transition="transform .25s cubic-bezier(.2,.9,.3,1)";x.style.transform=""})})}
+function startDrag(tab,t,e){var grid=t.parentNode,r=t.getBoundingClientRect(),moved=false;
+drag={tab:tab,el:t,ox:e.clientX-r.left,oy:e.clientY-r.top,x0:e.clientX,y0:e.clientY};
+function mv(ev){if(!drag)return;var dx=ev.clientX-drag.x0,dy=ev.clientY-drag.y0;if(!moved){if(Math.hypot(dx,dy)<6)return;moved=true;t.classList.add("dragging")}
+ev.preventDefault();t.style.transform="translate("+dx+"px,"+dy+"px) scale(1.04)";
+t.style.pointerEvents="none";var over=document.elementFromPoint(ev.clientX,ev.clientY);t.style.pointerEvents="";
+var o=over&&over.closest&&over.closest(".wd");if(!o||o===t||o.parentNode!==grid)return;
+var or=o.getBoundingClientRect(),after=(ev.clientY>or.top+or.height/2)||(ev.clientX>or.left+or.width/2&&ev.clientY>or.top);
+var before=t.getBoundingClientRect();flip(grid,function(){grid.insertBefore(t,after?o.nextSibling:o)});var after2=t.getBoundingClientRect();
+drag.x0+=after2.left-before.left;drag.y0+=after2.top-before.top;t.style.transform="translate("+(ev.clientX-drag.x0)+"px,"+(ev.clientY-drag.y0)+"px) scale(1.04)"}
+function up(){window.removeEventListener("pointermove",mv);window.removeEventListener("pointerup",up);window.removeEventListener("pointercancel",up);
+if(moved){t.style.transition="transform .2s ease";t.style.transform="";setTimeout(function(){t.style.transition="";t.classList.remove("dragging");
+WD[tab]=Array.prototype.slice.call(grid.querySelectorAll(".wd")).map(function(x){return x.dataset.w});saveWd();drag=null;buildWds(tab);tickWds()},200)}else drag=null}
+window.addEventListener("pointermove",mv,{passive:false});window.addEventListener("pointerup",up);window.addEventListener("pointercancel",up)}
+
+/* ---------- gallery: search and categories ---------- */
+var gq="",gcat="All",tools=document.createElement("div");tools.className="wgtools";
+tools.innerHTML='<input id="wgq" type="search" placeholder="Search widgets" aria-label="Search widgets" autocomplete="off"><div class="wgcats" role="group" aria-label="Category"></div>';
+EL("wgl").parentNode.insertBefore(tools,EL("wgl"));
+function cats(){var s={};WG.forEach(function(w){if(w.tab===wgTab||w.tab==="both")s[CAT[w.id]||"Info"]=1});return ["All"].concat(["Mail","Calendar","Time","Productivity","Info"].filter(function(k){return s[k]}))}
+buildWg=function(){EL("wgsub").textContent=(wgTab==="mail"?"For the Mail tab.":"For the Calendar tab.")+" Tap Add to put one on your page.";
+var cs=cats();if(cs.indexOf(gcat)<0)gcat="All";tools.querySelector(".wgcats").innerHTML=cs.map(function(k){return '<button type="button" class="wbtn'+(k===gcat?' on':'')+'" data-gc="'+k+'" aria-pressed="'+(k===gcat)+'">'+k+'</button>'}).join("");
+var q=gq.toLowerCase(),list=WG.filter(function(w){return (w.tab===wgTab||w.tab==="both")&&(gcat==="All"||(CAT[w.id]||"Info")===gcat)&&(!q||(w.name+" "+w.desc+" "+(CAT[w.id]||"Info")).toLowerCase().indexOf(q)>-1)});
+EL("wgl").innerHTML='<div class="wgg">'+(list.length?list.map(function(w){var on=WD[wgTab].indexOf(w.id)>-1;
+return '<div class="wgc'+(on?' added':'')+'"><div class="wgp" aria-hidden="true"><div class="wd zs" style="--tn:'+TN(w.id)+'"><div class="wb">'+w.r()+'</div></div></div><div class="wgi"><b>'+esc(w.name)+(on?' <span class="why">Added</span>':'')+'</b><span>'+esc(w.desc)+'</span></div><button class="btn'+(on?'':' pri')+'" type="button" data-id="'+w.id+'">'+(on?"Remove":"Add")+'</button></div>'}).join(""):'<div class="wemp">No widgets match.</div>')+'</div><button type="button" class="btn wreset" id="wreset">Reset to defaults</button>'};
+EL("wgq").addEventListener("input",function(){gq=this.value;buildWg()});
+tools.addEventListener("click",function(e){var b=e.target.closest("[data-gc]");if(!b)return;gcat=b.dataset.gc;buildWg()});
+
+buildWds("mail");buildWds("calendar");
+document.addEventListener("visibilitychange",function(){if(!document.hidden)paintW("weather")});
+})();
 </script>
 </body>
 </html>
