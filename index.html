@@ -2313,6 +2313,15 @@ html.motion .sppl:hover{transform:translateY(-3px)}
 /* sizes */
 @media(max-width:1099px){.spm{grid-template-columns:1fr}.spcol{grid-column:1;grid-row:auto}.sph{grid-row:auto}}
 @media(max-width:600px){.spx{padding-bottom:100px}.sphi{flex-direction:column;align-items:stretch;padding:20px;gap:18px}.spart{width:min(100%,280px);align-self:center}.sptn{font-size:28px}.spres{grid-template-columns:1fr}.sphead{flex-direction:column;align-items:stretch}.spq{width:100%}.spgrid{grid-template-columns:repeat(2,1fr);gap:10px}.spsetup{padding:20px}.spcid{flex-direction:column}}
+
+.spone{max-width:520px;margin:0 auto;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:40px 32px}
+.spone h3{margin:6px 0 0;font-size:26px;font-weight:750;letter-spacing:-.015em}
+.spone>p{margin:0;color:var(--mute);font-size:14.5px;line-height:1.55;max-width:400px}
+.spbadge.big{width:72px;height:72px;border-radius:22px;box-shadow:0 18px 40px -14px rgba(30,215,96,.7)}
+.spbadge.big svg{width:38px;height:38px}
+.spgo{margin-top:10px;height:46px;padding:0 28px!important;border-radius:99px!important;background:#1ed760!important;color:#000!important;border:0!important;font-size:15px!important;font-weight:750!important;box-shadow:0 12px 26px -12px rgba(30,215,96,.9)!important;transition:transform .2s,filter .2s}
+.spgo:hover{transform:translateY(-1px) scale(1.02);filter:brightness(1.05)}
+.spone .sperr{text-align:left;width:100%}
 </style>
 <script>try{var t=localStorage.getItem("wth");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);var a=localStorage.getItem("wacc");if(/^#[0-9a-f]{6}$/i.test(a||"")){var r=document.documentElement.style;r.setProperty("--accent",a);r.setProperty("--dot",a);r.setProperty("--today",a)}}catch(e){}</script>
 </head>
@@ -4724,7 +4733,9 @@ function sp(path,opt,again){opt=opt||{};return fresh().then(function(t){if(!t)th
  return fetch(API+path,{method:opt.method||"GET",headers:Object.assign({Authorization:"Bearer "+t.a},opt.body?{"Content-Type":"application/json"}:{}),body:opt.body?JSON.stringify(opt.body):undefined})}).then(function(r){
  if(r.status===401&&!again)return fresh(true).then(function(t){if(!t)throw {code:"signin"};return sp(path,opt,true)});
  if(r.status===204||r.status===202)return null;
- return r.json().catch(function(){return {}}).then(function(j){if(!r.ok){var e=j&&j.error||{};throw {code:r.status===403&&/premium/i.test(e.reason||e.message||"")?"premium":r.status===404&&/device/i.test(e.reason||e.message||"")?"nodevice":r.status===429?"slow":"api",status:r.status,msg:e.message||""}}return j})})}
+ return r.json().catch(function(){return {}}).then(function(j){if(!r.ok){var e=j&&j.error||{};
+  if(r.status===403&&/not (?:be |been )?registered|developer\.spotify\.com\/dashboard|developer dashboard/i.test((e.message||"")+" "+JSON.stringify(j))){notListed();throw {code:"notlisted"}}throw {code:r.status===403&&/premium/i.test(e.reason||e.message||"")?"premium":r.status===404&&/device/i.test(e.reason||e.message||"")?"nodevice":r.status===429?"slow":"api",status:r.status,msg:e.message||""}}return j})})}
+function notListed(){setTok(null);ME=null;loaded=false;ERR="This Spotify account isn\u2019t on the app\u2019s list yet. Ask the person who runs this app to add your Spotify email in the Spotify dashboard under User Management, then connect again.";box.innerHTML="";draw()}
 function say2(t){if(typeof say==="function")say(t,4000)}
 function why(e){return e&&e.code==="premium"?"Playing and skipping need Spotify Premium.":e&&e.code==="nodevice"?"Open Spotify on your phone or computer first, or pick a device below.":e&&e.code==="slow"?"Spotify asked us to slow down. Try again in a moment.":e&&e.code==="signin"?"Connect Spotify again.":"Spotify didn’t do that"+(e&&e.msg?": "+e.msg:".")}
 function act(p){return p.then(function(){setTimeout(poll,350);setTimeout(poll,1500)},function(e){say2(why(e));if(e&&e.code==="nodevice")loadDevices(true)})}
@@ -4768,7 +4779,11 @@ function draw(){var id=cid(),t=tok();
   '<div class="spk spwide"><div class="sphead"><div class="sptitle">Your playlists</div><label class="spq">'+IC.search+'<input id="spsearch" type="search" placeholder="Search Spotify" aria-label="Search Spotify" autocomplete="off"></label></div><div id="spres"></div><div id="splists" class="spgrid"></div></div>'+
   '<div class="spfoot"><span id="spme"></span><button type="button" class="btn sm" data-sp="out">Disconnect Spotify</button></div></div>';
  paintLists();paintRecent();paintQueue();paintMe()}
-function setup(id){var r=redirect(),both=[location.origin+"/"];var alt=/^preview--/.test(location.host)?location.origin.replace("preview--",""):location.origin.replace("://","://preview--");both=[r];if(alt.indexOf("netlify.app")>-1)both.push(alt+location.pathname);
+function cfgId(){return ((window.APP_CONFIG||{}).spotifyClientId||"").trim()}
+function setup(id){if(cfgId())return '<div class="spk spsetup spone">'+(ERR?'<p class="sperr">'+esc(ERR)+'</p>':'')+
+ '<span class="spbadge big">'+IC.note+'</span><h3>Connect Spotify</h3><p>See what\u2019s playing, control it on any of your devices, and play your playlists and searches from here.</p>'+
+ '<button type="button" class="btn pri spgo" data-sp="connect">Connect Spotify</button><p class="spnote">You\u2019ll log in on Spotify\u2019s page and press Allow. Playing, pausing and skipping need Spotify Premium.</p></div>';
+ var r=redirect(),both=[location.origin+"/"];var alt=/^preview--/.test(location.host)?location.origin.replace("preview--",""):location.origin.replace("://","://preview--");both=[r];if(alt.indexOf("netlify.app")>-1)both.push(alt+location.pathname);
  return '<div class="spk spsetup">'+(ERR?'<p class="sperr">'+esc(ERR)+'</p>':'')+
  '<div class="spsh"><span class="spbadge">'+IC.note+'</span><div><h3>Connect Spotify</h3><p>See what’s playing, control it on any of your devices, and play your playlists from here. A one-time setup on Spotify’s site, about 5 minutes.</p></div></div>'+
  '<ol class="spsteps">'+
@@ -4832,6 +4847,7 @@ sec.addEventListener("click",function(e){var b=e.target.closest("button,[data-co
  if(a==="like"){var id=pb.item&&pb.item.id;if(!id)return;var on=!S.liked[id];S.liked[id]=on;paintLike();if(on&&window.motionOn&&motionOn())b.animate([{transform:"scale(1)"},{transform:"scale(1.35)"},{transform:"none"}],{duration:420,easing:"cubic-bezier(.3,1.4,.5,1)"});
   sp("/me/tracks?ids="+id,{method:on?"PUT":"DELETE"}).then(function(){say2(on?"Saved to Liked Songs":"Removed from Liked Songs")},function(x){S.liked[id]=!on;paintLike();say2(why(x))});return}
  if(a==="devices"){var d=EL("spdev");if(d&&!d.hidden){d.hidden=true;return}loadDevices(true);return}
+ if(a==="connect"){ERR="";connect();return}
  if(a==="out"){setTok(null);ME=null;loaded=false;S={pb:null,at:0,dev:[],q:[],recent:[],lists:[],liked:{},res:null,qs:""};box.innerHTML="";draw();return}
  if(b.dataset.dev){act(sp("/me/player",{method:"PUT",body:{device_ids:[b.dataset.dev],play:true}}).then(function(){var d=EL("spdev");if(d)d.hidden=true}));return}
  if(b.dataset.ctxplay){act(sp("/me/player/play",{method:"PUT",body:{context_uri:b.dataset.ctxplay}}));return}
