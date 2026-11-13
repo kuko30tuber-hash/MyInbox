@@ -185,10 +185,66 @@
     ready: ready
   };
 
+  /* ---------- quiet renewal without the helper ----------
+     Google's one-hour pass can be renewed without typing anything while you are
+     still signed in to Google in this browser. Browsers only allow the small
+     Google window when you click or press a key, so the renewal waits for your
+     next click in the app (from 10 minutes before the hour ends). */
+  var QQ = { failed: {}, busy: false, armed: false, missed: false }, T0 = Date.now();
+  function needsQuiet(e) { var t = toks()[e]; return !kept(e) && !QQ.failed[e] && (!t || t.exp - Date.now() < 10 * 60e3); }
+  function canQuiet(e) { return !!CLIENT_ID && !kept(e) && !QQ.failed[e] && accounts().indexOf(e) > -1; }
+  function silent(email) {
+    return gisReady().then(function () {
+      return new Promise(function (res) {
+        var done = false, fin = function (v) { if (!done) { done = true; res(v); } };
+        setTimeout(function () { fin(false); }, 20000);
+        try {
+          google.accounts.oauth2.initTokenClient({
+            client_id: CLIENT_ID, scope: SCOPES, hint: email,
+            callback: function (r) {
+              if (!(r && r.access_token)) return fin(false);
+              var tok = { t: r.access_token, exp: Date.now() + (Number(r.expires_in) || 3600) * 1000 };
+              profile(r.access_token).then(function (who) { if (who === email) { saveTok(email, tok); fin(true); } else fin(false); });
+            },
+            error_callback: function () { fin(false); }
+          }).requestAccessToken({ prompt: "none", hint: email });
+        } catch (x) { fin(false); }
+      });
+    }, function () { return false; });
+  }
+  function onAct(ev) {
+    if (QQ.busy || !ev.isTrusted || (ev.target && ev.target.closest && ev.target.closest("#gsignin,.gexp"))) return;
+    var e = accounts().filter(needsQuiet)[0];
+    if (!e) { disarm(); return; }
+    QQ.busy = true;
+    silent(e).then(function (ok) {
+      QQ.busy = false;
+      if (ok) {
+        delete expired[e]; dropPrompt(e);
+        if (!accounts().some(needsQuiet)) {
+          disarm();
+          /* the app tried to load while the pass was out: load it again now */
+          if (QQ.missed) { QQ.missed = false; var a = document.activeElement; if (!(a && /INPUT|TEXTAREA/.test(a.tagName) && a.value)) location.reload(); else setTimeout(function () { location.reload(); }, 60000); }
+        }
+      } else { QQ.failed[e] = 1; showExpired(e); }
+    });
+  }
+  function arm() { if (QQ.armed) return; QQ.armed = true; window.addEventListener("pointerdown", onAct, true); window.addEventListener("keydown", onAct, true); }
+  function disarm() { QQ.armed = false; window.removeEventListener("pointerdown", onAct, true); window.removeEventListener("keydown", onAct, true); }
+  function watchQuiet() { ready.then(function () { if (accounts().some(needsQuiet)) arm(); }); }
+  setInterval(watchQuiet, 60e3); watchQuiet();
+
   /* Small floating prompt, one line per account whose 1-hour Google session ran out */
   var promptEl = null, expired = {};
+  function dropPrompt(email) {
+    if (!promptEl) return;
+    var keys = Object.keys(expired);
+    if (!keys.length) { promptEl.remove(); promptEl = null; return; }
+    var r = promptEl.querySelector('[data-e="' + email.replace(/[<>&"]/g, "") + '"]'); if (r) r.closest(".gexr").remove();
+  }
   function showExpired(email) {
     if (!email || accounts().indexOf(email) < 0 || expired[email] || kept(email)) return;
+    if (canQuiet(email)) { QQ.missed = QQ.missed || Date.now() - T0 < 30000; arm(); return; }
     expired[email] = 1;
     if (!promptEl) {
       promptEl = document.createElement("div");
