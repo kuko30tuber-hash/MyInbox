@@ -2129,6 +2129,15 @@ html.motion #v-weather .wxt:nth-child(n){animation-delay:calc(.12s + var(--d,0s)
 .wpknew input{width:100%;margin:2px 0;padding:6px 8px!important;border-radius:8px!important;border:1px solid var(--line)!important;background:var(--panel)!important;font:inherit;font-size:13.5px;font-weight:650;color:var(--ink)}
 .wpkbtns{display:flex;gap:6px;margin-top:6px}
 .wpkbtns .btn{padding:5px 10px!important;font-size:12px!important}
+
+.wpkn{max-width:320px!important;flex:2 1 280px!important}
+.wpkic{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;width:100%;margin:6px 0 4px}
+.wpkic button{display:grid;place-items:center;aspect-ratio:1;border:0;border-radius:9px;background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--ink);cursor:pointer;transition:background .15s,color .15s,transform .15s}
+.wpkic button svg{width:17px;height:17px}
+.wpkic button:hover{background:color-mix(in srgb,var(--accent) 16%,transparent)}
+.wpkic button.on{background:var(--accent);color:#fff}
+.wpkic button:active{transform:scale(.9)}
+.wpkic button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 </style>
 <script>try{var t=localStorage.getItem("wth");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);var a=localStorage.getItem("wacc");if(/^#[0-9a-f]{6}$/i.test(a||"")){var r=document.documentElement.style;r.setProperty("--accent",a);r.setProperty("--dot",a);r.setProperty("--today",a)}}catch(e){}</script>
 </head>
@@ -3415,9 +3424,23 @@ var PACKS=[["mail","Mail","mail",["unread","important","latest","deliveries"]],[
 function packIcon(t){var b=EL("t"+t),v=b&&b.querySelector("svg");return v?v.outerHTML:""}
 var PK_MINE='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><path d="M17.25 14v6.5M14 17.25h6.5"/></svg>',
  PK_CHECK='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+var PK_ICONS={grid:'<rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><path d="M17.25 14v6.5M14 17.25h6.5"/>',
+star:'<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>',
+heart:'<path d="M12 20s-7.5-4.4-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10c0 5.6-7.5 10-7.5 10z"/>',
+bolt:'<path d="M13 2 4.5 13.5H12L11 22l8.5-11.5H12z"/>',
+coffee:'<path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5zM17 10h1.5a2.5 2.5 0 0 1 0 5H17M8 3v3M12 3v3"/>',
+work:'<rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/>',
+book:'<path d="M4 4.5A1.5 1.5 0 0 1 5.5 3H20v15H5.5A1.5 1.5 0 0 0 4 19.5zM4 19.5A1.5 1.5 0 0 0 5.5 21H20"/>',
+music:'<path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/>',
+moon:'<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',
+leaf:'<path d="M5 19c0-9 6-14 15-14 0 9-5 15-14 15M5 19l7-7"/>',
+rocket:'<path d="M12 15c3.5-2.5 6-6.5 6-11-4.5 0-8.5 2.5-11 6zM7 10l-3 .5L3 13l4 1M14 17l-.5 3L11 21l-1-4M9 15l-3 3"/>',
+home:'<path d="M4 11 12 4l8 7v8.5a.5.5 0 0 1-.5.5H15v-6H9v6H4.5a.5.5 0 0 1-.5-.5z"/>'};
+function pkIcon(k){return '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(PK_ICONS[k]||PK_ICONS.grid)+'</svg>'}
+var pkIconSel="grid";
 function myPacks(){var a=jparse("wd-packs",[]);return Array.isArray(a)?a:[]}
 function saveMyPacks(a){ss("wd-packs",JSON.stringify(a))}
-function allPacks(){return PACKS.map(function(p){return {id:p[0],name:p[1],icon:packIcon(p[2]),ids:p[3],mine:false}}).concat(myPacks().map(function(p){return {id:"my-"+p.id,name:p.name,icon:PK_MINE,ids:p.ids,mine:true,raw:p.id}}))}
+function allPacks(){return PACKS.map(function(p){return {id:p[0],name:p[1],icon:packIcon(p[2]),ids:p[3],mine:false}}).concat(myPacks().map(function(p){return {id:"my-"+p.id,name:p.name,icon:pkIcon(p.icon),ids:p.ids,mine:true,raw:p.id}}))}
 function markPack(tab,id){var m=jparse("wd-packsel",{});m[tab]=id;ss("wd-packsel",JSON.stringify(m))}
 function sameSet(a,b){a=a.filter(wgById);b=b.filter(wgById);if(!a.length||a.length!==b.length)return false;var s={};a.forEach(function(x){s[x]=1});return b.every(function(x){return s[x]})}
 var undoPack=null,pkNaming=false;
@@ -3429,13 +3452,14 @@ var _bwg=buildWg;buildWg=function(){_bwg();var q=EL("wgq")&&EL("wgq").value;if(q
   return '<div class="wpkw'+(on?' on':'')+'"><button type="button" class="wpkc'+(on?' on':'')+'" data-pack="'+esc(p.id)+'" aria-pressed="'+on+'"><span class="wpke wpki">'+p.icon+'</span>'+(on?'<em class="wpkt">'+PK_CHECK+'In use</em>':'')+'<b>'+esc(p.name)+'</b><small>'+esc(names.join(", ")||"No widgets")+'</small></button>'+
   (p.mine?'<button type="button" class="wpkx" data-pkdel="'+esc(p.raw)+'" aria-label="Delete the '+esc(p.name)+' pack" title="Delete pack">×</button>':'')+'</div>'}
  var n=cur.filter(wgById).length,saveCard=pkNaming?
-  '<form class="wpkw wpkn" id="wpkform"><div class="wpkc wpknew"><span class="wpke wpki">'+PK_MINE+'</span><input id="wpkname" maxlength="24" placeholder="Pack name" aria-label="Pack name" autocomplete="off" value="My pack '+(myPacks().length+1)+'"><small>'+n+' widget'+(n===1?'':'s')+' from this tab</small><span class="wpkbtns"><button type="button" class="btn sm" data-pkcancel="1">Cancel</button><button type="submit" class="btn pri sm">Save</button></span></div></form>':
+  '<form class="wpkw wpkn" id="wpkform"><div class="wpkc wpknew"><span class="wpke wpki" id="wpkprev">'+pkIcon(pkIconSel)+'</span><div class="wpkic" role="radiogroup" aria-label="Pack icon">'+Object.keys(PK_ICONS).map(function(k){var on=k===pkIconSel;return '<button type="button" role="radio" aria-checked="'+on+'" aria-label="'+k+'" title="'+k.charAt(0).toUpperCase()+k.slice(1)+'" data-pkicon="'+k+'"'+(on?' class="on"':'')+'>'+pkIcon(k)+'</button>'}).join("")+'</div><input id="wpkname" maxlength="24" placeholder="Pack name" aria-label="Pack name" autocomplete="off" value="My pack '+(myPacks().length+1)+'"><small>'+n+' widget'+(n===1?'':'s')+' from this tab</small><span class="wpkbtns"><button type="button" class="btn sm" data-pkcancel="1">Cancel</button><button type="submit" class="btn pri sm">Save</button></span></div></form>':
   '<div class="wpkw"><button type="button" class="wpkc wpkadd" data-pksave="1"'+(n?'':' disabled')+'><span class="wpke wpki">+</span><b>Save as a pack</b><small>'+(n?'Keep the '+n+' widget'+(n===1?'':'s')+' on this tab as your own pack':'Add some widgets first')+'</small></button></div>';
  l.insertAdjacentHTML("afterbegin",'<div class="wpk"><div class="stgl">Widget packs</div><p class="wpkh">A pack swaps the widgets on this tab for a set that goes together. Any pack works on any tab, and you can undo it.</p><div class="wpkr">'+built.map(card).join("")+'</div>'+
   '<div class="stgl wpkmine">Your packs</div><div class="wpkr">'+mine.map(card).join("")+saveCard+'</div></div>');
  if(pkNaming){var i=EL("wpkname");if(i){i.focus();i.select()}}};
 EL("wgl").addEventListener("click",function(e){var b;
- if((b=e.target.closest("[data-pksave]"))){if(b.disabled)return;pkNaming=true;buildWg();return}
+ if((b=e.target.closest("[data-pkicon]"))){pkIconSel=b.dataset.pkicon;var f=EL("wpkform");f.querySelectorAll("[data-pkicon]").forEach(function(x){var on=x===b;x.classList.toggle("on",on);x.setAttribute("aria-checked",on)});EL("wpkprev").innerHTML=pkIcon(pkIconSel);return}
+ if((b=e.target.closest("[data-pksave]"))){if(b.disabled)return;pkNaming=true;pkIconSel="grid";buildWg();return}
  if((b=e.target.closest("[data-pkcancel]"))){pkNaming=false;buildWg();return}
  if((b=e.target.closest("[data-pkdel]"))){var all=myPacks(),i=all.findIndex(function(x){return x.id===b.dataset.pkdel});if(i<0)return;var gone=all.splice(i,1)[0];saveMyPacks(all);buildWg();
   pkToast('“'+esc(gone.name)+'” pack deleted',function(){var a=myPacks();a.splice(Math.min(i,a.length),0,gone);saveMyPacks(a);if(!EL("wg").hidden)buildWg()});return}
@@ -3444,7 +3468,7 @@ EL("wgl").addEventListener("click",function(e){var b;
   undoPack={tab:wgTab,ids:(WD[wgTab]||[]).slice()};markPack(wgTab,p.id);WD[wgTab]=p.ids.filter(function(id){return wgById(id)});saveWd();buildWds(wgTab);tickWds();buildWg();
   pkToast(esc(p.name)+' pack added',function(){if(!undoPack)return;WD[undoPack.tab]=undoPack.ids;saveWd();buildWds(undoPack.tab);tickWds();if(!EL("wg").hidden)buildWg();undoPack=null})}});
 EL("wgl").addEventListener("submit",function(e){if(e.target.id!=="wpkform")return;e.preventDefault();var name=(EL("wpkname").value||"").trim().slice(0,24)||"My pack",ids=(WD[wgTab]||[]).filter(wgById);if(!ids.length)return;
- var a=myPacks(),nid=Date.now().toString(36);a.push({id:nid,name:name,ids:ids});saveMyPacks(a);markPack(wgTab,"my-"+nid);pkNaming=false;buildWg();pkToast('Saved “'+esc(name)+'”')});
+ var a=myPacks(),nid=Date.now().toString(36);a.push({id:nid,name:name,ids:ids,icon:pkIconSel});saveMyPacks(a);markPack(wgTab,"my-"+nid);pkNaming=false;buildWg();pkToast('Saved “'+esc(name)+'”')});
 EL("wgl").addEventListener("keydown",function(e){if(e.key==="Escape"&&pkNaming&&e.target.id==="wpkname"){e.stopPropagation();e.preventDefault();pkNaming=false;buildWg()}},true);
 
 buildWds("mail");buildWds("calendar");buildWds("weather");
