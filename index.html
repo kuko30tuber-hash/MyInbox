@@ -1185,6 +1185,81 @@ html.motion .wps.in{animation:wpsIn .4s cubic-bezier(.2,.9,.3,1)}
 .wpsw input:focus-visible+i{outline:2px solid var(--accent);outline-offset:2px}
 .wpacc{display:flex;align-items:center;gap:8px;width:100%;justify-content:center;margin-top:10px}
 .wpacc i{width:12px;height:12px;border-radius:50%}
+/* ===== Widgets 4 ===== */
+.wl.hasi::before{display:none!important}
+.wl .wic{flex:none;color:var(--tn,var(--accent));margin-right:1px}
+.st-vivid .wl .wic{color:#fff}
+.whd{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.whd .ws{margin:0;padding:0}
+.wrs{display:flex;flex-direction:column;gap:2px;margin:8px -8px 0;min-width:0}
+.zs .wrs{display:none}
+.zw .wrs>.wrw:nth-of-type(n+4){display:none}
+.zl .wrs>.wrw:nth-of-type(n+8){display:none}
+.wrw{display:flex;align-items:center;gap:9px;width:100%;min-width:0;padding:6px 8px;border:0;border-radius:12px;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;transition:background .15s}
+.wrw:hover{background:color-mix(in srgb,var(--tn,var(--accent)) 12%,transparent)}
+.wrw:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.wav{position:relative;flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;font-size:11px;font-weight:700;color:#fff;background:linear-gradient(145deg,hsl(var(--h) 70% 62%),hsl(var(--h) 65% 46%))}
+.wav.lg{width:34px;height:34px;font-size:14px}
+.wav i{position:absolute;right:-2px;bottom:-2px;width:9px;height:9px;border-radius:50%;border:2px solid var(--panel)}
+.wrt{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.25}
+.wrt b{font-size:13px;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wrt span{font-size:12px;color:var(--mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wrm{flex:none;font-size:11px;color:var(--mute);font-variant-numeric:tabular-nums}
+.wtag{font-style:normal;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:99px;background:color-mix(in srgb,#ff9f0a 18%,transparent);color:color-mix(in srgb,#ff9f0a 70%,var(--ink))}
+.wemp2{display:flex;align-items:center;gap:8px;margin-top:auto;padding-top:8px;font-size:13px;color:var(--mute);line-height:1.35}
+.wemp2>span{flex:none;font-size:20px}
+.st-vivid .wrt span,.st-vivid .wrm,.st-vivid .wemp2{color:rgba(255,255,255,.82)}
+.st-vivid .wrw:hover{background:rgba(255,255,255,.16)}
+/* latest */
+.wlat{display:flex;flex-direction:column;gap:6px;margin:8px -8px 0;padding:8px;border:0;border-radius:14px;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;min-width:0;flex:1}
+.wlat:hover{background:color-mix(in srgb,var(--tn,var(--accent)) 10%,transparent)}
+.wlh{display:flex;align-items:center;gap:9px;min-width:0}
+.wls{font-size:14px;font-weight:650;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.wlp{font-size:12.5px;color:var(--mute);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.zs .wlp{display:none}.zs .wlh .wrt span{display:none}.zl .wlp{-webkit-line-clamp:6}
+/* next event */
+.wnx{display:flex;flex-direction:column;gap:3px;margin:8px -8px 0;padding:8px 8px 8px 14px;border:0;border-radius:14px;background:color-mix(in srgb,var(--c) 12%,transparent);color:inherit;font:inherit;text-align:left;cursor:pointer;position:relative;min-width:0}
+.wnx::before{content:"";position:absolute;left:5px;top:10px;bottom:10px;width:3px;border-radius:3px;background:var(--c)}
+.wnx:hover{background:color-mix(in srgb,var(--c) 20%,transparent)}
+.wnt{font-size:15px;font-weight:700;line-height:1.25;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.wnw{font-size:22px;font-weight:800;letter-spacing:-.02em;color:var(--c)}
+.zl .wnw{font-size:30px}
+.wns{font-size:12px;color:var(--mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wthen{font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--mute);padding:4px 8px 0}
+.zw .wrs.then>.wrw:nth-of-type(n+3){display:none}
+.wec{flex:none;width:4px;align-self:stretch;border-radius:4px;background:var(--c)}
+.wrw.ev{padding-left:6px}
+/* week strip */
+.wwk{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin-top:10px;flex:1;min-height:70px}
+.wwd{display:flex;flex-direction:column;align-items:center;gap:2px;padding:2px 0;border:0;border-radius:10px;background:none;color:inherit;font:inherit;cursor:pointer}
+.wwd:hover{background:color-mix(in srgb,var(--tn,var(--accent)) 10%,transparent)}
+.wwb{flex:1;width:70%;max-width:26px;min-height:36px;display:flex;align-items:flex-end;border-radius:8px;background:color-mix(in srgb,var(--ink) 6%,transparent)}
+.wwb i{display:flex;justify-content:center;width:100%;border-radius:8px;background:color-mix(in srgb,var(--tn,var(--accent)) 70%,transparent);transition:height .5s cubic-bezier(.2,.8,.2,1)}
+.wwb b{font-size:10px;color:#fff;padding-top:2px}
+.wwd.t .wwb i{background:var(--tn,var(--accent))}
+.wwn{font-size:10px;font-weight:700;color:var(--mute)}
+.wwdn{font-size:11.5px;font-weight:650}
+.wwd.t .wwdn{color:var(--tn,var(--accent))}
+.wwl{display:none}.zl .wwl{display:flex}
+.zs .wwk{min-height:56px}
+/* top senders */
+.wsr{display:grid;grid-template-columns:26px minmax(0,1fr) 34% 22px;align-items:center;gap:8px;padding:4px 8px}
+.wsn{font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wsb{height:6px;border-radius:99px;background:var(--glass-lo);overflow:hidden}.wsb i{display:block;height:100%;border-radius:inherit;background:var(--tn,var(--accent))}
+.wsr b{font-size:12px;text-align:right;font-variant-numeric:tabular-nums}
+.zs .wsr:nth-child(n+3){display:none}.zs .wrs:has(.wsr){display:flex}.zs .wsr{grid-template-columns:22px minmax(0,1fr) 18px}.zs .wsr .wsb{display:none}.zs .wsr .wav{width:22px;height:22px;font-size:10px}
+.zw .wrs>.wsr:nth-child(n+5){display:none}
+/* deliveries */
+.wst{flex:none;display:flex;gap:3px}
+.wst i{width:14px;height:5px;border-radius:3px;background:color-mix(in srgb,var(--ink) 14%,transparent)}
+.wst i.on{background:var(--tn,var(--accent))}
+.wdl.done .wst i.on{background:#30d158}
+.wdl.done .wrt b{color:var(--mute);font-weight:600}
+/* loading shimmer */
+.wsk{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.wsk i{height:12px;border-radius:6px;background:linear-gradient(90deg,color-mix(in srgb,var(--ink) 7%,transparent) 0,color-mix(in srgb,var(--ink) 14%,transparent) 50%,color-mix(in srgb,var(--ink) 7%,transparent) 100%);background-size:200% 100%;animation:wShim 1.3s linear infinite}
+.wsk i:first-child{height:28px;width:50%}.wsk i:last-child{width:70%}
+@keyframes wShim{to{background-position:-200% 0}}
 </style>
 <script>try{var t=localStorage.getItem("wth");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);var a=localStorage.getItem("wacc");if(/^#[0-9a-f]{6}$/i.test(a||"")){var r=document.documentElement.style;r.setProperty("--accent",a);r.setProperty("--dot",a);r.setProperty("--today",a)}}catch(e){}</script>
 </head>
@@ -1527,7 +1602,7 @@ function ini(s){var c=Array.from(String(s).replace(/[^\p{L}\p{N}]/gu," ").trim()
 function moveInd(){var b=document.querySelector(".top button.on"),i=document.querySelector(".top .ind");if(b&&i){i.style.width=b.offsetWidth+"px";i.style.transform="translateX("+b.offsetLeft+"px)"}}
 EL("today").textContent=new Intl.DateTimeFormat("en-GB",{weekday:"long",day:"numeric",month:"long",timeZone:tz}).format(now);
 window.addEventListener("resize",moveInd);window.addEventListener("load",moveInd);moveInd();
-var WD={mail:["unread","spam"],calendar:["next","week"]};
+var WD={mail:["unread","important"],calendar:["next","week"]};
 try{var sv=JSON.parse(localStorage.getItem("wd")||"null");if(sv&&sv.mail&&sv.calendar)WD=sv}catch(e){}
 function saveWd(){try{localStorage.setItem("wd",JSON.stringify(WD))}catch(e){}}
 function ls(k,d){try{var v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}}
@@ -1888,7 +1963,7 @@ c.addEventListener("dragend",function(){drag=null})});
 function buildWg(){EL("wgsub").textContent=wgTab==="mail"?"For the Mail tab. Tap Add to put one on your page.":"For the Calendar tab. Tap Add to put one on your page.";
 EL("wgl").innerHTML='<div class="wgg">'+WG.filter(function(w){return w.tab===wgTab||w.tab==="both"}).map(function(w){var on=WD[wgTab].indexOf(w.id)>-1;
 return '<div class="wgc"><div class="wgp" aria-hidden="true"><div class="wd zs" style="--tn:'+TN(w.id)+'"><div class="wb">'+w.r()+'</div></div></div><div class="wgi"><b>'+esc(w.name)+'</b><span>'+esc(w.desc)+'</span></div><button class="btn'+(on?'':' pri')+'" type="button" data-id="'+w.id+'">'+(on?"Remove":"Add")+'</button></div>'}).join("")+'</div><button type="button" class="btn wreset" id="wreset">Reset to defaults</button>'}
-EL("wgl").addEventListener("click",function(e){if(!e.target.closest("#wreset"))return;WD={mail:["unread","spam"],calendar:["next","week"]};WS().sz={};ss("wd-size","{}");saveWd();buildWds("mail");buildWds("calendar");tickWds();buildWg()});
+EL("wgl").addEventListener("click",function(e){if(!e.target.closest("#wreset"))return;WD={mail:["unread","important"],calendar:["next","week"]};WS().sz={};ss("wd-size","{}");saveWd();buildWds("mail");buildWds("calendar");tickWds();buildWg()});
 buildWds("mail");buildWds("calendar");tickWds();
 EL("v-mail").addEventListener("click",function(e){var b=e.target.closest("[data-notspam],[data-isspam]");if(!b)return;
 var tid=b.dataset.notspam||b.dataset.isspam,row=lastL.filter(function(x){return x[6]===tid})[0];if(!row)return;
@@ -2370,7 +2445,7 @@ function brStep(){var p=brPat(),ph=p[BR.ph%p.length];document.querySelectorAll('
 /* photo */
 function photoHtml(){var p=ls("wd-photo","");return p?'<div class="wph" style="background-image:url('+p+')" role="img" aria-label="Your photo"></div>'+(c3("photo","cap","")?'<div class="wphc">'+esc(c3("photo","cap",""))+'</div>':''):'<div class="wl">Photo</div><div class="wph0"><span>🖼️</span>Add a photo in Customize</div>'}
 /* smart stack */
-function stackIds(){return c3("stack","ids",["weather","next","quote"]).filter(function(id){var w=wgById(id);return w&&w.live&&id!=="stack"})}
+function stackIds(){return c3("stack","ids",["weather","next","important"]).filter(function(id){var w=wgById(id);return w&&w.live&&id!=="stack"})}
 var STK={};
 function stackHtml(){var ids=stackIds();if(!ids.length)return '<div class="wl">Smart stack</div><div class="ws">Pick widgets in Customize</div>';
 return '<div class="stk" data-stk><div class="stkr">'+ids.map(function(id){var w=wgById(id);return '<div class="stki" style="--tn:'+TN(id)+'" data-si="'+id+'">'+w.r()+'</div>'}).join("")+'</div><div class="stkd">'+ids.map(function(id,i){return '<button type="button" data-sd="'+i+'" aria-label="Show '+esc(wgById(id).name)+'"></button>'}).join("")+'</div></div>'}
@@ -2460,7 +2535,7 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!cm.hidden)
 document.addEventListener("click",function(){requestAnimationFrame(function(){if(!cm.hidden&&typeof pills==="function")pills()})});
 
 /* ---------- packs in the gallery ---------- */
-var PACKS=[["morning","Morning","☀️",["weather","agenda","important","quote"]],["focus","Deep work","🎯",["focus","todo","breathe","water"]],["planner","Planner","🗓️",["agenda","week","month","rings"]],["inbox","Inbox pro","📬",["unread","important","accounts","activity"]],["calm","Calm","🌿",["breathe","sun","habits","photo"]]];
+var PACKS=[["morning","Morning","☀️",["weather","agenda","important","deliveries"]],["focus","Deep work","🎯",["focus","todo","breathe","water"]],["planner","Planner","🗓️",["agenda","week","month","rings"]],["inbox","Inbox pro","📬",["unread","important","accounts","activity"]],["calm","Calm","🌿",["breathe","sun","habits","photo"]]];
 var undoPack=null;
 var _bwg=buildWg;buildWg=function(){_bwg();var q=EL("wgq")&&EL("wgq").value;if(q)return;var l=EL("wgl");
 l.insertAdjacentHTML("afterbegin",'<div class="wpk"><div class="stgl">Widget packs</div><div class="wpkr">'+PACKS.map(function(p){return '<button type="button" class="wpkc" data-pack="'+p[0]+'"><span class="wpke">'+p[2]+'</span><b>'+p[1]+'</b><span class="wpkd">'+p[3].map(function(id){return '<i style="background:'+TN(id)+'" title="'+esc((wgById(id)||{}).name||id)+'"></i>'}).join("")+'</span><small>'+p[3].map(function(id){return (wgById(id)||{}).name}).join(", ")+'</small></button>'}).join("")+'</div></div>')};
@@ -2685,6 +2760,86 @@ else if(t.id==="wpany"){draw()}
 else if(t.id==="wpfile"&&t.files&&t.files[0])loadPhoto(t.files[0])});
 render();
 window.__wps={open:openP,close:closeP,X:X,render:render};
+})();
+/* ===== Widgets 4: fewer, better widgets ===== */
+(function(){
+var dk=function(d){return tk.format(d||new Date())};
+function fmtT(d){return new Intl.DateTimeFormat("en-GB",{hour:"2-digit",minute:"2-digit",hourCycle:"h23",timeZone:tz}).format(d)}
+function ago(iso){var m=Math.max(0,Math.round((Date.now()-new Date(iso))/60000));if(m<1)return "now";if(m<60)return m+" min";var h=Math.round(m/60);if(h<24)return h+" h";var d=Math.round(h/24);return d+" d"}
+function upd(id,o){var w=wgById(id);if(w)for(var k in o)w[k]=o[k]}
+
+/* ---------- retire widgets that repeat others; their places go to the better one ---------- */
+var GONE={today:"agenda",year:"rings",busiest:"week",mix:"month",orders:"deliveries",spam:null,quote:null};
+for(var i=WG.length-1;i>=0;i--)if(WG[i].id in GONE)WG.splice(i,1);
+
+/* ---------- open what a row points at ---------- */
+function openMail(k){var m=(lastL||[]).filter(function(x){return x[6]===k})[0];if(!m)return;show("mail");var v=isSpam(m)?"sp":"in";
+if(typeof acctF==="string"&&acctF&&m[10]!==acctF){acctF="";try{localStorage.setItem("mailacct","")}catch(e){}}
+if(view!==v){view=v;tabs()}renderMail(lastL,lastNote);
+var a=document.querySelector('#mail>li>a[data-k="'+k.replace(/"/g,'\\"')+'"]');if(a){a.scrollIntoView({block:"center",behavior:window.motionOn&&motionOn()?"smooth":"auto"});if(a.getAttribute("aria-expanded")!=="true")a.click()}}
+function openDay(k){show("calendar");var b=document.querySelector('#grid button[data-k="'+k+'"]');if(b)b.click();var c=document.querySelector(".cal");if(c)c.scrollIntoView({block:"start",behavior:window.motionOn&&motionOn()?"smooth":"auto"})}
+document.addEventListener("click",function(e){var r=e.target.closest&&e.target.closest("[data-wopen],[data-wday]");if(!r||!r.closest(".wds")||r.closest(".wds.edit"))return;e.preventDefault();e.stopPropagation();if(r.dataset.wopen)openMail(r.dataset.wopen);else openDay(r.dataset.wday)},true);
+
+/* ---------- building blocks ---------- */
+function mrow(m,extra){return '<button type="button" class="wrw" data-wopen="'+esc(m[6]||"")+'"><span class="wav" style="--h:'+hue(m[0])+'">'+esc(ini(m[0]))+(m[10]&&accts().length>1?'<i style="background:'+accColor(m[10])+'"></i>':'')+'</span><span class="wrt"><b>'+esc(m[0])+'</b><span>'+esc(m[1]||"(no subject)")+'</span></span><span class="wrm">'+(extra!=null?extra:ago(m[2]))+'</span></button>'}
+function erow(e,noDay){var t=T(e),c=C[e[2]]?C[e[2]][1]:"var(--tn)";return '<button type="button" class="wrw ev" data-wday="'+K(e)+'" style="--c:'+c+'"><span class="wec"></span><span class="wrt"><b>'+esc(e[1])+'</b><span>'+(t?fmtT(new Date(e[0])):"All day")+(K(e)!==dk()&&noDay!==true?" · "+dlab(K(e)):"")+'</span></span></button>'}
+function empty(icon,txt){return '<div class="wemp2"><span>'+icon+'</span>'+txt+'</div>'}
+
+/* ---------- mail ---------- */
+upd("unread",{desc:"How many unread emails you have, and who they’re from. Tap a row to open it",r:function(){var l=inb(),u=l.filter(function(m){return m[3]});
+return '<div class="wl">Unread</div><div class="whd"><div class="wn">'+u.length+'</div><div class="ws">of '+l.length+' in your inbox</div></div>'+(u.length?'<div class="wrs">'+u.slice(0,7).map(function(m){return mrow(m)}).join("")+'</div>':empty("✓","You’re all caught up"))}});
+upd("important",{r:function(){var L=(lastL||[]).filter(isImp);return '<div class="wl">Important</div><div class="whd"><div class="wn">'+L.length+'</div><div class="ws">'+(L.length?"need a look":"nothing important")+'</div></div>'+(L.length?'<div class="wrs">'+L.slice(0,7).map(function(m){return mrow(m,'<em class="wtag">'+esc(impWhy(m))+'</em>')}).join("")+'</div>':'')}});
+upd("latest",{desc:"The newest email in your inbox, with a preview. Tap to open it",r:function(){var l=inb()[0];if(!l)return '<div class="wl">Latest email</div>'+empty("📬","Inbox is empty");
+return '<div class="wl">Latest email</div><button type="button" class="wlat" data-wopen="'+esc(l[6]||"")+'"><span class="wlh"><span class="wav lg" style="--h:'+hue(l[0])+'">'+esc(ini(l[0]))+'</span><span class="wrt"><b>'+esc(l[0])+'</b><span>'+ago(l[2])+' ago'+(l[3]?' · unread':'')+'</span></span></span><span class="wls">'+esc(l[1]||"(no subject)")+'</span><span class="wlp">'+esc(l[7]||"")+'</span></button>'}});
+upd("senders",{desc:"Who emails you the most this week",r:function(){var c={},raw={};(lastL||[]).forEach(function(m){c[m[0]]=(c[m[0]]||0)+1;raw[m[0]]=m});var a=Object.keys(c).sort(function(x,y){return c[y]-c[x]}).slice(0,6),mx=a.length?c[a[0]]:1;
+return '<div class="wl">Top senders</div>'+(a.length?'<div class="wrs">'+a.map(function(k){return '<div class="wsr"><span class="wav" style="--h:'+hue(k)+'">'+esc(ini(k))+'</span><span class="wsn">'+esc(k)+'</span><span class="wsb"><i style="width:'+Math.max(8,Math.round(c[k]/mx*100))+'%"></i></span><b>'+c[k]+'</b></div>'}).join("")+'</div>':empty("📬","No mail yet"))}});
+/* deliveries: follows each shop's newest email through ordered, shipped, out for delivery and delivered */
+var ST=[["Ordered",/order (confirm|received|placed)|thanks? (you )?for your (order|purchase)|objednávk[ay]? (bola )?(prijat|potvrd)|potvrdenie objednávky|your order/i],["Shipped",/shipped|dispatched|on its way|on the way|odoslan|expedovan|zásielk|zasielk|tracking|sledovan|in transit/i],["Out for delivery",/out for delivery|arriving today|doručujeme dnes|kuriér|kurier|na ceste k vám/i],["Delivered",/delivered|doručen|dorucen|picked up|vyzdvihnut/i]];
+function stage(m){var t=(m[1]||"")+" "+(m[7]||""),s=-1;ST.forEach(function(x,i){if(x[1].test(t))s=i});return s}
+function shop(m){var a=(addrOf(m[5]||"")||"").split("@")[1]||"";return m[0]||a}
+var DEL={id:"deliveries",tab:"both",live:1,name:"Deliveries",desc:"Your orders and parcels, from ordered to delivered. Tap one to open the email",r:function(){var by={};(lastL||[]).forEach(function(m){if(isSpam(m))return;var s=stage(m);if(s<0)return;var k=shop(m);if(!by[k]||new Date(m[2])>new Date(by[k].m[2]))by[k]={m:m,s:s}});
+var L=Object.keys(by).map(function(k){return by[k]}).sort(function(a,b){return (a.s===3)-(b.s===3)||new Date(b.m[2])-new Date(a.m[2])}).slice(0,5),open=L.filter(function(x){return x.s<3}).length;
+if(!L.length)return '<div class="wl">Deliveries</div>'+empty("📬","No orders or parcels in your recent mail");
+return '<div class="wl">Deliveries</div><div class="whd"><div class="wn">'+open+'</div><div class="ws">'+(open===1?"on the way":open?"on the way":"all delivered")+'</div></div><div class="wrs">'+L.map(function(x){return '<button type="button" class="wrw wdl'+(x.s===3?' done':'')+'" data-wopen="'+esc(x.m[6]||"")+'"><span class="wrt"><b>'+esc(shop(x.m))+'</b><span>'+ST[x.s][0]+' · '+ago(x.m[2])+' ago</span></span><span class="wst" aria-label="Step '+(x.s+1)+' of 4">'+[0,1,2,3].map(function(i){return '<i class="'+(i<=x.s?"on":"")+'"></i>'}).join("")+'</span></button>'}).join("")+'</div>'}};
+WG.push(DEL);
+
+/* ---------- calendar ---------- */
+function upcoming(f,n){var now=Date.now();return E.filter(function(e){return !HID[e[2]]&&(f?f(e):true)&&(T(e)?+new Date(e[0])>now-30*60e3:K(e)>=dk())}).sort(function(a,b){return V(a)-V(b)}).slice(0,n)}
+function untilTxt(e){if(!T(e))return K(e)===dk()?"today":"in "+Math.round((V(e)-Date.parse(dk()+"T00:00:00Z"))/864e5)+" d";var ms=+new Date(e[0])-Date.now();if(ms<=0)return "now";var m=Math.round(ms/60000);if(m<60)return "in "+m+" min";var h=Math.floor(m/60);if(h<24)return "in "+h+" h "+(m%60)+" min";return "in "+Math.floor(h/24)+" d "+(h%24)+" h"}
+function nextHtml(label,f,emptyTxt){var L=upcoming(f,4);if(!L.length)return '<div class="wl">'+label+'</div>'+empty("🗓️",emptyTxt||"Nothing coming up");var e=L[0],c=C[e[2]]?C[e[2]][1]:"var(--tn)";
+return '<div class="wl">'+label+'</div><button type="button" class="wnx" data-wday="'+K(e)+'" style="--c:'+c+'"><span class="wnt">'+esc(e[1])+'</span><span class="wnw">'+untilTxt(e)+'</span><span class="wns">'+(T(e)?fmtT(new Date(e[0])):"All day")+' · '+dlab(K(e))+(C[e[2]]?' · '+esc(C[e[2]][0]):'')+'</span></button>'+(L.length>1?'<div class="wrs then"><div class="wthen">Then</div>'+L.slice(1).map(erow).join("")+'</div>':'')}
+upd("next",{desc:"Your next event with a countdown, then what follows",r:function(){return nextHtml("Next event")}});
+upd("f1",{r:function(){var i=calIdx(/formula ?1|\bf1\b/i);return i<0?'<div class="wl">Next F1 session</div>'+empty("🗓️","Subscribe to a Formula 1 calendar in Google Calendar to see sessions here"):nextHtml("Next F1 session",function(e){return e[2]===i},"No sessions coming up")}});
+upd("holiday",{r:function(){var i=holIdx();return i<0?'<div class="wl">Next holiday</div>'+empty("🗓️","Add a holidays calendar in Google Calendar to see them here"):nextHtml("Next holiday",function(e){return e[2]===i},"No holidays coming up")}});
+upd("tomorrow",{desc:"Everything on tomorrow, in order",r:function(){var t2=addDays(dk(),1),a=visEv(function(e){return K(e)===t2}).sort(function(x,y){return V(x)-V(y)});
+return '<div class="wl">Tomorrow · '+dlab(t2)+'</div><div class="whd"><div class="wn">'+a.length+'</div><div class="ws">'+(a.length===1?"event":a.length?"events":"a free day")+'</div></div>'+(a.length?'<div class="wrs">'+a.slice(0,6).map(function(e){return erow(e,true)}).join("")+'</div>':'')}});
+upd("week",{desc:"The next 7 days at a glance: how busy each day is. Tap a day to open it",wide:1,r:function(){var td=dk(),days=[],mx=1;for(var i=0;i<7;i++){var k=addDays(td,i),ev=visEv(function(e){return K(e)===k});if(ev.length>mx)mx=ev.length;days.push([k,ev])}
+var tot=days.reduce(function(s,d){return s+d[1].length},0),busy=days.slice().sort(function(a,b){return b[1].length-a[1].length})[0];
+return '<div class="wl">Next 7 days</div><div class="whd"><div class="wn">'+tot+'</div><div class="ws">'+(tot?"events · busiest "+(busy[0]===td?"today":dlab(busy[0]).split(" ")[0]):"a clear week")+'</div></div><div class="wwk">'+days.map(function(d,i){var dt=new Date(d[0]+"T12:00:00Z"),n=d[1].length;return '<button type="button" class="wwd'+(i===0?' t':'')+'" data-wday="'+d[0]+'" aria-label="'+dlab(d[0])+', '+n+' events"><span class="wwb"><i style="height:'+(n?Math.max(14,Math.round(n/mx*100)):4)+'%">'+(n?'<b>'+n+'</b>':'')+'</i></span><span class="wwn">'+new Intl.DateTimeFormat("en-GB",{weekday:"narrow",timeZone:"UTC"}).format(dt)+'</span><span class="wwdn">'+dt.getUTCDate()+'</span></button>'}).join("")+'</div><div class="wrs wwl">'+days.filter(function(d){return d[1].length}).slice(0,3).map(function(d){return d[1].sort(function(a,b){return V(a)-V(b)}).slice(0,2).map(erow).join("")}).join("")+'</div>'}});
+
+/* ---------- loading shimmer instead of "Loading…" ---------- */
+["weather","sun"].forEach(function(id){var w=wgById(id);if(!w)return;var o=w.r;w.r=function(){var h=o();return h.replace(/<div class="ws"[^>]*>Loading…<\/div>/,'<div class="wsk" aria-label="Loading"><i></i><i></i><i></i></div>')}});
+
+/* ---------- an icon for every widget ---------- */
+var IC={unread:'<rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/>',important:'<path d="m12 3 2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/>',latest:'<path d="M4 13h4l2 3h4l2-3h4"/><path d="M6 5h12l2 8v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-5z"/>',senders:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/>',deliveries:'<path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5z"/><path d="M3 7.5 12 12l9-4.5M12 12v9M7.5 5.2l9 4.6"/>',accounts:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',activity:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+next:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',f1:'<path d="M5 21V4M5 4h13l-2.5 4L18 12H5"/>',week:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',tomorrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',holiday:'<path d="M12 3c4 3 6 6 6 9a6 6 0 0 1-12 0c0-3 2-6 6-9z"/>',month:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/>',agenda:'<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>',
+clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5h4"/>',world:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',focus:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/>',countdown:'<path d="M6 2h12M6 22h12M7 2c0 6 10 6 10 10S7 16 7 22M17 2c0 6-10 6-10 10s10 4 10 10"/>',stopwatch:'<circle cx="12" cy="14" r="8"/><path d="M12 10v4M10 2h4M19 7l1.5-1.5"/>',rings:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/>',
+notes:'<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/>',todo:'<rect x="3" y="3" width="18" height="18" rx="4"/><path d="m8 12 3 3 5-6"/>',habits:'<path d="M3 12a9 9 0 1 0 9-9"/><path d="m3 4 0 5h5"/><path d="m9 12 2 2 4-4"/>',water:'<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/>',breathe:'<path d="M3 8h11a3 3 0 1 0-3-3M3 12h15a3 3 0 1 1-3 3M3 16h7"/>',
+weather:'<path d="M7 18a4 4 0 0 1-.5-8A6 6 0 0 1 18 9a4.5 4.5 0 0 1-.5 9z"/>',sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',links:'<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',photo:'<rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/>',stack:'<path d="M12 3 3 8l9 5 9-5z"/><path d="m3 13 9 5 9-5"/>'};
+function icon(id){return IC[id]?'<svg class="wic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+IC[id]+'</svg>':''}
+function addIcons(root){root.querySelectorAll('.wd[data-w],.stki[data-si]').forEach(function(t){var id=t.dataset.w||t.dataset.si,l=t.querySelector(".wl");if(l&&!l.querySelector(".wic")&&IC[id]){l.insertAdjacentHTML("afterbegin",icon(id));l.classList.add("hasi")}})}
+var _bw=buildWds;buildWds=function(tab){_bw(tab);var c=EL("wds-"+tab);if(c)addIcons(c)};
+var _tw=tickWds;tickWds=function(){_tw();document.querySelectorAll(".wds").forEach(addIcons)};
+new MutationObserver(function(ms){var hit=false;ms.forEach(function(m){if(m.addedNodes.length)hit=true});if(hit)document.querySelectorAll(".wds,.wcprev,#wgl").forEach(addIcons)}).observe(document.body,{childList:true,subtree:true});
+
+/* mail widgets follow the inbox right away */
+var _rm4=renderMail;renderMail=function(L,n){_rm4(L,n);["unread","latest","deliveries","senders"].forEach(function(id){var w=wgById(id);if(w)document.querySelectorAll('.wds [data-w="'+id+'"] .wb').forEach(function(b){if(!b.contains(document.activeElement))b.innerHTML=w.r()})});document.querySelectorAll(".wds").forEach(addIcons)};
+
+/* ---------- move saved layouts off the retired widgets ---------- */
+var ch=false;["mail","calendar"].forEach(function(tab){var out=[];(WD[tab]||[]).forEach(function(id){var n=id in GONE?GONE[id]:id;if(n&&out.indexOf(n)<0&&wgById(n))out.push(n);if(n!==id)ch=true});WD[tab]=out});
+if(ch)saveWd();
+try{var w3=JSON.parse(localStorage.getItem("wd-w3")||"{}");if(w3.stack&&w3.stack.ids){var s=w3.stack.ids.map(function(id){return id in GONE?GONE[id]:id}).filter(function(id,i,a){return id&&a.indexOf(id)===i});if(s.join()!==w3.stack.ids.join()){w3.stack.ids=s;localStorage.setItem("wd-w3",JSON.stringify(w3))}}}catch(e){}
+buildWds("mail");buildWds("calendar");tickWds();
 })();
 </script>
 </body>
