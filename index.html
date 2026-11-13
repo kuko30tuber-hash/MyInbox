@@ -8,7 +8,7 @@
 <link rel="icon" href="icon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#3a5bff">
+<meta name="theme-color" content="#7c4dff">
 <meta name="apple-mobile-web-app-title" content="OwnInbox">
 <meta name="application-name" content="OwnInbox">
 <script src="config.js"></script>
@@ -72,9 +72,9 @@ li a:hover,li a:focus-visible{background:color-mix(in srgb,var(--accent) 8%,tran
 .all{font:inherit;font-size:12px;margin:10px 0 0;padding:4px 10px;border:1px solid var(--line);border-radius:999px;background:none;color:var(--accent);cursor:pointer}
 .empty{margin:16px 0 0;padding:14px;border:1px dashed var(--line);border-radius:10px;color:var(--mute);font-size:14px}
 .empty strong{color:var(--ink);display:block;margin-bottom:2px}
-:root{--bg:#e8ecf4;--panel:#fff;--ink:#1d1d1f;--mute:#6e6e73;--line:rgba(60,60,67,.14);--accent:#0071e3;--dot:#0071e3;--today:#0071e3;--todayink:#fff;--glass:rgba(255,255,255,.52);--glass-hi:rgba(255,255,255,.9);--glass-lo:rgba(255,255,255,.28);--gloss:rgba(255,255,255,.26);--pill:#fff;--shadow:0 12px 40px rgba(40,60,110,.16);--b1:#6fa8ff;--b2:#ffa6d2;--b3:#9ff0cf}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#090b12;--panel:#181c28;--ink:#f5f5f7;--mute:#a1a1aa;--line:rgba(255,255,255,.12);--accent:#0a84ff;--dot:#0a84ff;--today:#0a84ff;--todayink:#fff;--glass:rgba(40,44,62,.5);--glass-hi:rgba(255,255,255,.22);--glass-lo:rgba(255,255,255,.07);--gloss:rgba(255,255,255,.14);--pill:rgba(255,255,255,.2);--shadow:0 14px 48px rgba(0,0,0,.55);--b1:#2447ff;--b2:#9b2fd0;--b3:#0b9c88}}
-:root[data-theme="dark"]{--bg:#090b12;--panel:#181c28;--ink:#f5f5f7;--mute:#a1a1aa;--line:rgba(255,255,255,.12);--accent:#0a84ff;--dot:#0a84ff;--today:#0a84ff;--todayink:#fff;--glass:rgba(40,44,62,.5);--glass-hi:rgba(255,255,255,.22);--glass-lo:rgba(255,255,255,.07);--gloss:rgba(255,255,255,.14);--pill:rgba(255,255,255,.2);--shadow:0 14px 48px rgba(0,0,0,.55);--b1:#2447ff;--b2:#9b2fd0;--b3:#0b9c88}
+:root{--bg:#e8ecf4;--panel:#fff;--ink:#1d1d1f;--mute:#6e6e73;--line:rgba(60,60,67,.14);--accent:#7c4dff;--dot:#7c4dff;--today:#7c4dff;--todayink:#fff;--glass:rgba(255,255,255,.52);--glass-hi:rgba(255,255,255,.9);--glass-lo:rgba(255,255,255,.28);--gloss:rgba(255,255,255,.26);--pill:#fff;--shadow:0 12px 40px rgba(40,60,110,.16);--b1:#6fa8ff;--b2:#ffa6d2;--b3:#9ff0cf}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#090b12;--panel:#181c28;--ink:#f5f5f7;--mute:#a1a1aa;--line:rgba(255,255,255,.12);--accent:#a879ff;--dot:#a879ff;--today:#a879ff;--todayink:#fff;--glass:rgba(40,44,62,.5);--glass-hi:rgba(255,255,255,.22);--glass-lo:rgba(255,255,255,.07);--gloss:rgba(255,255,255,.14);--pill:rgba(255,255,255,.2);--shadow:0 14px 48px rgba(0,0,0,.55);--b1:#2447ff;--b2:#9b2fd0;--b3:#0b9c88}}
+:root[data-theme="dark"]{--bg:#090b12;--panel:#181c28;--ink:#f5f5f7;--mute:#a1a1aa;--line:rgba(255,255,255,.12);--accent:#a879ff;--dot:#a879ff;--today:#a879ff;--todayink:#fff;--glass:rgba(40,44,62,.5);--glass-hi:rgba(255,255,255,.22);--glass-lo:rgba(255,255,255,.07);--gloss:rgba(255,255,255,.14);--pill:rgba(255,255,255,.2);--shadow:0 14px 48px rgba(0,0,0,.55);--b1:#2447ff;--b2:#9b2fd0;--b3:#0b9c88}
 body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",system-ui,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}
 body::before{content:"";position:fixed;inset:-10%;z-index:-1;background:radial-gradient(40vmax 40vmax at 12% 10%,var(--b1),transparent 70%),radial-gradient(45vmax 45vmax at 88% 20%,var(--b2),transparent 70%),radial-gradient(50vmax 50vmax at 55% 95%,var(--b3),transparent 70%);opacity:.75;filter:blur(24px);animation:drift 28s ease-in-out infinite alternate}
 @keyframes drift{to{transform:translate3d(-3%,4%,0) scale(1.08)}}
@@ -1097,7 +1097,7 @@ html.finept .wrch{display:inline}
 
 /* brand */
 .brand{flex:1 1 100%;display:flex;align-items:center;gap:9px;width:max-content;max-width:max-content;margin:0 0 6px;color:var(--ink);text-decoration:none;font-size:16px;font-weight:750;letter-spacing:-.02em;text-shadow:var(--txt-shadow)}
-.brand img{width:28px;height:28px;border-radius:8px;box-shadow:0 4px 12px rgba(40,60,200,.28)}
+.brand img{width:28px;height:28px;border-radius:8px;box-shadow:0 4px 12px rgba(110,50,230,.3)}
 .brand:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:10px}
 html.motion .brand img{transition:transform .35s cubic-bezier(.3,1.5,.5,1)}
 html.motion .brand:hover img{transform:rotate(-8deg) scale(1.06)}
@@ -2075,7 +2075,7 @@ function recent(){try{var a=JSON.parse(localStorage.getItem("colrecent")||"[]");
 function pushRecent(c){var a=recent().filter(function(x){return x!==c});a.unshift(c);try{localStorage.setItem("colrecent",JSON.stringify(a.slice(0,8)))}catch(e){}}
 
 /* --- what a picker controls: an account ("acc:email") or the app accent ("accent") --- */
-var ACC_DEF="#0a84ff";
+var ACC_DEF="#7c4dff";
 function getAccent(){var c=ls("wacc","");return HEX.test(c)?c:""}
 function applyAccent(){var c=getAccent(),r=document.documentElement.style;if(c){r.setProperty("--accent",c);r.setProperty("--dot",c);r.setProperty("--today",c)}else{r.removeProperty("--accent");r.removeProperty("--dot");r.removeProperty("--today")}}
 applyAccent();
@@ -2124,7 +2124,7 @@ EL("sttabs").innerHTML=TABS.map(function(t){var on=t[0]===stTab;return '<button 
 if(stTab==="acc"){h='<p class="stp">Every email, filter and chip uses its account’s colour. Tap an account to change it.</p>'+(A.length?A.map(function(e,i){return cardAcc(e,i===0)}).join(""):'<p class="stempty">Sign in with Google to see your accounts here.</p>')+
 (window.gAuth&&gAuth.addAccount?'<button type="button" class="btn stadd" id="stadd"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Add another Gmail account</button>':'')}
 else if(stTab==="look"){var c=getAccent()||ACC_DEF;h='<div class="stgrp"><div class="stgl">Theme</div>'+segH("theme",[["auto","Automatic"],["light","Light"],["dark","Dark"]],typeof TH==="string"?TH:"auto","Theme")+'</div>'+
-'<section class="stcard open" style="--ac:'+c+'"><div class="stch static"><span class="stdot"></span><span class="stct"><b>Accent colour</b><small><span class="stcn">'+esc(getAccent()?cName(c):"Default blue")+'</span> · buttons, today, links</small></span></div><div class="stcb"><div class="stacp" aria-hidden="true"><span class="btn pri">Send</span><span class="stacd">13</span><span class="stacl">Open in Gmail</span><span class="stacs"><i></i></span></div>'+pickerHtml("accent")+'<div class="stcf"><button type="button" class="btn sm" data-accdef="1">Default accent</button></div></div></section>'+
+'<section class="stcard open" style="--ac:'+c+'"><div class="stch static"><span class="stdot"></span><span class="stct"><b>Accent colour</b><small><span class="stcn">'+esc(getAccent()?cName(c):"Default purple")+'</span> · buttons, today, links</small></span></div><div class="stcb"><div class="stacp" aria-hidden="true"><span class="btn pri">Send</span><span class="stacd">13</span><span class="stacl">Open in Gmail</span><span class="stacs"><i></i></span></div>'+pickerHtml("accent")+'<div class="stcf"><button type="button" class="btn sm" data-accdef="1">Default accent</button></div></div></section>'+
 '<div class="stgrp"><div class="stgl">Email list</div>'+segH("dense",[["0","Comfortable"],["1","Compact"]],String(p.dense?1:0),"Email list density")+'</div>'}
 else if(stTab==="mail"){h='<div class="stgrp">'+sw("snip","Show message previews","A line of each email under its subject",p.snip)+sw("accl","Show account labels","Coloured name of the account on each email",p.accl)+sw("star","Star important emails in Inbox","A small ★ next to emails that are also in Important",p.star)+sw("mread","Mark as read when opened","Turn off to keep emails unread until you read them in Gmail",p.mread)+sw("spamauto","Automatic spam filter","Moves promotions and discounts to Spam. TikTok and your own spam list always go to Spam",p.spamauto)+'</div>'+
 '<div class="stgrp"><div class="stgl">Open the page on</div>'+segH("open",[["in","Inbox"],["imp","Important"]],p.open,"Open the page on")+'</div>'+
@@ -2145,7 +2145,7 @@ var w=t.closest("[data-col]");if(w&&cp){setCol(k,w.dataset.col);syncCp(cp,w.data
 if(t.closest("[data-rand]")&&cp){var r=surprise(k);setCol(k,r);syncCp(cp,r);return}
 if(t.closest("[data-eye]")&&cp){new EyeDropper().open().then(function(r){var c=normHex(r.sRGBHex);if(c){setCol(k,c);syncCp(cp,c)}},function(){});return}
 var d=t.closest("[data-acdef]");if(d){var cs=accCols();delete cs[d.dataset.acdef];try{localStorage.setItem("acccol",JSON.stringify(cs))}catch(x){}repaint();var c0=accColor(d.dataset.acdef).toLowerCase(),cp2=d.closest(".stcard").querySelector(".cp");syncCp(cp2,c0);return}
-if(t.closest("[data-accdef]")){try{localStorage.removeItem("wacc")}catch(x){}applyAccent();EL("st").style.removeProperty("--accent");syncCp(t.closest(".stcard").querySelector(".cp"),ACC_DEF);t.closest(".stcard").querySelector(".stcn").textContent="Default blue";return}
+if(t.closest("[data-accdef]")){try{localStorage.removeItem("wacc")}catch(x){}applyAccent();EL("st").style.removeProperty("--accent");syncCp(t.closest(".stcard").querySelector(".cp"),ACC_DEF);t.closest(".stcard").querySelector(".stcn").textContent="Default purple";return}
 var so=t.closest("[data-acout]");if(so){so.disabled=true;gAuth.signOut(so.dataset.acout).then(function(){location.reload()});return}
 var sg=t.closest("[data-seg]");if(sg){var id=sg.dataset.seg,v=sg.dataset.v;sg.parentNode.querySelectorAll("button").forEach(function(x){var on=x===sg;x.classList.toggle("on",on);x.setAttribute("aria-checked",on)});
 if(id==="theme")setTheme(v,true);else if(id==="dense")setP("dense",v==="1"?1:0);else if(id==="open")setP("open",v);return}
