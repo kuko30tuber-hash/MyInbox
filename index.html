@@ -3,7 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>My inbox and calendar</title>
+<title>OwnInbox</title>
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<link rel="icon" href="icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#3a5bff">
+<meta name="apple-mobile-web-app-title" content="OwnInbox">
+<meta name="application-name" content="OwnInbox">
 <script src="config.js"></script>
 <script src="google-shim.js"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -1087,12 +1094,21 @@ html.finept .wds:not(.edit) [data-edit]{display:none}
 html.finept .wrch{display:inline}
 @media(max-width:700px){html.finept .wrch{display:none}}
 .wgrid>.wd[data-w]:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* brand */
+.brand{flex:1 1 100%;display:flex;align-items:center;gap:9px;width:max-content;max-width:max-content;margin:0 0 6px;color:var(--ink);text-decoration:none;font-size:16px;font-weight:750;letter-spacing:-.02em;text-shadow:var(--txt-shadow)}
+.brand img{width:28px;height:28px;border-radius:8px;box-shadow:0 4px 12px rgba(40,60,200,.28)}
+.brand:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:10px}
+html.motion .brand img{transition:transform .35s cubic-bezier(.3,1.5,.5,1)}
+html.motion .brand:hover img{transform:rotate(-8deg) scale(1.06)}
+@media(max-width:600px){.brand{font-size:15px}.brand img{width:24px;height:24px;border-radius:7px}}
 </style>
 <script>try{var t=localStorage.getItem("wth");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);var a=localStorage.getItem("wacc");if(/^#[0-9a-f]{6}$/i.test(a||"")){var r=document.documentElement.style;r.setProperty("--accent",a);r.setProperty("--dot",a);r.setProperty("--today",a)}}catch(e){}</script>
 </head>
 <body>
 <div id="bg" aria-hidden="true"><div class="vig"></div><div class="grn"></div></div>
 <header>
+<a class="brand" href="#mail" aria-label="OwnInbox, go to Mail"><img src="logo.svg" alt="" width="28" height="28"><span>OwnInbox</span></a>
 <h1 id="greet">Hello</h1>
 <p class="sub" id="today"></p>
 <div class="conn" id="conn" role="status" aria-live="polite"></div>
