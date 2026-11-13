@@ -1567,6 +1567,136 @@ header{padding-top:52px!important;padding-bottom:18px!important}
 header h1,.hclock{font-size:clamp(52px,5.2vw,84px)!important;line-height:1!important;letter-spacing:-.02em!important}
 header .sub{font-size:14.5px!important;letter-spacing:.06em!important;margin-top:12px!important}
 @media(max-width:600px){header{padding-top:28px!important}header h1{font-size:46px!important}header .sub{font-size:12.5px!important;margin-top:8px!important}}
+/* ===== Widgets 5 ===== */
+/* hover: lift, tilt toward the pointer, a light that follows it and a hairline in the widget colour */
+html.motion .wds:not(.edit) .wgrid>.wd[data-w]{transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .4s ease,border-color .3s ease;transform-style:preserve-3d;will-change:transform}
+.wds .wgrid>.wd[data-w]::before{opacity:0!important;background:radial-gradient(420px circle at var(--mx,50%) var(--my,0%),color-mix(in srgb,var(--tn,var(--accent)) 22%,transparent),transparent 60%)!important;transition:opacity .35s ease;z-index:0}
+.wds .wgrid>.wd[data-w]>.wb{z-index:1}
+.wds .wgrid>.wd[data-w]::after{content:"";display:block!important;position:absolute;inset:0;border-radius:inherit;pointer-events:none;padding:1px;background:radial-gradient(260px circle at var(--mx,50%) var(--my,0%),color-mix(in srgb,var(--tn,var(--accent)) 85%,transparent),transparent 70%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);opacity:0;transition:opacity .35s ease;z-index:2}
+.wds:not(.edit) .wgrid>.wd.hov::before{opacity:1!important}
+.wds:not(.edit) .wgrid>.wd.hov::after{opacity:1}
+html.motion .wds:not(.edit) .wgrid>.wd.hov{transform:perspective(900px) translateY(-3px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));box-shadow:inset 0 1px 0 var(--hair-hi),0 2px 4px rgba(15,15,25,.06),0 18px 40px -14px color-mix(in srgb,var(--tn,var(--accent)) 45%,rgba(15,15,25,.3))!important}
+.wds:not(.edit) .wgrid>.wd.hov{transition-duration:.18s,.4s,.3s}
+/* the header icon nods */
+html.motion .wd.hov .wl .wic{animation:w5nod .6s cubic-bezier(.3,1.4,.5,1)}
+@keyframes w5nod{0%{transform:none}35%{transform:rotate(-12deg) scale(1.15)}70%{transform:rotate(6deg)}100%{transform:none}}
+/* big numbers lean in */
+.wds .wn{transition:transform .4s cubic-bezier(.3,1.3,.5,1),letter-spacing .4s}
+html.motion .wd.hov .wn{transform:scale(1.04);transform-origin:left center}
+/* rows slide in a touch */
+html.motion .wd.hov .wrw{transition:background .15s,transform .3s cubic-bezier(.2,.8,.2,1)}
+html.motion .wd.hov .wrw:hover{transform:translateX(3px)}
+/* bars grow on hover */
+html.motion .wd.hov .wwb i,html.motion .wd.hov .wsb i{animation:w5grow .6s cubic-bezier(.2,.8,.2,1)}
+@keyframes w5grow{from{transform:scaleY(.4);transform-origin:bottom}to{transform:none}}
+html.motion .wd.hov .wsb i{animation-name:w5growx}
+@keyframes w5growx{from{transform:scaleX(.3);transform-origin:left}to{transform:none}}
+
+/* ---------- clock ---------- */
+.ckw{display:flex;align-items:center;gap:16px;flex:1;min-height:0;margin-top:6px}
+.ckf{flex:none;width:clamp(70px,44%,132px);height:auto;aspect-ratio:1;filter:drop-shadow(0 6px 14px rgba(15,15,25,.12))}
+.zl .ckf{width:min(62%,210px)}
+.zl .ckw{flex-direction:column;justify-content:center;gap:12px}
+.zl .ckt{align-items:center;text-align:center}
+.ckbg{fill:color-mix(in srgb,var(--panel) 80%,transparent);stroke:color-mix(in srgb,var(--ink) 10%,transparent);stroke-width:.8}
+.ckf .tk{stroke:color-mix(in srgb,var(--ink) 30%,transparent);stroke-width:1.2;stroke-linecap:round}
+.ckf .tk.b{stroke:var(--ink);stroke-width:2.2}
+.ckf .hh,.ckf .mh,.ckf .sh{stroke-linecap:round;transform-origin:50px 50px;animation:w5spin linear infinite}
+.ckf .hh{stroke:var(--ink);stroke-width:3.6;animation-duration:43200s}
+.ckf .mh{stroke:var(--ink);stroke-width:2.4;animation-duration:3600s}
+.ckf .sh{stroke:var(--tn,var(--accent));stroke-width:1.2;animation-duration:60s}
+.ckc{fill:var(--tn,var(--accent));stroke:var(--panel);stroke-width:1.2}
+@keyframes w5spin{to{transform:rotate(360deg)}}
+.ckt{display:flex;flex-direction:column;min-width:0;line-height:1.2}
+.ckt b{font-family:var(--font-display,inherit);font-weight:400;font-size:clamp(30px,3vw,44px);letter-spacing:-.01em;line-height:1;font-variant-numeric:tabular-nums}
+.ckt span{font-size:12.5px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ckt span:first-of-type{margin-top:6px;font-weight:650;color:var(--ink)}
+.zs .ckt{display:none}.zs .ckf{width:min(100%,118px);margin:auto}
+html.motion .wd.hov .ckf{transform:scale(1.04);transition:transform .5s cubic-bezier(.3,1.3,.5,1)}
+.ckf{transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.st-vivid .ckt span{color:rgba(255,255,255,.82)}
+
+/* ---------- weather: sky behind the reading ---------- */
+.wd[data-w="weather"]{isolation:isolate}
+.wxsky{position:absolute!important;inset:-14px -16px;z-index:0!important;pointer-events:none;border-radius:inherit;overflow:hidden;opacity:.9;transition:opacity .4s}
+.wd[data-w="weather"] .wb{position:relative}
+.wd[data-w="weather"] .wb>.wxsky{inset:-32px -16px -38px}
+.wxon{position:relative;z-index:1;display:flex;flex-direction:column;flex:1;min-width:0}
+.wxsky.k-clear.day{background:radial-gradient(60% 70% at 85% 0%,rgba(255,214,102,.55),transparent 70%),linear-gradient(180deg,rgba(90,170,255,.32),rgba(90,170,255,.04))}
+.wxsky.k-clear.night{background:radial-gradient(40% 50% at 82% 8%,rgba(220,225,255,.28),transparent 70%),linear-gradient(180deg,rgba(40,50,120,.4),rgba(40,50,120,.05))}
+.wxsky.k-cloudy{background:linear-gradient(180deg,rgba(140,155,180,.36),rgba(140,155,180,.05))}
+.wxsky.k-fog{background:linear-gradient(180deg,rgba(180,185,195,.42),rgba(180,185,195,.08))}
+.wxsky.k-rain{background:linear-gradient(180deg,rgba(80,110,160,.42),rgba(80,110,160,.06))}
+.wxsky.k-snow{background:linear-gradient(180deg,rgba(200,220,255,.45),rgba(200,220,255,.08))}
+.wxsky.k-storm{background:linear-gradient(180deg,rgba(70,60,110,.5),rgba(70,60,110,.08))}
+.wxsky i{position:absolute;display:block;border-radius:50%}
+.wxsky.k-clear.day i:first-child{width:120px;height:120px;right:-30px;top:-40px;background:radial-gradient(circle,rgba(255,220,120,.7),transparent 65%)}
+.wxsky.k-cloudy i,.wxsky.k-fog i,.wxsky.k-rain i,.wxsky.k-storm i{width:140px;height:44px;border-radius:40px;background:rgba(255,255,255,.22);filter:blur(6px)}
+.wxsky i:nth-child(1){top:10%;left:55%}.wxsky i:nth-child(2){top:34%;left:-10%;transform:scale(.8)}.wxsky i:nth-child(3){top:62%;left:40%;transform:scale(.6)}
+html.motion .wxsky.k-cloudy i,html.motion .wxsky.k-fog i,html.motion .wxsky.k-rain i,html.motion .wxsky.k-storm i{animation:w5drift 18s ease-in-out infinite alternate}
+html.motion .wxsky i:nth-child(2){animation-duration:24s!important;animation-delay:-6s!important}
+html.motion .wxsky i:nth-child(3){animation-duration:30s!important}
+@keyframes w5drift{to{translate:40px 0}}
+html.motion .wxsky.k-clear.day i:first-child{animation:w5glow 6s ease-in-out infinite alternate}
+@keyframes w5glow{to{transform:scale(1.18);opacity:.8}}
+html.motion .wd.hov .wxsky{opacity:1}
+
+/* ---------- water: a glass that fills ---------- */
+.wd[data-w="water"] .wb{padding-right:72px}
+.zs.wd[data-w="water"] .wb{padding-right:48px}
+.wtg{position:absolute!important;right:2px;top:50%;transform:translateY(-50%);width:58px;pointer-events:none}
+.zs .wtg{width:40px;top:44%}
+.zl .wtg{width:86px}
+.zl.wd[data-w="water"] .wb{padding-right:104px}
+.wtg svg{display:block;width:100%;height:auto;overflow:visible}
+.wtbg{fill:color-mix(in srgb,#64d2ff 8%,transparent)}
+.wtgl{fill:none;stroke:color-mix(in srgb,var(--ink) 22%,transparent);stroke-width:1.6}
+.wtl{transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+.wtw.a{fill:color-mix(in srgb,#40b4ff 72%,transparent)}
+.wtw.b{fill:color-mix(in srgb,#64d2ff 50%,transparent)}
+html.motion .wtw.a{animation:w5wave 3.2s linear infinite}
+html.motion .wtw.b{animation:w5wave 5s linear infinite reverse}
+@keyframes w5wave{to{transform:translateX(60px)}}
+html.motion .wd.hov .wtw.a{animation-duration:1.4s}
+html.motion .wd.hov .wtw.b{animation-duration:2.2s}
+.wd[data-w="water"] .bar{display:none}
+.wd[data-w="water"] .btn{white-space:nowrap}
+
+/* ---------- focus: ring ---------- */
+.ftwrap{position:relative;display:grid;place-items:center;width:min(100%,150px);aspect-ratio:1;margin:6px auto 4px}
+.zw .ftwrap{width:110px;margin:4px 0}
+.zl .ftwrap{width:min(78%,220px)}
+.ftr{position:absolute;inset:0;width:100%;height:100%}
+.ftb{fill:none;stroke:color-mix(in srgb,var(--ink) 8%,transparent);stroke-width:6}
+.ftp{fill:none;stroke:var(--tn,var(--accent));stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset 1s linear;filter:drop-shadow(0 0 6px color-mix(in srgb,var(--tn,var(--accent)) 45%,transparent))}
+.ftwrap .wn.ftt{position:relative;font-family:var(--font-display,inherit);font-weight:400;font-size:clamp(26px,2.6vw,40px)!important;font-variant-numeric:tabular-nums;margin:0}
+.zl .ftwrap .wn.ftt{font-size:52px!important}
+.zw .wd[data-w="focus"] .wb,.wd.zw[data-w="focus"] .wb{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto 1fr;column-gap:16px;align-items:center}
+.wd.zw[data-w="focus"] .wl{grid-column:1/-1}
+.wd.zw[data-w="focus"] .fbt{flex-direction:column;margin:0;padding:0}
+html.motion .wd.hov .ftwrap{transform:scale(1.03)}
+.ftwrap{transition:transform .5s cubic-bezier(.3,1.3,.5,1)}
+
+/* ---------- countdown: a little calendar page ---------- */
+.wd[data-w="countdown"] .wb{padding-right:70px}
+.cdd2{position:absolute!important;right:0;top:50%;translate:0 -50%;width:56px;border-radius:12px;overflow:hidden;background:var(--panel);box-shadow:0 1px 0 var(--hair-hi) inset,0 6px 16px -6px rgba(15,15,25,.25);text-align:center;display:flex;flex-direction:column;transition:transform .5s cubic-bezier(.3,1.3,.5,1)}
+.cdm{display:block;padding:3px 0 2px;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--tn,var(--accent))}
+.cdn2{display:block;padding:3px 0 6px;font-size:24px;font-weight:750;line-height:1.1;font-variant-numeric:tabular-nums}
+.zs .cdd2{width:44px;top:20px;translate:none}.zs .cdn2{font-size:18px}
+.zs.wd[data-w="countdown"] .wb{padding-right:50px}
+html.motion .wd.hov .cdd2{transform:rotate(-6deg) scale(1.06)}
+
+/* ---------- world clocks: day and night ---------- */
+.wcr{display:flex;align-items:center;gap:8px}
+.wcr>span{flex:1;min-width:0}
+.wcdn{flex:none;width:18px;height:18px;border-radius:50%;position:relative}
+.wcr.day .wcdn{background:radial-gradient(circle,#ffd54a 0 38%,transparent 40%),conic-gradient(from 0deg,#ffb300 0 6%,transparent 6% 12.5%,#ffb300 12.5% 18.5%,transparent 18.5% 25%,#ffb300 25% 31%,transparent 31% 37.5%,#ffb300 37.5% 43.5%,transparent 43.5% 50%,#ffb300 50% 56%,transparent 56% 62.5%,#ffb300 62.5% 68.5%,transparent 68.5% 75%,#ffb300 75% 81%,transparent 81% 87.5%,#ffb300 87.5% 93.5%,transparent 93.5%);-webkit-mask:radial-gradient(circle,#000 0 70%,transparent 72%);mask:radial-gradient(circle,#000 0 70%,transparent 72%)}
+.wcr.night .wcdn{background:radial-gradient(circle at 34% 40%,#c9cfff 0 44%,transparent 46%);-webkit-mask:radial-gradient(circle at 62% 30%,transparent 0 34%,#000 36%);mask:radial-gradient(circle at 62% 30%,transparent 0 34%,#000 36%)}
+.wcr.night b{color:var(--mute)}
+html.motion .wd.hov .wcr.day .wcdn{animation:w5spin 6s linear infinite}
+html.motion .wd.hov .wcr.night .wcdn{animation:w5nod .8s ease}
+
+@media (prefers-reduced-motion:reduce){.ckf .sh{animation-timing-function:steps(60)}}
 </style>
 <script>try{var t=localStorage.getItem("wth");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);var a=localStorage.getItem("wacc");if(/^#[0-9a-f]{6}$/i.test(a||"")){var r=document.documentElement.style;r.setProperty("--accent",a);r.setProperty("--dot",a);r.setProperty("--today",a)}}catch(e){}</script>
 </head>
@@ -3417,6 +3547,49 @@ function align(){c.style.top=g.offsetTop+"px";c.style.height=g.offsetHeight+"px"
 function tick(){fmt();setTimeout(tick,60000-Date.now()%60000+30)}
 tick();align();window.addEventListener("resize",align);try{new ResizeObserver(align).observe(g)}catch(e){}if(document.fonts&&document.fonts.ready)document.fonts.ready.then(align);
 document.addEventListener("visibilitychange",function(){if(!document.hidden)fmt()})})();
+/* ===== Widgets 5: richer faces and hover reactions ===== */
+(function(){
+function wr(id,fn){var w=wgById(id);if(!w)return;var o=w.r;w.r=function(){return fn(o())}}
+function fmt(o,d){return new Intl.DateTimeFormat("en-GB",Object.assign({timeZone:tz},o)).format(d||new Date())}
+
+/* ---------- Clock: an analog face with live hands ---------- */
+var CK=wgById("clock");if(CK)CK.r=function(){var d=new Date(),p=new Intl.DateTimeFormat("en-GB",{hour:"numeric",minute:"numeric",second:"numeric",hourCycle:"h23",timeZone:tz}).formatToParts(d),g=function(t){return +(p.filter(function(x){return x.type===t})[0]||{value:0}).value},h=g("hour"),m=g("minute"),s=g("second")+d.getMilliseconds()/1000;
+ var secs=h%12*3600+m*60+s,ticks="";for(var i=0;i<12;i++){var a=i*30*Math.PI/180,r1=i%3?40:37,r2=44;ticks+='<line x1="'+(50+Math.sin(a)*r1).toFixed(1)+'" y1="'+(50-Math.cos(a)*r1).toFixed(1)+'" x2="'+(50+Math.sin(a)*r2).toFixed(1)+'" y2="'+(50-Math.cos(a)*r2).toFixed(1)+'" class="'+(i%3?"tk":"tk b")+'"/>'}
+ return '<div class="wl">'+esc(tz.split("/").pop().replace(/_/g," "))+'</div><div class="ckw"><svg class="ckf" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" class="ckbg"/>'+ticks+
+ '<line x1="50" y1="54" x2="50" y2="27" class="hh" style="animation-delay:-'+secs.toFixed(1)+'s"/><line x1="50" y1="56" x2="50" y2="15" class="mh" style="animation-delay:-'+(m*60+s).toFixed(1)+'s"/><line x1="50" y1="60" x2="50" y2="12" class="sh" style="animation-delay:-'+s.toFixed(2)+'s"/><circle cx="50" cy="50" r="3.2" class="ckc"/></svg>'+
+ '<div class="ckt"><b>'+fmt({hour:"2-digit",minute:"2-digit",hourCycle:"h23"},d)+'</b><span>'+fmt({weekday:"long"},d)+'</span><span>'+fmt({day:"numeric",month:"long"},d)+'</span></div></div>'};
+
+/* ---------- Weather: the tile takes on the sky ---------- */
+function wxKind(c){if(c==null)return "clear";if(c<=1)return "clear";if(c<=3)return "cloudy";if(c<=48)return "fog";if(c<=67||(c>=80&&c<=82))return "rain";if(c<=77||c===85||c===86)return "snow";if(c>=95)return "storm";return "cloudy"}
+wr("weather",function(h){var c=null;try{c=jparse("wd-wx",null).d.c.weather_code}catch(e){}var hr=+fmt({hour:"numeric",hourCycle:"h23"}),mo=new Date().getMonth(),day=hr>=7&&hr<(mo>=3&&mo<=8?20:17),k=wxKind(c);return '<div class="wxsky k-'+k+(day?' day':' night')+'" aria-hidden="true"><i></i><i></i><i></i></div><div class="wxon k-'+k+(day?' day':' night')+'">'+h+'</div>'});
+
+/* ---------- Water: a glass that fills ---------- */
+wr("water",function(h){var g=8;try{g=jparse("wd-cfg",{}).water.goal||8}catch(e){}var n=(jparse("wd-water",{})[tk.format(new Date())]||0),p=Math.max(0,Math.min(1,n/g));
+ return '<div class="wtg" aria-hidden="true"><svg viewBox="0 0 60 80"><defs><clipPath id="wtc"><path d="M8 6h44l-5 66a6 6 0 0 1-6 5.5H19a6 6 0 0 1-6-5.5z"/></clipPath></defs><g clip-path="url(#wtc)"><rect x="0" y="0" width="60" height="80" class="wtbg"/><g class="wtl" style="transform:translateY('+((1-p)*74+4).toFixed(1)+'px)"><path class="wtw a" d="M-60 4 Q-45 0 -30 4 T0 4 T30 4 T60 4 T90 4 T120 4 V90 H-60Z"/><path class="wtw b" d="M-60 6 Q-45 2 -30 6 T0 6 T30 6 T60 6 T90 6 T120 6 V90 H-60Z"/></g></g><path d="M8 6h44l-5 66a6 6 0 0 1-6 5.5H19a6 6 0 0 1-6-5.5z" class="wtgl"/></svg></div>'+h});
+
+/* ---------- Focus: a ring that runs down ---------- */
+function ftRing(){var L=FT.len||1500,l=typeof ftLeft==="function"?ftLeft():L,p=Math.max(0,Math.min(1,l/L)),C=2*Math.PI*42;return '<svg class="ftr" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="42" class="ftb"/><circle cx="50" cy="50" r="42" class="ftp" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+(C*(1-p)).toFixed(1)+'" transform="rotate(-90 50 50)"/></svg>'}
+var FW=wgById("focus");if(FW){var fo=ftHtml;ftHtml=function(){var h=fo();return h.replace('<div class="wn ftt">','<div class="ftwrap">'+ftRing()+'<div class="wn ftt">').replace('</div><div class="fbt">','</div></div><div class="fbt">')};FW.r=function(){return ftHtml()}}
+setInterval(function(){if(!FT||!FT.run)return;var L=FT.len||1500,p=Math.max(0,Math.min(1,ftLeft()/L)),C=2*Math.PI*42;document.querySelectorAll('[data-w="focus"] .ftp').forEach(function(c){c.setAttribute("stroke-dashoffset",(C*(1-p)).toFixed(1))})},1000);
+
+/* ---------- Countdown: the date under the number ---------- */
+wr("countdown",function(h){var c=null;try{c=JSON.parse(ls("wd-cd","null"))}catch(e){}if(!c||!c.d)return h;var d=new Date(c.d+"T12:00:00Z");
+ return h.replace('<div class="ws">','<div class="cdd2"><span class="cdm">'+new Intl.DateTimeFormat("en-GB",{month:"short",timeZone:"UTC"}).format(d)+'</span><span class="cdn2">'+d.getUTCDate()+'</span></div><div class="ws">')});
+
+/* ---------- World clocks: day or night in each city ---------- */
+wr("world",function(h){return h.replace(/<div class="wcr"><span>([\s\S]*?)<\/span><b>(\d\d):(\d\d)<\/b><\/div>/g,function(all,city,hh,mm){var H=+hh,day=H>=7&&H<19;return '<div class="wcr '+(day?"day":"night")+'"><i class="wcdn" aria-label="'+(day?"Daytime":"Night")+'"></i><span>'+city+'</span><b>'+hh+':'+mm+'</b></div>'})});
+
+/* ---------- hover: a light that follows the pointer and a gentle tilt ---------- */
+
+function on(){return !!(window.motionOn&&motionOn())}
+var cur=null,raf=0,lx=0,ly=0;
+function apply(){raf=0;if(!cur)return;var r=cur.getBoundingClientRect(),x=(lx-r.left)/r.width,y=(ly-r.top)/r.height;cur.style.setProperty("--mx",(x*100).toFixed(1)+"%");cur.style.setProperty("--my",(y*100).toFixed(1)+"%");
+ var big=r.width>380||r.height>300,amt=big?2:4;cur.style.setProperty("--ry",((x-.5)*amt).toFixed(2)+"deg");cur.style.setProperty("--rx",((.5-y)*amt).toFixed(2)+"deg")}
+document.addEventListener("pointermove",function(e){if(e.pointerType!=="mouse")return;var t=e.target.closest&&e.target.closest(".wds:not(.edit) .wgrid>.wd[data-w]");if(t!==cur){if(cur){cur.classList.remove("hov");cur.style.removeProperty("--rx");cur.style.removeProperty("--ry")}cur=t;if(cur&&on())cur.classList.add("hov")}if(!cur||!on())return;lx=e.clientX;ly=e.clientY;if(!raf)raf=requestAnimationFrame(apply)},{passive:true});
+document.addEventListener("pointerleave",function(){if(cur){cur.classList.remove("hov");cur=null}},true);
+window.addEventListener("blur",function(){if(cur){cur.classList.remove("hov");cur=null}});
+buildWds("mail");buildWds("calendar");tickWds();
+})();
 </script>
 </body>
 </html>
