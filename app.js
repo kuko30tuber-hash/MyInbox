@@ -2825,3 +2825,33 @@ apply();window.addEventListener("storage",function(e){if(e.key==="tabs-hide")app
 /* keep the tab bar's highlight under the right tab after layout changes */
 (function(){var nav=document.querySelector("nav.top");if(!nav||typeof moveInd!=="function")return;var r=0;function go(){cancelAnimationFrame(r);r=requestAnimationFrame(function(){requestAnimationFrame(moveInd)})}
 try{new ResizeObserver(go).observe(nav)}catch(e){}window.addEventListener("resize",go);window.addEventListener("orientationchange",go);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(go)})();
+/* ===== Offline: the app opens without internet and shows what it last loaded ===== */
+(function(){
+if("serviceWorker" in navigator&&(location.protocol==="https:"||location.hostname==="localhost"))window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});
+var MAIL="cache-mail",CALK="cache-cal";
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function fmt(t){return new Intl.DateTimeFormat("en-GB",{weekday:"short",hour:"2-digit",minute:"2-digit"}).format(new Date(t))}
+/* remember the inbox after each good load */
+var _rmo=renderMail;renderMail=function(L,note){_rmo.apply(this,arguments);if(L&&L.length&&/updated/.test(String(note||"")))save(MAIL,{at:Date.now(),L:L.slice(0,60)})};
+/* remember the calendar */
+var _mg=mergeLive;mergeLive=function(){_mg.apply(this,arguments);try{if(Object.keys(liveE).length)save(CALK,{at:Date.now(),C:C,CAL:CAL,E:E.filter(function(e){return e&&e[3]})})}catch(x){}};
+/* forget it when you sign out of everything */
+if(window.gAuth&&gAuth.signOut){var _so=gAuth.signOut;gAuth.signOut=function(email){return _so.apply(this,arguments).then(function(r){if(!email||!gAuth.accounts().length){try{localStorage.removeItem(MAIL);localStorage.removeItem(CALK)}catch(e){}}return r})}}
+function offlineStart(){var m=jparse(MAIL,null);if(m&&m.L&&m.L.length&&(!lastL||!lastL.length||!liveOk))renderMail(m.L,"offline · emails from "+fmt(m.at));
+ var c=jparse(CALK,null);if(c&&c.E&&c.E.length&&!Object.keys(liveE).length){try{C=c.C;CAL=c.CAL;E=c.E;E0=E.slice();rebuildHas();if(typeof buildLegend==="function")buildLegend();drawGrid();renderAg();calStat("offline · from "+fmt(c.at))}catch(x){}}}
+function chip(){var on=navigator.onLine,h=document.querySelector("header"),el=EL("offchip");if(on){if(el)el.remove();return}
+ if(!el&&h){el=document.createElement("div");el.id="offchip";el.className="offchip";el.setAttribute("role","status");el.innerHTML='<i></i>Offline. Showing what was last loaded';h.appendChild(el)}}
+window.addEventListener("offline",function(){chip();offlineStart()});
+window.addEventListener("online",function(){chip();say("Back online. Updating…",2500);try{if(mcpNS&&typeof directRefresh==="function")directRefresh(mcpNS)}catch(e){}});
+if(!navigator.onLine){chip();setTimeout(offlineStart,600)}
+/* ---------- install as an app ---------- */
+var deferred=null;window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();deferred=e;paint()});
+window.addEventListener("appinstalled",function(){deferred=null;paint();say("OwnInbox is installed.",3000)});
+function standalone(){return matchMedia("(display-mode: standalone)").matches||navigator.standalone===true}
+function ios(){return /iphone|ipad|ipod/i.test(navigator.userAgent)}
+function html(){if(standalone())return '<div class="s3g" id="s3inst"><div class="s3h">App</div><p class="s3p ntnote">You’re using OwnInbox as an installed app. It opens without internet and shows what it last loaded.</p></div>';
+ return '<div class="s3g" id="s3inst"><div class="s3h">App</div><div class="s3r"><div class="s3l"><b>Install OwnInbox</b><small>'+(deferred?"Opens in its own window, starts faster and works without internet.":ios()?"In Safari, tap Share, then “Add to Home Screen”.":"In your browser’s menu, choose “Install OwnInbox” or “Add to Home screen”.")+'</small></div>'+(deferred?'<div class="s3c"><button type="button" class="btn pri sm" id="instgo">Install</button></div>':'')+'</div></div>'}
+function paint(){var b=EL("stbody");if(!b||typeof stTab==="undefined"||stTab!=="look")return;var g=EL("s3inst");if(g)g.outerHTML=html();else b.insertAdjacentHTML("beforeend",html())}
+var _ds=drawSettings;drawSettings=function(){_ds.apply(this,arguments);paint()};
+EL("st").addEventListener("click",function(e){if(!e.target.closest("#instgo")||!deferred)return;deferred.prompt();deferred.userChoice.then(function(){deferred=null;paint()})});
+})();

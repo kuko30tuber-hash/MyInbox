@@ -2443,3 +2443,8 @@ html.motion .m3ab.busy svg{animation:m3spin .8s linear infinite}
 .cvseg button.on{background:var(--panel)!important;color:var(--ink)!important;box-shadow:0 1px 3px rgba(0,0,0,.12)!important}
 @media(max-width:600px){.cvseg{width:auto}}
 .top button[hidden]{display:none!important}
+/* offline */
+.offchip{position:absolute;left:50%;top:14px;transform:translateX(-50%);display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:99px;background:color-mix(in srgb,#ff9f0a 18%,var(--panel));border:1px solid color-mix(in srgb,#ff9f0a 45%,transparent);font-size:12.5px;font-weight:650;color:var(--ink);z-index:5}
+.offchip i{width:8px;height:8px;border-radius:50%;background:#ff9f0a}
+html.sidebar header #conn{flex:1 1 0;min-width:0;max-width:none;margin-right:clamp(150px,13vw,220px)!important}
+html.sidebar header #conn .cchips{flex-wrap:wrap}
