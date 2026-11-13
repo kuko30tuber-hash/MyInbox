@@ -1563,6 +1563,9 @@ var d=document.createElement("span");d.className="ceb";d.setAttribute("aria-hidd
 d.innerHTML=L.slice(0,3).map(function(e){return '<span style="--c:'+(C[e[2]]?C[e[2]][1]:"#0a84ff")+'">'+esc(e[1])+'</span>'}).join("")+(L.length>3?'<em>+'+(L.length-3)+' more</em>':'');b.appendChild(d)})};
 drawGrid();
 })();
+(function(){try{history.scrollRestoration="manual"}catch(e){}
+function top0(){if(/^#(mail|calendar|notes)$/.test(location.hash))window.scrollTo(0,0)}
+top0();window.addEventListener("load",function(){top0();setTimeout(top0,0)});window.addEventListener("hashchange",function(){setTimeout(top0,0)})})();
 </script>
 </body>
 </html>
