@@ -2855,3 +2855,6 @@ function paint(){var b=EL("stbody");if(!b||typeof stTab==="undefined"||stTab!=="
 var _ds=drawSettings;drawSettings=function(){_ds.apply(this,arguments);paint()};
 EL("st").addEventListener("click",function(e){if(!e.target.closest("#instgo")||!deferred)return;deferred.prompt();deferred.userChoice.then(function(){deferred=null;paint()})});
 })();
+/* screen readers: say which tab is open */
+(function(){function mark(){document.querySelectorAll("nav.top button[id^='t']").forEach(function(b){if(b.classList.contains("on"))b.setAttribute("aria-current","page");else b.removeAttribute("aria-current")})}
+var _sh=show;show=function(){var r=_sh.apply(this,arguments);mark();return r};mark()})();
