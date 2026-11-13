@@ -734,6 +734,28 @@ main>section>h2{padding-left:0!important;padding-right:0!important}
 .accpick button.on{background:color-mix(in srgb,var(--ac) 18%,transparent);border-color:color-mix(in srgb,var(--ac) 65%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--ac) 40%,transparent);font-weight:600}
 .accpick button.on .ck{display:block}
 .accpick button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+header h1{padding-right:190px!important}
+@media(max-width:600px){header h1{padding-right:134px!important}}
+.stsheet{width:min(480px,100%)}
+.sth4{margin:18px 0 4px;font-size:13px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:var(--mute)}
+.sth4:first-child{margin-top:4px}
+.stp{margin:0 0 10px;font-size:14px;color:var(--mute)}
+.stacc{padding:14px;margin:0 0 10px;border-radius:20px;background:var(--glass-lo);border:1px solid var(--line)}
+.stah{display:flex;align-items:center;gap:9px;min-width:0;margin-bottom:12px}
+.stdot{flex:none;width:12px;height:12px;border-radius:50%;background:var(--ac);box-shadow:0 0 0 3px color-mix(in srgb,var(--ac) 25%,transparent)}
+.stem{flex:1;min-width:0;font-size:15px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stsw{display:grid;grid-template-columns:repeat(auto-fill,minmax(34px,1fr));gap:8px}
+.stsw button,.swc{position:relative;width:100%;aspect-ratio:1;max-width:40px;border-radius:50%;border:0;padding:0;cursor:pointer;background:var(--s);box-shadow:inset 0 0 0 1px rgba(0,0,0,.12);transition:transform .15s}
+.stsw button:hover,.swc:hover{transform:scale(1.08)}
+.stsw button.on,.swc.on{box-shadow:0 0 0 2px var(--panel,#fff),0 0 0 4px var(--s)}
+.stsw button.on::after{content:"";position:absolute;left:50%;top:46%;width:7px;height:12px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:translate(-50%,-50%) rotate(45deg)}
+.stsw button:focus-visible,.swc:focus-within{outline:2px solid var(--accent);outline-offset:3px}
+.swc{display:block;background:conic-gradient(#ff453a,#ffd60a,#30d158,#64d2ff,#0a84ff,#bf5af2,#ff375f,#ff453a)}
+.swc.on{background:var(--s)}
+.swc input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;border:0;padding:0}
+.stres{margin-top:4px;font-size:13px}
+.stbtns{display:flex;flex-wrap:wrap;gap:8px}
 </style>
 <script>try{var t=localStorage.getItem("wth");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 </head>
@@ -790,6 +812,7 @@ main>section>h2{padding-left:0!important;padding-right:0!important}
 </div>
 <div id="cmmsg" role="status"></div>
 <div class="acts"><span class="hint">Ctrl + Enter to send</span><button class="btn" id="cmcancel" type="button">Cancel</button><button class="btn pri" id="cmgo" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7Z"/></svg>Send</button></div></div></div>
+<div id="st" class="modal" hidden><div class="sheet stsheet" role="dialog" aria-modal="true" aria-labelledby="sth"><div class="shh"><div><h3 id="sth">Settings</h3><p class="shsub">Changes save right away</p></div><button class="x" id="stx" type="button" aria-label="Close">×</button></div><div id="stbody"></div><div class="acts"><button class="btn pri" id="stdone" type="button">Done</button></div></div></div>
 <div id="wg" class="modal" hidden><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="wgh"><div class="shh"><div><h3 id="wgh">Widgets</h3><p class="shsub" id="wgsub"></p></div><button class="x" id="wgx" type="button" aria-label="Close">×</button></div><div id="wgl"></div><div class="acts"><button class="btn pri" id="wgdone" type="button">Done</button></div></div></div>
 <div id="kb" class="modal" hidden><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="kbh3"><div class="shh"><div><h3 id="kbh3">Keyboard shortcuts</h3><p class="shsub">They work when you are not typing in a field</p></div><button class="x" id="kbx" type="button" aria-label="Close">×</button></div><div class="kbl"><div><span style="margin:0"><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd></span><span>Mail, Calendar, Notes</span></div><div><span style="margin:0"><kbd>J</kbd><kbd>K</kbd></span><span>Next or previous email</span></div><div><span style="margin:0"><kbd>R</kbd></span><span>Reply</span></div><div><span style="margin:0"><kbd>C</kbd></span><span>Write an email</span></div><div><span style="margin:0"><kbd>/</kbd></span><span>Search notes</span></div><div><span style="margin:0"><kbd>Esc</kbd></span><span>Close or fold up</span></div><div><span style="margin:0"><kbd>?</kbd></span><span>Show this list</span></div></div></div></div>
 <button id="kbh" class="kbh" type="button" aria-label="Keyboard shortcuts" title="Keyboard shortcuts">?</button>
@@ -826,7 +849,8 @@ function isSpam(m){return !!spamWhy(m)}
 var view="in",lastL=[],lastNote="";
 var ACOL=["#0a84ff","#ff9f0a","#30d158","#bf5af2","#ff375f","#64d2ff"];
 function accts(){try{return window.gAuth&&gAuth.accounts?gAuth.accounts().map(function(a){return a.email}):[]}catch(e){return[]}}
-function accColor(e){var i=accts().indexOf(e);return ACOL[(i<0?0:i)%ACOL.length]}
+function accCols(){try{var o=JSON.parse(localStorage.getItem("acccol")||"{}");return o&&typeof o==="object"?o:{}}catch(e){return{}}}
+function accColor(e){var c=accCols()[e];if(c&&/^#[0-9a-f]{6}$/i.test(c))return c;var i=accts().indexOf(e);return ACOL[(i<0?0:i)%ACOL.length]}
 function accShort(e){return String(e||"").split("@")[0]}
 var acctF="";try{acctF=localStorage.getItem("mailacct")||""}catch(e){}
 function isMe(e){e=String(e||"").toLowerCase();return !!e&&((typeof MYMAIL==="string"&&e===MYMAIL)||accts().indexOf(e)>-1)}
@@ -1635,7 +1659,7 @@ function top0(){if(/^#(mail|calendar|notes)$/.test(location.hash))window.scrollT
 top0();window.addEventListener("load",function(){top0();setTimeout(top0,0)});window.addEventListener("hashchange",function(){setTimeout(top0,0)})})();
 /* ===== Important + several accounts ===== */
 function acctChips(){if(!(window.gAuth&&gAuth.accounts))return "";var A=gAuth.accounts();if(!A.length)return "";
-return A.map(function(a,i){return '<span class="cc acct'+(a.on?'':' off')+'" title="'+esc(a.email)+'"><i style="background:'+ACOL[i%ACOL.length]+'"></i><span class="acm">'+esc(a.email)+'</span>'+(a.on?'':'<button type="button" class="acin" data-acin="'+esc(a.email)+'">Sign in</button>')+'<button type="button" class="acx" data-acrm="'+esc(a.email)+'" aria-label="Sign out of '+esc(a.email)+'">×</button></span>'}).join("")+'<button type="button" class="cc gso" id="gadd">+ Add account</button>'}
+return A.map(function(a,i){return '<span class="cc acct'+(a.on?'':' off')+'" title="'+esc(a.email)+'"><i style="background:'+accColor(a.email)+'"></i><span class="acm">'+esc(a.email)+'</span>'+(a.on?'':'<button type="button" class="acin" data-acin="'+esc(a.email)+'">Sign in</button>')+'<button type="button" class="acx" data-acrm="'+esc(a.email)+'" aria-label="Sign out of '+esc(a.email)+'">×</button></span>'}).join("")+'<button type="button" class="cc gso" id="gadd">+ Add account</button>'}
 function say(t,ms){var tt=EL("toast");tt.textContent=t;tt.hidden=false;clearTimeout(say.k);say.k=setTimeout(function(){tt.hidden=true},ms||4000)}
 EL("conn").addEventListener("click",function(e){if(!window.gAuth)return;var b=e.target.closest("[data-acrm],[data-acin],#gadd");if(!b)return;b.disabled=true;
 if(b.id==="gadd"){gAuth.addAccount().then(function(){location.reload()},function(){b.disabled=false;say("Couldn’t add that account. In Google Cloud, add it as a test user of the app first.",7000)});return}
@@ -1671,6 +1695,26 @@ EL("cmpick").addEventListener("keydown",function(e){var d={ArrowRight:1,ArrowDow
 var _sc=setCals;setCals=function(cs){_sc(cs);var first=window.gAuth&&gAuth.primary?gAuth.primary():"",multi=accts().length>1;
 if(multi)cs.forEach(function(c,i){if(c.account&&c.account!==first&&C[i]&&C[i][0]!==c.account)C[i][0]=C[i][0]+" · "+accShort(c.account)});
 buildLegend();buildCalSelect()};
+/* ===== Settings: a colour for each account ===== */
+var PAL=[["#0a84ff","Blue"],["#5e5ce6","Indigo"],["#bf5af2","Purple"],["#ff375f","Pink"],["#ff453a","Red"],["#ff9f0a","Orange"],["#ffd60a","Yellow"],["#30d158","Green"],["#66d4cf","Mint"],["#64d2ff","Teal"],["#ac8e68","Brown"],["#8e8e93","Grey"]];
+(function(){var h=document.querySelector(".hact");if(!h||EL("stbtn"))return;
+h.insertAdjacentHTML("beforeend",'<button id="stbtn" class="wpbtn" type="button" aria-label="Settings" title="Settings" aria-haspopup="dialog"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.2 2h-.4a2 2 0 0 0-2 2v.2a2 2 0 0 1-1 1.7l-.4.3a2 2 0 0 1-2 0l-.2-.1a2 2 0 0 0-2.7.7l-.2.4a2 2 0 0 0 .7 2.7l.2.1a2 2 0 0 1 1 1.7v.6a2 2 0 0 1-1 1.7l-.2.1a2 2 0 0 0-.7 2.7l.2.4a2 2 0 0 0 2.7.7l.2-.1a2 2 0 0 1 2 0l.4.3a2 2 0 0 1 1 1.7v.2a2 2 0 0 0 2 2h.4a2 2 0 0 0 2-2v-.2a2 2 0 0 1 1-1.7l.4-.3a2 2 0 0 1 2 0l.2.1a2 2 0 0 0 2.7-.7l.2-.4a2 2 0 0 0-.7-2.7l-.2-.1a2 2 0 0 1-1-1.7v-.6a2 2 0 0 1 1-1.7l.2-.1a2 2 0 0 0 .7-2.7l-.2-.4a2 2 0 0 0-2.7-.7l-.2.1a2 2 0 0 1-2 0l-.4-.3a2 2 0 0 1-1-1.7V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></button>')})();
+function drawSettings(){var A=accts(),cs=accCols();
+EL("stbody").innerHTML='<h4 class="sth4">Account colours</h4><p class="stp">Each email is labelled in its account’s colour.</p>'+(A.length?A.map(function(e,i){var cur=accColor(e).toLowerCase(),inPal=PAL.some(function(p){return p[0]===cur});
+return '<div class="stacc" style="--ac:'+cur+'"><div class="stah"><span class="stdot"></span><span class="stem">'+esc(e)+'</span><span class="acc">'+esc(accShort(e))+'</span></div><div class="stsw" role="radiogroup" aria-label="Colour for '+esc(e)+'">'+PAL.map(function(p){var on=p[0]===cur;return '<button type="button" role="radio" aria-checked="'+on+'" aria-label="'+p[1]+'" title="'+p[1]+'" data-acc="'+esc(e)+'" data-col="'+p[0]+'" style="--s:'+p[0]+'"'+(on?' class="on"':'')+'></button>'}).join("")+'<label class="swc'+(inPal?'':' on')+'" title="Pick any colour" style="--s:'+cur+'"><input type="color" value="'+cur+'" data-acc="'+esc(e)+'" aria-label="Any colour for '+esc(e)+'"></label></div></div>'}).join("")+(Object.keys(cs).length?'<button type="button" class="btn stres" id="stres">Reset to default colours</button>':''):'<p class="stp">Sign in with Google to choose account colours.</p>')+
+'<h4 class="sth4">Accounts</h4><div class="stbtns">'+(window.gAuth&&gAuth.addAccount?'<button type="button" class="btn" id="stadd">+ Add another Gmail account</button>':'')+'</div>'}
+function setAccColor(e,c){var cs=accCols();cs[e]=c;try{localStorage.setItem("acccol",JSON.stringify(cs))}catch(x){}repaint()}
+function repaint(){renderMail(lastL,lastNote);renderConn();if(typeof drawPick==="function")drawPick()}
+function openSt(){drawSettings();EL("st").hidden=false;var f=EL("st").querySelector('.stsw [aria-checked="true"]')||EL("stdone");f.focus()}
+function closeSt(){EL("st").hidden=true;EL("stbtn").focus()}
+EL("stbtn").onclick=openSt;EL("stx").onclick=closeSt;EL("stdone").onclick=closeSt;
+EL("st").addEventListener("click",function(e){if(e.target===EL("st"))return closeSt();
+var b=e.target.closest("[data-col]");if(b){var acc=b.dataset.acc;setAccColor(acc,b.dataset.col);drawSettings();var n=EL("st").querySelector('[data-acc="'+acc+'"][data-col="'+b.dataset.col+'"]');if(n)n.focus();return}
+if(e.target.id==="stres"){try{localStorage.removeItem("acccol")}catch(x){}repaint();drawSettings();EL("stdone").focus();return}
+if(e.target.id==="stadd"){e.target.disabled=true;gAuth.addAccount().then(function(){location.reload()},function(){e.target.disabled=false;say("Couldn’t add that account. In Google Cloud, add it as a test user of the app first.",7000)})}});
+EL("st").addEventListener("input",function(e){var t=e.target;if(t.type!=="color")return;var row=t.closest(".stacc");setAccColor(t.dataset.acc,t.value);row.style.setProperty("--ac",t.value);t.parentNode.style.setProperty("--s",t.value);row.querySelectorAll(".stsw button").forEach(function(x){x.classList.remove("on");x.setAttribute("aria-checked","false")});t.parentNode.classList.add("on")});
+EL("st").addEventListener("change",function(e){if(e.target.type==="color")drawSettings()});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!EL("st").hidden){e.stopPropagation();closeSt()}},true);
 </script>
 </body>
 </html>
