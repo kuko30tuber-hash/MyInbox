@@ -1631,7 +1631,7 @@ html.motion .wd.hov .ckf{transform:scale(1.04);transition:transform .5s cubic-be
 .wxsky.k-storm{background:linear-gradient(180deg,rgba(70,60,110,.5),rgba(70,60,110,.08))}
 .wxsky i{position:absolute;display:block;border-radius:50%}
 .wxsky.k-clear.day i:first-child{width:120px;height:120px;right:-30px;top:-40px;background:radial-gradient(circle,rgba(255,220,120,.7),transparent 65%)}
-.wxsky.k-cloudy i,.wxsky.k-fog i,.wxsky.k-rain i,.wxsky.k-storm i{width:140px;height:44px;border-radius:40px;background:rgba(255,255,255,.22);filter:blur(6px)}
+.wxsky.k-cloudy i,.wxsky.k-fog i,.wxsky.k-rain i,.wxsky.k-storm i{width:180px;height:60px;border-radius:60px;background:rgba(255,255,255,.16);filter:blur(16px)}
 .wxsky i:nth-child(1){top:10%;left:55%}.wxsky i:nth-child(2){top:34%;left:-10%;transform:scale(.8)}.wxsky i:nth-child(3){top:62%;left:40%;transform:scale(.6)}
 html.motion .wxsky.k-cloudy i,html.motion .wxsky.k-fog i,html.motion .wxsky.k-rain i,html.motion .wxsky.k-storm i{animation:w5drift 18s ease-in-out infinite alternate}
 html.motion .wxsky i:nth-child(2){animation-duration:24s!important;animation-delay:-6s!important}
@@ -1793,6 +1793,77 @@ html.motion:not(.still) #bg .sv.aw .awf1{animation:awDrift 42s ease-in-out infin
 @keyframes awDrift{from{transform:translate(-2px,-1px)}to{transform:translate(2px,1.5px)}}
 html.motion:not(.still) #bg .sv.aw .awh{animation:awRise 30s ease-in-out infinite alternate}
 @keyframes awRise{from{transform:translateY(2px) scale(1)}to{transform:translateY(-2px) scale(1.015)}}
+/* ===== Weather 2 ===== */
+.wx2{gap:0}
+.wx2t{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px}
+.wx2n{font-family:var(--font-display,inherit);font-weight:400;font-size:clamp(46px,4.4vw,64px);line-height:.95;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.wx2t .wxi2{width:46px;height:46px;flex:none}
+.wx2c{display:flex;flex-direction:column;gap:1px;margin-top:6px;line-height:1.25}
+.wx2c b{font-size:14px;font-weight:650}
+.wx2c span{font-size:12.5px;color:var(--mute);font-variant-numeric:tabular-nums;white-space:pre}
+.wx2m{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:8px;font-size:11.5px;color:var(--mute)}
+/* hourly */
+.wx2h{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:2px;margin-top:12px;padding:10px 4px;border-radius:14px;background:color-mix(in srgb,var(--panel) 45%,transparent);border:1px solid color-mix(in srgb,var(--ink) 6%,transparent)}
+.wx2hr{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:0;font-variant-numeric:tabular-nums}
+.wx2hr span{font-size:11px;font-weight:650;color:var(--mute)}
+.wx2hr:first-child span{color:var(--ink)}
+.wx2hr .wxi2{width:24px;height:24px}
+.wx2hr b{font-size:13px;font-weight:650}
+.wx2hr em{font-style:normal;font-size:10px;font-weight:700;color:#3aa0ff;min-height:12px}
+/* daily */
+.wx2d{display:flex;flex-direction:column;margin-top:10px}
+.wx2dr{display:grid;grid-template-columns:44px 24px 30px 30px minmax(40px,1fr) 30px;align-items:center;gap:6px;padding:5px 0;border-top:1px solid color-mix(in srgb,var(--ink) 7%,transparent);font-size:13px;font-variant-numeric:tabular-nums}
+.wx2dr:first-child{border-top:0}
+.wx2dn{font-weight:650}
+.wx2dr .wxi2{width:22px;height:22px}
+.wx2dr em{font-style:normal;font-size:10.5px;font-weight:700;color:#3aa0ff}
+.wx2lo{color:var(--mute);text-align:right}
+.wx2hi{font-weight:650}
+.wx2bar{position:relative;height:5px;border-radius:99px;background:color-mix(in srgb,var(--ink) 10%,transparent)}
+.wx2bar>i{position:absolute;top:0;bottom:0;border-radius:inherit}
+.wx2dot{position:absolute;top:50%;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:#fff;box-shadow:0 0 0 2px color-mix(in srgb,var(--ink) 55%,transparent)}
+/* sizes */
+.zs .wx2m,.zs .wx2h,.zs .wx2d{display:none}
+.zs .wx2n{font-size:44px}.zs .wx2t .wxi2{width:38px;height:38px}
+.wd.zw .wx2{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto auto 1fr;column-gap:16px}
+.wd.zw .wx2>.wl{grid-column:1/-1}
+.wd.zw .wx2t{grid-column:1;grid-row:2}
+.wd.zw .wx2c{grid-column:1;grid-row:3;align-self:start}
+.wd.zw .wx2h{grid-column:2;grid-row:2/4;margin:0;align-self:center}
+.wd.zw .wx2hr:nth-child(n+7){display:none}
+.wd.zw .wx2m,.wd.zw .wx2d{display:none}
+.wd.zw .wx2t .wxi2{width:36px;height:36px}
+.st-vivid .wx2c span,.st-vivid .wx2m,.st-vivid .wx2hr span,.st-vivid .wx2lo{color:rgba(255,255,255,.82)}
+/* icon colours */
+.wxi2{overflow:visible}
+.wxi-sun circle{fill:#ffc42e}
+.wxi-rays line{stroke:#ffb020;stroke-width:2;stroke-linecap:round}
+.wxi-rays{transform-origin:16px 16px;transform-box:view-box}
+.k-part .wxi-rays{transform-origin:12px 12px}
+.wxi-moon{fill:#c9cfff}
+.wxi-cl{fill:#fff;stroke:color-mix(in srgb,var(--ink) 14%,transparent);stroke-width:.8}
+.wxi-cl.back{fill:#d9dee8}
+:root[data-theme="dark"] .wxi-cl{fill:#e6e9f2}:root[data-theme="dark"] .wxi-cl.back{fill:#9aa3b5}
+.wxi-fog line{stroke:#a9b2c3;stroke-width:2;stroke-linecap:round}
+.wxi-rain line{stroke:#3aa0ff;stroke-width:2;stroke-linecap:round}
+.wxi-snow circle{fill:#9fd4ff}
+.wxi-bolt{fill:#ffcc00}
+/* motion */
+html.motion .wxi-rays{animation:wxSpin 16s linear infinite}
+html.motion .wxi-rain line{animation:wxDrop 1s linear infinite}
+html.motion .wxi-snow circle{animation:wxFlake 1.8s ease-in-out infinite}
+html.motion .wxi-bolt{animation:wxBolt 3s ease-in-out infinite}
+@keyframes wxSpin{to{transform:rotate(360deg)}}
+@keyframes wxDrop{0%{transform:translateY(-2px);opacity:0}30%{opacity:1}100%{transform:translateY(4px);opacity:0}}
+@keyframes wxFlake{0%{transform:translateY(-2px);opacity:0}40%{opacity:1}100%{transform:translate(1px,4px);opacity:0}}
+@keyframes wxBolt{0%,80%,100%{opacity:1}85%{opacity:.2}90%{opacity:1}93%{opacity:.3}}
+/* hover: the forecast steps in, the big icon grows */
+html.motion .wd.hov .wx2t .wxi2{transform:scale(1.12) rotate(-4deg)}
+.wx2t .wxi2{transition:transform .5s cubic-bezier(.3,1.3,.5,1)}
+html.motion .wd.hov .wx2hr,html.motion .wd.hov .wx2dr{animation:wxIn .5s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i)*40ms)}
+@keyframes wxIn{from{opacity:0;transform:translateY(6px)}}
+html.motion .wd.hov .wx2bar>i{animation:rgFill .8s cubic-bezier(.2,.8,.2,1) both;transform-origin:left}
+html.motion .wd.hov .wx2.still .wx2hr,html.motion .wd.hov .wx2.still .wx2dr,html.motion .wd.hov .wx2.still .wx2bar>i{animation:none}
 </style>
 <script>try{var t=localStorage.getItem("wth");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);var a=localStorage.getItem("wacc");if(/^#[0-9a-f]{6}$/i.test(a||"")){var r=document.documentElement.style;r.setProperty("--accent",a);r.setProperty("--dot",a);r.setProperty("--today",a)}}catch(e){}</script>
 </head>
@@ -3824,6 +3895,57 @@ try{var o=localStorage.getItem("wp");if(o&&fix(o)!==o)localStorage.setItem("wp",
 if(window.__wps&&__wps.X){var X=__wps.X;if(X.id&&fix(X.id)!==X.id){X.id=fix(X.id);ss("wpx",JSON.stringify(X))}cur=fix(X.id||cur)}else cur=fix(cur);
 if(typeof buildWp==="function")try{buildWp()}catch(e){}
 if(window.__wps)__wps.render();else applyWp(cur);
+})();
+/* ===== Weather 2: hourly strip, temperature bars and drawn icons ===== */
+(function(){
+var W=wgById("weather");if(!W)return;var old=W.r;
+var D2=jparse("wd-wx2",null),busy=false,failAt=0;
+function place(){return (jparse("wd-cfg",{}).weather||{}).place||null}
+function key(p){return p.lat+","+p.lon}
+function paint(){document.querySelectorAll('.wds [data-w="weather"] .wb').forEach(function(b){b.innerHTML=W.r()})}
+function load(){var p=place();if(!p||busy||Date.now()-failAt<5*60e3)return;if(D2&&D2.key===key(p)&&Date.now()-D2.at<15*60e3)return;busy=true;
+ fetch("https://api.open-meteo.com/v1/forecast?latitude="+p.lat+"&longitude="+p.lon+"&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,relative_humidity_2m,is_day&hourly=temperature_2m,weather_code,precipitation_probability,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&forecast_days=7&forecast_hours=26")
+ .then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){busy=false;if(!j.current||!j.daily)throw 0;D2={key:key(p),at:Date.now(),off:j.utc_offset_seconds||0,c:j.current,h:j.hourly||null,d:j.daily};ss("wd-wx2",JSON.stringify(D2));paint()})
+ .catch(function(){busy=false;failAt=Date.now()})}
+
+/* ---------- drawn icons ---------- */
+function kind(c){if(c==null)return "clear";if(c===0)return "clear";if(c<=2)return "part";if(c===3)return "cloudy";if(c<=48)return "fog";if(c<=57)return "drizzle";if(c<=67||(c>=80&&c<=82))return "rain";if(c<=77||c===85||c===86)return "snow";if(c>=95)return "storm";return "cloudy"}
+var NAME={0:"Clear",1:"Mostly clear",2:"Partly cloudy",3:"Cloudy",45:"Fog",48:"Freezing fog",51:"Light drizzle",53:"Drizzle",55:"Heavy drizzle",56:"Freezing drizzle",57:"Freezing drizzle",61:"Light rain",63:"Rain",65:"Heavy rain",66:"Freezing rain",67:"Freezing rain",71:"Light snow",73:"Snow",75:"Heavy snow",77:"Snow grains",80:"Showers",81:"Showers",82:"Heavy showers",85:"Snow showers",86:"Snow showers",95:"Thunderstorm",96:"Thunderstorm with hail",99:"Thunderstorm with hail"};
+function sun(cx,cy,r){var s='<g class="wxi-sun"><g class="wxi-rays">';for(var i=0;i<8;i++){var a=i*Math.PI/4;s+='<line x1="'+(cx+Math.cos(a)*(r+3)).toFixed(1)+'" y1="'+(cy+Math.sin(a)*(r+3)).toFixed(1)+'" x2="'+(cx+Math.cos(a)*(r+6.5)).toFixed(1)+'" y2="'+(cy+Math.sin(a)*(r+6.5)).toFixed(1)+'"/>'}return s+'</g><circle cx="'+cx+'" cy="'+cy+'" r="'+r+'"/></g>'}
+function moon(cx,cy,r){return '<path class="wxi-moon" d="M'+(cx+r*.35)+' '+(cy-r)+' A'+r+' '+r+' 0 1 0 '+(cx+r)+' '+(cy+r*.4)+' A'+(r*.82)+' '+(r*.82)+' 0 0 1 '+(cx+r*.35)+' '+(cy-r)+'Z"/>'}
+function cloud(x,y,s,cls){return '<path class="wxi-cl'+(cls?" "+cls:"")+'" transform="translate('+x+' '+y+') scale('+s+')" d="M6 20h18a6 6 0 0 0 .6-12A8 8 0 0 0 9.4 9.6 5.3 5.3 0 0 0 6 20z"/>'}
+function icon(code,day){var k=kind(code),b="";
+ if(k==="clear")b=day?sun(16,16,7):moon(16,16,8);
+ else if(k==="part")b=(day?sun(12,12,5.5):moon(12,12,6))+cloud(4,8,.95);
+ else if(k==="cloudy")b=cloud(-2,2,.85,"back")+cloud(3,7,.95);
+ else if(k==="fog")b=cloud(2,0,.9)+'<g class="wxi-fog"><line x1="5" y1="25" x2="27" y2="25"/><line x1="8" y1="29" x2="24" y2="29"/></g>';
+ else if(k==="drizzle"||k==="rain"){var n=k==="rain"?3:2;b=cloud(2,-1,.95);b+='<g class="wxi-rain">';for(var i=0;i<n;i++)b+='<line x1="'+(11+i*5)+'" y1="22" x2="'+(9+i*5)+'" y2="27" style="animation-delay:'+(-i*.33)+'s"/>';b+='</g>'}
+ else if(k==="snow"){b=cloud(2,-1,.95)+'<g class="wxi-snow">';for(var j=0;j<3;j++)b+='<circle cx="'+(11+j*5)+'" cy="25" r="1.4" style="animation-delay:'+(-j*.6)+'s"/>';b+='</g>'}
+ else b=cloud(2,-1,.95)+'<path class="wxi-bolt" d="M17 19l-4 6h4l-2 5 6-7h-4l2-4z"/>';
+ return '<svg class="wxi2 k-'+k+'" viewBox="0 0 32 32" aria-hidden="true">'+b+'</svg>'}
+
+/* ---------- temperature colours ---------- */
+var TC=[[-10,"#7c7cff"],[0,"#4fb7ff"],[8,"#3fd0c6"],[15,"#7ddc5a"],[21,"#ffd23f"],[27,"#ff9f2e"],[34,"#ff5a3c"]];
+function tcol(t){if(t<=TC[0][0])return TC[0][1];for(var i=0;i<TC.length-1;i++){var a=TC[i],b=TC[i+1];if(t<=b[0]){var f=(t-a[0])/(b[0]-a[0]),x=hex2rgb(a[1]),y=hex2rgb(b[1]);return rgb2hex(x[0]+(y[0]-x[0])*f,x[1]+(y[1]-x[1])*f,x[2]+(y[2]-x[2])*f)}}return TC[TC.length-1][1]}
+function R(n){return Math.round(n)}
+
+/* ---------- the widget ---------- */
+function html(p,d){var c=d.c,day=c.is_day!==0,k=kind(c.weather_code),lo=d.d.temperature_2m_min,hi=d.d.temperature_2m_max,now=Date.now()+d.off*1000;
+ var head='<div class="wx2t"><div class="wx2l"><b class="wx2n">'+R(c.temperature_2m)+'°</b></div>'+icon(c.weather_code,day)+'</div>'+
+  '<div class="wx2c"><b>'+esc(NAME[c.weather_code]||"—")+'</b><span>H '+R(hi[0])+'°  L '+R(lo[0])+'°</span></div>'+
+  '<div class="wx2m"><span>Feels like '+R(c.apparent_temperature)+'°</span>'+(c.relative_humidity_2m!=null?'<span>Humidity '+R(c.relative_humidity_2m)+'%</span>':'')+'<span>Wind '+R(c.wind_speed_10m)+' km/h</span></div>';
+ var hours="";if(d.h&&d.h.time){var start=0;for(var i=0;i<d.h.time.length;i++){if(Date.parse(d.h.time[i]+":00Z")>now-36e5+1){start=i;break}}
+  var H=[];for(var j=start;j<Math.min(d.h.time.length,start+8);j++)H.push(j);
+  hours='<div class="wx2h">'+H.map(function(ix,n){var pr=d.h.precipitation_probability?d.h.precipitation_probability[ix]:null;return '<div class="wx2hr" style="--i:'+n+'"><span>'+(n===0?"Now":d.h.time[ix].slice(11,13))+'</span>'+icon(d.h.weather_code[ix],d.h.is_day?d.h.is_day[ix]!==0:true)+'<b>'+R(n===0?c.temperature_2m:d.h.temperature_2m[ix])+'°</b><em>'+(pr!=null&&pr>=30?pr+'%':'')+'</em></div>'}).join("")+'</div>'}
+ var n7=Math.min(6,d.d.time.length),gmin=Math.min.apply(0,lo.slice(0,n7)),gmax=Math.max.apply(0,hi.slice(0,n7)),span=Math.max(1,gmax-gmin);
+ var days='<div class="wx2d">'+d.d.time.slice(0,n7).map(function(t,i){var l=lo[i],h=hi[i],pp=d.d.precipitation_probability_max?d.d.precipitation_probability_max[i]:null,
+  dot=i===0?'<i class="wx2dot" style="left:'+((c.temperature_2m-gmin)/span*100).toFixed(1)+'%"></i>':'';
+  return '<div class="wx2dr" style="--i:'+i+'"><span class="wx2dn">'+(i===0?"Today":new Intl.DateTimeFormat("en-GB",{weekday:"short",timeZone:"UTC"}).format(new Date(t+"T12:00:00Z")))+'</span>'+icon(d.d.weather_code[i],true)+'<em>'+(pp!=null&&pp>=30?pp+'%':'')+'</em><span class="wx2lo">'+R(l)+'°</span><span class="wx2bar"><i style="left:'+((l-gmin)/span*100).toFixed(1)+'%;width:'+Math.max(4,(h-l)/span*100).toFixed(1)+'%;background:linear-gradient(90deg,'+tcol(l)+','+tcol(h)+')"></i>'+dot+'</span><span class="wx2hi">'+R(h)+'°</span></div>'}).join("")+'</div>';
+ var lab='<div class="wl hasi"><svg class="wic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.1-7-11.5a7 7 0 0 1 14 0C19 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>'+esc(p.name)+'</div>';
+ var sk=k==="part"?"clear":k==="drizzle"?"rain":k;
+ return '<div class="wxsky k-'+sk+(day?' day':' night')+'" aria-hidden="true"><i></i><i></i><i></i></div><div class="wxon wx2 k-'+k+(document.querySelector('.wd.hov[data-w="weather"]')?' still':'')+'">'+lab+head+hours+days+'</div>'}
+W.r=function(){var h=old(),p=place();load();if(!p||!D2||D2.key!==key(p)||!D2.c)return h;try{return html(p,D2)}catch(e){return h}};
+paint();
 })();
 </script>
 </body>
