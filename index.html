@@ -1413,8 +1413,93 @@ li a[aria-expanded="true"]{background:color-mix(in srgb,var(--accent) 10%,transp
 .vig{opacity:.6}
 ::selection{background:color-mix(in srgb,var(--accent) 28%,transparent)}
 @media(max-width:600px){header h1{font-size:38px}header .sub{font-size:11.5px}}
+#conn.allok .cc.acct,#conn.allok #gadd{display:none}
 /* scrollbars that stay out of the way */
 *{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--ink) 18%,transparent) transparent}
+/* ===== Premium 2 ===== */
+:root{--r-lg:16px;--r-md:12px;--r-sm:9px;--hair:color-mix(in srgb,var(--ink) 8%,transparent);
+--surf:color-mix(in srgb,var(--panel) 84%,transparent);--lift:0 1px 2px rgba(15,15,25,.05),0 0 0 .5px rgba(15,15,25,.02)}
+:root[data-theme="dark"]{--panel:#141418;--ink:#ececf1;--mute:#8e8e99;--surf:color-mix(in srgb,#141418 82%,transparent);--lift:0 1px 2px rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--panel:#141418;--ink:#ececf1;--mute:#8e8e99;--surf:color-mix(in srgb,#141418 82%,transparent);--lift:0 1px 2px rgba(0,0,0,.4)}}
+/* crisp, mostly solid surfaces */
+.mcol,#mpane,.cal,.nl,.ne{background:var(--surf)!important;border-radius:16px!important;-webkit-backdrop-filter:blur(24px) saturate(140%)!important;backdrop-filter:blur(24px) saturate(140%)!important}
+.wds .wd{background:var(--surf)!important;border-radius:14px!important;-webkit-backdrop-filter:blur(24px) saturate(140%)!important;backdrop-filter:blur(24px) saturate(140%)!important}
+.wds .wd::after{display:none}
+html.motion .wds:not(.edit) .wd:hover{transform:none;box-shadow:inset 0 1px 0 var(--hair-hi),0 1px 2px rgba(15,15,25,.06),0 8px 24px -12px rgba(15,15,25,.18)!important}
+.modal .sheet,#st .sheet,.wps{border-radius:18px!important;background:color-mix(in srgb,var(--panel) 94%,transparent)!important}
+.wctx{border-radius:12px}
+/* controls: compact, precise */
+.btn{border-radius:9px;padding:7px 13px;font-size:13.5px}
+.btn.sm{border-radius:8px}
+.cc{border-radius:8px}
+.segw,#sttabs,.wpstabs,.stseg,.wctxs{border-radius:10px!important;padding:2px!important}
+.segw>button,#sttabs>button,.wpstabs>button,.stseg>button{border-radius:8px!important;padding:6px 12px!important;font-size:13px!important}
+.sgi{border-radius:8px!important}
+.tabs #tin,.tabs #timp,.tabs #tsp{padding:6px 12px}
+.accf button,#accf button{border-radius:8px;padding:4px 10px}
+li a{border-radius:10px;padding:11px 12px}
+li a[aria-expanded="true"]{box-shadow:none;background:color-mix(in srgb,var(--accent) 9%,transparent)}
+li:not(:last-child)::after{left:58px!important;right:12px!important}
+.av{width:36px!important;height:36px!important;font-size:14px!important}
+li a{grid-template-columns:36px 1fr!important}
+.snip{-webkit-line-clamp:1!important}
+.acc{font-size:0!important;width:7px;height:7px;min-width:7px;padding:0!important;border-radius:50%!important;background:var(--ac)!important;box-shadow:none!important;align-self:center}
+.wds .wn{font-size:34px}.zl .wn{font-size:50px}
+.wds .wd{padding:14px 16px}
+.wbar .wbtn,.wbar [data-add],.wbar [data-edit]{border-radius:8px}
+/* header: compact and editorial */
+header{padding-top:26px!important}
+header h1{font-size:clamp(36px,3.6vw,48px)!important;letter-spacing:-.015em}
+main>section>h2{font-size:20px!important}
+/* sidebar on desktop */
+@media(min-width:1100px){
+ html.sidebar header,html.sidebar main{max-width:1260px;margin-left:248px!important;padding-left:40px!important;padding-right:40px!important}
+ html.sidebar .top{left:0!important;top:0!important;bottom:0!important;transform:none!important;width:248px;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:2px;padding:20px 12px 14px!important;border-radius:0!important;border:0!important;border-right:1px solid var(--hair)!important;background:color-mix(in srgb,var(--panel) 70%,transparent)!important;-webkit-backdrop-filter:blur(30px) saturate(150%)!important;backdrop-filter:blur(30px) saturate(150%)!important;box-shadow:none!important;overflow:auto}
+ html.sidebar .sbtop{padding:2px 10px 18px}
+ html.sidebar .sbtop .brand{margin:0;font-size:15px}
+ html.sidebar .top>button{position:relative;display:flex!important;flex-direction:row!important;align-items:center;justify-content:flex-start;gap:11px;min-width:0!important;width:100%;height:36px;padding:0 10px!important;border-radius:9px!important;background:none!important;box-shadow:none!important;color:color-mix(in srgb,var(--ink) 72%,transparent);font-size:14px;font-weight:500}
+ html.sidebar .top>button svg{width:18px;height:18px;flex:none}
+ html.sidebar .top>button span{font-size:14px!important;font-weight:500!important}
+ html.sidebar .top>button:hover{background:color-mix(in srgb,var(--ink) 5%,transparent)!important;color:var(--ink)}
+ html.sidebar .top>button.on{background:color-mix(in srgb,var(--ink) 7%,transparent)!important;color:var(--ink)}
+ html.sidebar .top>button.on svg{color:var(--accent)}
+ html.sidebar .top>button .bdg{position:static!important;margin-left:auto;transform:none!important;min-width:0;height:auto;padding:1px 7px;border-radius:99px;background:color-mix(in srgb,var(--ink) 8%,transparent)!important;color:color-mix(in srgb,var(--ink) 70%,transparent)!important;font-size:11.5px;font-weight:600;box-shadow:none!important;border:0!important}
+ html.sidebar .sbx{display:flex;flex-direction:column;flex:1;min-height:0;margin-top:20px}
+ html.sidebar .sbh{padding:0 10px 6px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:color-mix(in srgb,var(--ink) 45%,transparent)}
+ html.sidebar .sbacc{display:flex;flex-direction:column;gap:1px}
+ html.sidebar .sbr{display:flex;align-items:center;gap:10px;height:32px;padding:0 10px;border:0;border-radius:8px;background:none;color:color-mix(in srgb,var(--ink) 72%,transparent);font:inherit;font-size:13px;text-align:left;cursor:pointer;min-width:0}
+ html.sidebar .sbr:hover{background:color-mix(in srgb,var(--ink) 5%,transparent);color:var(--ink)}
+ html.sidebar .sbr.on{background:color-mix(in srgb,var(--ink) 7%,transparent);color:var(--ink);font-weight:550}
+ html.sidebar .sbd{flex:none;width:8px;height:8px;border-radius:50%;background:var(--ac)}
+ html.sidebar .sbd.all{background:conic-gradient(var(--accent) 0 50%,color-mix(in srgb,var(--accent) 40%,transparent) 0)}
+ html.sidebar .sbn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ html.sidebar .sbr b{font-size:11.5px;font-weight:600;color:color-mix(in srgb,var(--ink) 55%,transparent)}
+ html.sidebar .sbsp{flex:1}
+ html.sidebar .sbst{display:flex;align-items:center;gap:8px;padding:8px 10px;font-size:12px;color:color-mix(in srgb,var(--ink) 50%,transparent)}
+ html.sidebar .sbst.warn{color:#d97706;cursor:pointer}
+ html.sidebar .sbdot{width:7px;height:7px;border-radius:50%;background:#d97706}
+ html.sidebar .sbdot.ok{background:#30d158;box-shadow:0 0 0 3px color-mix(in srgb,#30d158 18%,transparent)}
+ html.sidebar .sbtools{padding:8px 4px 0;border-top:1px solid var(--hair)}
+ html.sidebar .sbtools .hact{position:static!important;display:flex;justify-content:space-between;gap:0;padding:0;border:0!important;background:none!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+ html.sidebar .sbtools .hact .wpbtn{width:36px;height:36px;border-radius:9px}
+ html.sidebar .top .sbx .sbr{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;gap:10px!important;width:100%!important;min-width:0!important;height:32px!important;padding:0 10px!important;margin:0!important;border-radius:8px!important;box-shadow:none!important;font-size:13px!important;line-height:1.2!important}
+ html.sidebar .top .sbx .sbr:not(.on){background:none!important}
+ html.sidebar .top .sbx .sbr.on{background:color-mix(in srgb,var(--ink) 7%,transparent)!important}
+ html.sidebar .top .sbx .sbr:hover{background:color-mix(in srgb,var(--ink) 5%,transparent)!important}
+ html.sidebar .top .sbtools .wpbtn{display:grid!important;place-items:center!important;flex-direction:row!important;width:38px!important;height:38px!important;min-width:0!important;padding:0!important;margin:0!important;border-radius:9px!important;background:none!important;box-shadow:none!important;color:color-mix(in srgb,var(--ink) 65%,transparent)!important}
+ html.sidebar .top .sbtools .wpbtn:hover{background:color-mix(in srgb,var(--ink) 6%,transparent)!important;color:var(--ink)!important}
+ html.sidebar .top .sbtools .wpbtn svg{width:19px!important;height:19px!important}
+ html.sidebar .top .sbtools .hact{justify-content:space-around!important}
+ html.sidebar #conn.allok{display:none}
+ html.sidebar .top .sbx .sbd{flex:0 0 8px!important;width:8px!important;height:8px!important;min-width:8px!important;padding:0!important;margin:0!important;display:block!important;border-radius:50%!important}
+ html.sidebar .top .sbx .sbd.plus{background:none!important;width:auto!important;flex:0 0 8px!important;font-size:15px;font-weight:500;line-height:8px;color:color-mix(in srgb,var(--ink) 55%,transparent);overflow:visible;text-align:center}
+ html.sidebar .top .sbx .sbr.add{color:color-mix(in srgb,var(--ink) 55%,transparent)!important}
+ html.sidebar .top .sbx .sbd.all{background:none!important;box-shadow:inset 0 0 0 1.6px var(--accent)}
+ html.sidebar #accf{display:none!important}
+ html.sidebar header h1{padding-right:0!important}
+ html.sidebar .kbh{right:40px!important}
+ html.sidebar .wps{top:12px}
+}
 </style>
 <script>try{var t=localStorage.getItem("wth");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);var a=localStorage.getItem("wacc");if(/^#[0-9a-f]{6}$/i.test(a||"")){var r=document.documentElement.style;r.setProperty("--accent",a);r.setProperty("--dot",a);r.setProperty("--today",a)}}catch(e){}</script>
 </head>
@@ -3155,6 +3240,28 @@ var d=WP.filter(function(w){return w.id==="default"})[0];
 if(d){d.n="Calm";d.l=["#f4f3f7","#e4dcff","#f3e6f1","#e2ecf4","#ece6ff","#f6eef0"];d.d=["#09090d","#2a1f55","#1a1330","#0f1a2c","#22183f","#140f24"]}
 if(typeof applyWp==="function"&&(jparse("wpx",{}).mode||"scene")==="scene")applyWp(ls("wp","default"),false);
 buildWds("mail");buildWds("calendar");tickWds();
+})();
+/* ===== Premium 2: a sidebar on desktop ===== */
+(function(){
+var mq=matchMedia("(min-width: 1100px)"),top=document.querySelector(".top"),brand=document.querySelector(".brand"),hact=document.querySelector(".hact"),header=document.querySelector("header");
+if(!top||!brand||!hact||!header)return;
+var box=document.createElement("div");box.className="sbx";box.innerHTML='<div class="sbh">Accounts</div><div class="sbacc" id="sbacc"></div><div class="sbsp"></div><div class="sbst" id="sbst"></div><div class="sbtools" id="sbtools"></div>';
+var hold=document.createElement("div");hold.className="sbtop";
+function place(){var on=mq.matches;document.documentElement.classList.toggle("sidebar",on);
+ if(on){if(brand.parentNode!==hold){top.insertBefore(hold,top.firstChild);hold.appendChild(brand)}if(box.parentNode!==top)top.appendChild(box);if(hact.parentNode!==EL("sbtools"))EL("sbtools").appendChild(hact)}
+ else{if(brand.parentNode!==header)header.insertBefore(brand,header.firstChild);if(hact.parentNode!==header)header.appendChild(hact);if(box.parentNode)box.remove();if(hold.parentNode)hold.remove()}
+ draw()}
+function draw(){if(!mq.matches||!box.isConnected)return;var acc=box.querySelector(".sbacc"),st=box.querySelector(".sbst");if(!acc||!st)return;var A=accts(),L=(lastL||[]).filter(function(m){return !isSpam(m)}),all=L.filter(function(m){return m[3]}).length;
+ var rows='<button type="button" class="sbr'+(!acctF?' on':'')+'" data-sba=""><span class="sbd all"></span><span class="sbn">All inboxes</span>'+(all?'<b>'+all+'</b>':'')+'</button>'+A.map(function(e){var u=L.filter(function(m){return m[10]===e&&m[3]}).length;return '<button type="button" class="sbr'+(acctF===e?' on':'')+'" data-sba="'+esc(e)+'" title="'+esc(e)+'"><span class="sbd" style="--ac:'+accColor(e)+'"></span><span class="sbn">'+esc(e)+'</span>'+(u?'<b>'+u+'</b>':'')+'</button>'}).join("");
+ acc.innerHTML=(A.length>1?rows:"")+(window.gAuth&&gAuth.addAccount?'<button type="button" class="sbr add" id="sbadd"><span class="sbd plus">+</span><span class="sbn">Add account</span></button>':"");box.querySelector(".sbh").hidden=!A.length&&!(window.gAuth&&gAuth.addAccount);
+ var ok=window.CS&&CS.gmail==="ok"&&CS.cal==="ok",c=EL("count"),t=c&&(c.textContent.match(/updated ([0-9:]+)/)||[])[1];
+ st.innerHTML='<span class="sbdot'+(ok?' ok':'')+'"></span>'+(ok?"Synced"+(t?" · "+t:""):"Needs attention");st.classList.toggle("warn",!ok)}
+box.addEventListener("click",function(e){var ad=e.target.closest("#sbadd");if(ad){ad.disabled=true;gAuth.addAccount().then(function(){location.reload()},function(){ad.disabled=false;say("Couldn’t add that account. In Google Cloud, add it as a test user of the app first.",7000)});return}var b=e.target.closest("[data-sba]");if(b){acctF=b.dataset.sba;try{localStorage.setItem("mailacct",acctF)}catch(x){}openTid=null;show("mail");renderMail(lastL,lastNote);return}
+ if(e.target.closest("#sbst.warn")){scrollTo({top:0,behavior:"smooth"});var cn=EL("conn");if(cn)cn.animate([{outline:"2px solid var(--accent)"},{outline:"2px solid transparent"}],{duration:1200})}});
+var _rm=renderMail;renderMail=function(L,n){_rm(L,n);draw()};
+var _rc=renderConn;renderConn=function(){_rc();draw()};
+try{mq.addEventListener("change",place)}catch(e){}
+place();
 })();
 </script>
 </body>
