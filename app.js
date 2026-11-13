@@ -2621,7 +2621,7 @@ window.__m3={archive:archive,setUnread:setUnread,serverSearch:serverSearch,endSe
 (function(){
 if(!window.gAuth||!gAuth.api)return;
 var SCOPE="https://www.googleapis.com/auth/drive.appdata",FILE="owninbox-settings.json",DRIVE="https://www.googleapis.com/drive/v3/files",UP="https://www.googleapis.com/upload/drive/v3/files";
-var KEYS=["wd","wd-size","wd-col","wd-cfg","wd-look","wd-w3","wd-packs","wd-packsel","wd-spamfrom","wd-notspam","wd-imp","wd-notimp","wd-cd","wd-water","wd-todo","wd-hab","wd-notes","wprefs","wacc","wth","wp","wpx","wpo","acccol","colrecent","hidcal","wxp-places","wxp-sel","nt2","sp-cid"];
+var KEYS=["wd","wd-size","wd-col","wd-cfg","wd-look","wd-w3","wd-packs","wd-packsel","wd-spamfrom","wd-notspam","wd-imp","wd-notimp","wd-cd","wd-water","wd-todo","wd-hab","wd-notes","wprefs","wacc","wth","wp","wpx","wpo","acccol","colrecent","hidcal","wxp-places","wxp-sel","nt2","sp-cid","notif"];
 var KS={};KEYS.forEach(function(k){KS[k]=1});
 function st(){return jparse("sync",{})}            /* {on, email, at (last local change), seen (remote time we have), fid, last} */
 function saveSt(x){try{_set.call(localStorage,"sync",JSON.stringify(x))}catch(e){}}
@@ -2673,4 +2673,53 @@ var _ds=drawSettings;drawSettings=function(){_ds.apply(this,arguments);paint()};
 EL("st").addEventListener("change",function(e){if(e.target.id==="syncsw"){if(e.target.checked)turnOn();else turnOff()}});
 EL("st").addEventListener("click",function(e){if(e.target.closest("#syncnow"))syncNow()});
 window.__sync={push:push,pull:pull,st:st};
+})();
+/* ===== Notifications: important emails and event reminders, while the app is open ===== */
+(function(){
+var NS=("Notification" in window);
+function cfg(){var c=jparse("notif",{});return {mail:!!c.mail,ev:!!c.ev,lead:c.lead||10}}
+function save(c){ss("notif",JSON.stringify(c))}
+function allowed(){return NS&&Notification.permission==="granted"}
+var ICON="icon-192.png";
+function notify(title,body,tag,onclick){
+ if(document.visibilityState==="visible"&&document.hasFocus()){var tt=EL("toast");tt.innerHTML='<b>'+esc(title)+'</b> '+esc(body)+(onclick?' <button type="button" class="undo" id="ntgo">Open</button>':'');tt.hidden=false;clearTimeout(tt._k);tt._k=setTimeout(function(){tt.hidden=true},7000);if(onclick)EL("ntgo").onclick=function(){tt.hidden=true;onclick()};return}
+ if(!allowed())return;try{var n=new Notification(title,{body:body,tag:tag,icon:ICON,badge:ICON});n.onclick=function(){window.focus();if(onclick)onclick();n.close()}}catch(e){
+  if(navigator.serviceWorker&&navigator.serviceWorker.ready)navigator.serviceWorker.ready.then(function(r){r.showNotification(title,{body:body,tag:tag,icon:ICON,data:{tag:tag}})})}}
+
+/* ---------- important emails ---------- */
+var seen=null;
+function rowKey(m){return m[6]||m[4]}
+var _rm=renderMail;renderMail=function(L){_rm.apply(this,arguments);try{check(L)}catch(e){}};
+function check(L){if(!L||!L.length)return;var c=cfg();
+ if(seen===null){seen={};L.forEach(function(m){seen[rowKey(m)]=1});return}
+ var fresh=L.filter(function(m){var k=rowKey(m);if(seen[k])return false;seen[k]=1;return m[3]&&!isSpam(m)&&isImp(m)&&Date.now()-Date.parse(m[2])<6*3600e3});
+ if(!c.mail||!fresh.length)return;
+ if(fresh.length>2){notify(fresh.length+" new important emails",fresh.slice(0,3).map(function(m){return m[0]}).join(", "),"oi-mail",function(){show("mail")});return}
+ fresh.forEach(function(m){var k=rowKey(m);notify(m[0],m[1]||"(no subject)","oi-"+k,function(){show("mail");setTimeout(function(){var a=document.querySelector('#mail a[data-k="'+(window.CSS&&CSS.escape?CSS.escape(k):k)+'"]');if(a&&openTid!==k)a.click()},250)})})}
+
+/* ---------- event reminders ---------- */
+function done(){try{return JSON.parse(sessionStorage.getItem("notif-ev")||"{}")}catch(e){return {}}}
+function tickEv(){var c=cfg();if(!c.ev||typeof E==="undefined")return;var d=done(),now=Date.now(),lead=c.lead*60e3,changed=false;
+ E.forEach(function(e){if(!e||String(e[0]).length<=10)return;var t=Date.parse(e[0]);if(isNaN(t))return;var key=(e[3]||e[1])+"@"+e[0];
+  if(t-now<=lead&&t-now>-60e3&&!d[key]){d[key]=1;changed=true;var mins=Math.max(0,Math.round((t-now)/60000));
+   notify(mins?"In "+mins+" min: "+e[1]:"Starting now: "+e[1],new Intl.DateTimeFormat("en-GB",{hour:"2-digit",minute:"2-digit",timeZone:tz}).format(new Date(t))+(CAL[e[2]]&&C[e[2]]?" · "+C[e[2]][0]:""),"oi-ev-"+key,function(){if(typeof goCal==="function")goCal();else show("calendar")})}});
+ if(changed)try{sessionStorage.setItem("notif-ev",JSON.stringify(d))}catch(x){}}
+setInterval(tickEv,30e3);setTimeout(tickEv,5000);
+
+/* ---------- Settings › Mail ---------- */
+function html(){var c=cfg(),perm=NS?Notification.permission:"unsupported";
+ var note=!NS?"This browser can’t show notifications.":perm==="denied"?"Notifications are blocked for this site. Allow them in your browser’s site settings, then switch these on.":"Shown while OwnInbox is open in a tab, even if it’s in the background.";
+ function tg(id,on,l){return '<label class="s3t"><input type="checkbox" role="switch" id="'+id+'"'+(on?' checked':'')+(NS&&perm!=="denied"?'':' disabled')+' aria-label="'+l+'"><i aria-hidden="true"></i></label>'}
+ return '<div class="s3g" id="s3notif"><div class="s3h">Notifications</div>'+
+ '<div class="s3r"><div class="s3l"><b>Important emails</b><small>New unread emails that land in Important</small></div><div class="s3c">'+tg("ntmail",c.mail&&perm==="granted","Notify me about important emails")+'</div></div>'+
+ '<div class="s3r"><div class="s3l"><b>Event reminders</b><small>Before events in your calendars start</small></div><div class="s3c">'+tg("ntev",c.ev&&perm==="granted","Remind me before events")+'</div></div>'+
+ (c.ev&&perm==="granted"?'<div class="s3r"><div class="s3l"><b>Remind me</b></div><div class="s3c"><div class="stseg" role="radiogroup" aria-label="How early">'+[5,10,15,30].map(function(m){var on=c.lead===m;return '<button type="button" role="radio" aria-checked="'+on+'" data-ntlead="'+m+'"'+(on?' class="on"':'')+'>'+m+' min</button>'}).join("")+'</div></div></div>':'')+
+ '<p class="s3p ntnote">'+note+'</p></div>'}
+function paint(){var b=EL("stbody");if(!b||typeof stTab==="undefined"||stTab!=="mail")return;var g=EL("s3notif");if(g)g.outerHTML=html();else{var kb=EL("stkb");if(kb)kb.insertAdjacentHTML("beforebegin",html());else b.insertAdjacentHTML("beforeend",html())}}
+var _ds=drawSettings;drawSettings=function(){_ds.apply(this,arguments);paint()};
+EL("st").addEventListener("change",function(e){var t=e.target;if(t.id!=="ntmail"&&t.id!=="ntev")return;var c=cfg(),k=t.id==="ntmail"?"mail":"ev",on=t.checked;
+ if(on&&NS&&Notification.permission!=="granted"){Notification.requestPermission().then(function(p){if(p==="granted"){c[k]=true;save(c);notify("Notifications are on","You’ll hear from OwnInbox here.","oi-test")}else{c[k]=false;save(c)}paint()});return}
+ c[k]=on;save(c);paint()},true);
+EL("st").addEventListener("click",function(e){var b=e.target.closest("[data-ntlead]");if(!b)return;var c=cfg();c.lead=+b.dataset.ntlead;save(c);paint()});
+window.__notif={check:check,tickEv:tickEv};
 })();

@@ -2400,3 +2400,5 @@ html.motion .m3ab.busy svg{animation:m3spin .8s linear infinite}
 @media(max-width:600px){.m3att{padding:4px 12px 18px}.m3rp{padding:0 12px}}
 /* sync */
 #s3sync .s3l small{max-width:420px}
+.ntnote{margin:6px 0 0!important;font-size:12px!important}
+#s3notif .stseg button{white-space:nowrap}
