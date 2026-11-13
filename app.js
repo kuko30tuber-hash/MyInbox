@@ -2621,7 +2621,7 @@ window.__m3={archive:archive,setUnread:setUnread,serverSearch:serverSearch,endSe
 (function(){
 if(!window.gAuth||!gAuth.api)return;
 var SCOPE="https://www.googleapis.com/auth/drive.appdata",FILE="owninbox-settings.json",DRIVE="https://www.googleapis.com/drive/v3/files",UP="https://www.googleapis.com/upload/drive/v3/files";
-var KEYS=["wd","wd-size","wd-col","wd-cfg","wd-look","wd-w3","wd-packs","wd-packsel","wd-spamfrom","wd-notspam","wd-imp","wd-notimp","wd-cd","wd-water","wd-todo","wd-hab","wd-notes","wprefs","wacc","wth","wp","wpx","wpo","acccol","colrecent","hidcal","wxp-places","wxp-sel","nt2","sp-cid","notif"];
+var KEYS=["wd","wd-size","wd-col","wd-cfg","wd-look","wd-w3","wd-packs","wd-packsel","wd-spamfrom","wd-notspam","wd-imp","wd-notimp","wd-cd","wd-water","wd-todo","wd-hab","wd-notes","wprefs","wacc","wth","wp","wpx","wpo","acccol","colrecent","hidcal","wxp-places","wxp-sel","nt2","sp-cid","notif","calview"];
 var KS={};KEYS.forEach(function(k){KS[k]=1});
 function st(){return jparse("sync",{})}            /* {on, email, at (last local change), seen (remote time we have), fid, last} */
 function saveSt(x){try{_set.call(localStorage,"sync",JSON.stringify(x))}catch(e){}}
@@ -2722,4 +2722,88 @@ EL("st").addEventListener("change",function(e){var t=e.target;if(t.id!=="ntmail"
  c[k]=on;save(c);paint()},true);
 EL("st").addEventListener("click",function(e){var b=e.target.closest("[data-ntlead]");if(!b)return;var c=cfg();c.lead=+b.dataset.ntlead;save(c);paint()});
 window.__notif={check:check,tickEv:tickEv};
+})();
+/* ===== Calendar: week and day views, drag to move or resize ===== */
+(function(){
+var mh=document.querySelector("#v-calendar .mh"),grid=EL("grid");if(!mh||!grid)return;
+var VIEW=ls("calview","month");if(["month","week","day"].indexOf(VIEW)<0)VIEW="month";
+var anchor=tk.format(new Date()),HH=48,SNAP=15;
+var seg=document.createElement("div");seg.className="stseg cvseg";seg.setAttribute("role","radiogroup");seg.setAttribute("aria-label","Calendar view");
+seg.innerHTML=[["month","Month"],["week","Week"],["day","Day"]].map(function(v){return '<button type="button" role="radio" data-cv="'+v[0]+'">'+v[1]+'</button>'}).join("");
+mh.insertBefore(seg,mh.querySelector(".mnav"));
+var wk=document.createElement("div");wk.className="wkv";wk.id="wkv";wk.hidden=true;grid.parentNode.insertBefore(wk,grid.nextSibling);
+
+function dayAdd(k,n){return addDays(k,n)}
+function mon(k){var d=new Date(k+"T12:00:00Z"),w=(d.getUTCDay()+6)%7;return dayAdd(k,-w)}
+function days(){if(VIEW==="day")return [anchor];var m=mon(anchor),a=[];for(var i=0;i<7;i++)a.push(dayAdd(m,i));return a}
+var PF=new Intl.DateTimeFormat("en-GB",{hour:"numeric",minute:"numeric",hourCycle:"h23",timeZone:tz});
+function mins(iso){var p=PF.formatToParts(new Date(iso)),h=0,m=0;p.forEach(function(x){if(x.type==="hour")h=+x.value;if(x.type==="minute")m=+x.value});return h*60+m}
+function hhmm(n){n=Math.max(0,Math.min(24*60,n));return String(Math.floor(n/60)%24).padStart(2,"0")+":"+String(n%60).padStart(2,"0")}
+function title(){var D=days(),f=function(k,o){return new Intl.DateTimeFormat("en-GB",Object.assign({timeZone:"UTC"},o)).format(new Date(k+"T12:00:00Z"))};
+ if(VIEW==="day")return f(anchor,{weekday:"long",day:"numeric",month:"long"});
+ var a=D[0],b=D[6];return a.slice(0,7)===b.slice(0,7)?f(a,{day:"numeric"})+"–"+f(b,{day:"numeric",month:"long",year:"numeric"}):f(a,{day:"numeric",month:"short"})+" – "+f(b,{day:"numeric",month:"short",year:"numeric"})}
+function col(ci){return (C[ci]&&C[ci][1])||"var(--accent)"}
+
+/* place the events of one day so overlapping ones sit side by side */
+function layout(items){items.sort(function(a,b){return a.s-b.s||b.e-a.e});var groups=[],cur=null,end=-1;
+ items.forEach(function(it){if(!cur||it.s>=end){cur=[];groups.push(cur);end=-1}cur.push(it);end=Math.max(end,it.e)});
+ groups.forEach(function(g){var cols=[];g.forEach(function(it){for(var c=0;c<cols.length;c++){if(cols[c]<=it.s){it.c=c;cols[c]=it.e;return}}it.c=cols.length;cols.push(it.e)});g.forEach(function(it){it.n=cols.length})});return items}
+function render(){if(VIEW==="month")return;var D=days(),tdy=tk.format(new Date()),per={},allday={};D.forEach(function(k){per[k]=[];allday[k]=[]});
+ E.forEach(function(e,idx){if(!e||HID[e[2]])return;
+  if(!T(e)){var s=e[0],en=e[4]&&e[4]>s?e[4]:dayAdd(s,1);D.forEach(function(k){if(k>=s&&k<en)allday[k].push(e)});return}
+  var st=new Date(e[0]),et=e[4]?new Date(e[4]):new Date(+st+36e5),sk=tk.format(st),ek=tk.format(new Date(+et-1));
+  D.forEach(function(k){if(k<sk||k>ek)return;var s=k===sk?mins(e[0]):0,x=k===ek?(mins(e[4]||new Date(+st+36e5).toISOString())||24*60):24*60;if(x<=s)x=Math.min(24*60,s+30);per[k].push({ev:e,s:s,e:x,cont:k!==sk,more:k!==ek})})});
+ var ncol=D.length,h='<div class="wkh" style="--n:'+ncol+'"><span></span>'+D.map(function(k){var d=new Date(k+"T12:00:00Z");return '<button type="button" class="wkd'+(k===tdy?' today':'')+'" data-wday="'+k+'"><small>'+new Intl.DateTimeFormat("en-GB",{weekday:"short",timeZone:"UTC"}).format(d)+'</small><b>'+d.getUTCDate()+'</b></button>'}).join("")+'</div>';
+ var anyAll=D.some(function(k){return allday[k].length});
+ if(anyAll)h+='<div class="wka" style="--n:'+ncol+'"><span>all-day</span>'+D.map(function(k){return '<div>'+allday[k].map(function(e){return '<button type="button" class="wkac" style="--c:'+col(e[2])+'"'+(canEdit(e)?' data-wid="'+esc(e[3])+'"':'')+' title="'+esc(e[1])+'">'+esc(e[1])+'</button>'}).join("")+'</div>'}).join("")+'</div>';
+ var hours="";for(var i=0;i<24;i++)hours+='<div class="wkhr"><span>'+(i?String(i).padStart(2,"0")+":00":"")+'</span></div>';
+ h+='<div class="wks" id="wks"><div class="wkb" style="--n:'+ncol+';--hh:'+HH+'px"><div class="wkt">'+hours+'</div>'+D.map(function(k){var items=layout(per[k]);
+  return '<div class="wkc'+(k===tdy?' today':'')+'" data-day="'+k+'">'+items.map(function(it){var e=it.ev,ed=canEdit(e),dur=it.e-it.s,short=dur<45;
+   return '<div class="wev'+(ed?' ed':'')+(short?' short':'')+(it.cont?' cont':'')+(it.more?' more':'')+'" style="--c:'+col(e[2])+';top:'+(it.s/60*HH)+'px;height:'+Math.max(18,dur/60*HH-2)+'px;left:calc('+(it.c/it.n*100)+'% + 2px);width:calc('+(100/it.n)+'% - 4px)"'+(ed?' data-wid="'+esc(e[3])+'" tabindex="0" role="button" aria-label="'+esc(e[1])+', '+hhmm(it.s)+' to '+hhmm(it.e)+'. Drag to move"':'')+'><b>'+esc(e[1])+'</b><span>'+hhmm(it.s)+'–'+hhmm(it.e)+'</span>'+(ed&&!it.more?'<i class="wrs2" aria-hidden="true"></i>':'')+'</div>'}).join("")+(k===tdy?'<div class="wnow" id="wnow"></div>':'')+'</div>'}).join("")+'</div></div>';
+ var sc=EL("wks"),keep=sc?sc.scrollTop:null;wk.innerHTML=h;EL("monthname").textContent=title();nowLine();
+ var s2=EL("wks");if(keep!=null)s2.scrollTop=keep;else{var first=Math.min.apply(0,D.map(function(k){return per[k].length?Math.min.apply(0,per[k].map(function(i){return i.s})):24*60}));var t=D.indexOf(tdy)>-1?mins(new Date().toISOString())-90:Math.min(first-30,8*60);s2.scrollTop=Math.max(0,t)/60*HH}}
+function nowLine(){var n=EL("wnow");if(!n)return;n.style.top=(mins(new Date().toISOString())/60*HH)+"px"}
+setInterval(nowLine,60000);
+function setView(v){VIEW=v;ss("calview",v);var mo=v==="month";grid.hidden=!mo;wk.hidden=mo;seg.querySelectorAll("[data-cv]").forEach(function(b){var on=b.dataset.cv===v;b.classList.toggle("on",on);b.setAttribute("aria-checked",on)});
+ EL("mprev").setAttribute("aria-label",mo?"Previous month":v==="week"?"Previous week":"Previous day");EL("mnext").setAttribute("aria-label",mo?"Next month":v==="week"?"Next week":"Next day");
+ if(mo){drawGrid()}else{if(typeof sel!=="undefined"&&sel)anchor=sel;render();if(window.motionOn&&motionOn())wk.animate([{opacity:0,transform:"translateY(6px)"},{opacity:1,transform:"none"}],{duration:300,easing:"cubic-bezier(.2,.8,.2,1)"})}}
+seg.addEventListener("click",function(e){var b=e.target.closest("[data-cv]");if(b)setView(b.dataset.cv)});
+/* the arrows and Today move by week or day in these views */
+[["mprev",-1],["mnext",1],["mtoday",0]].forEach(function(x){EL(x[0]).addEventListener("click",function(e){if(VIEW==="month")return;e.stopImmediatePropagation();e.preventDefault();
+ anchor=x[1]===0?tk.format(new Date()):dayAdd(anchor,x[1]*(VIEW==="week"?7:1));var s=EL("wks"),keep=s?s.scrollTop:0;render();var s2=EL("wks");if(s2)s2.scrollTop=keep;
+ if(window.motionOn&&motionOn()&&x[1])EL("wks").animate([{opacity:0,transform:"translateX("+(x[1]*24)+"px)"},{opacity:1,transform:"none"}],{duration:260,easing:"cubic-bezier(.2,.8,.2,1)"})},true)});
+var _dg=drawGrid;drawGrid=function(){_dg.apply(this,arguments);if(VIEW!=="month")render()};
+document.addEventListener("keydown",function(e){if(EL("v-calendar").hidden||kbBlocked(e))return;var m={m:"month",w:"week",d:"day"}[e.key.toLowerCase()];if(m){e.preventDefault();setView(m)}});
+
+/* ---------- click, drag and resize ---------- */
+var DR=null;
+function evById(id){return E.filter(function(x){return x[3]===id})[0]}
+wk.addEventListener("click",function(e){if(DR&&DR.moved)return;var d=e.target.closest("[data-wday]");if(d){anchor=d.dataset.wday;setView("day");return}
+ var a=e.target.closest(".wkac[data-wid]");if(a){openEdit(a.dataset.wid);return}});
+wk.addEventListener("dblclick",function(e){var c=e.target.closest(".wkc");if(!c||e.target.closest(".wev"))return;var r=c.getBoundingClientRect(),m=Math.round((e.clientY-r.top)/HH*60/30)*30;
+ openAdd();EL("evdate").value=c.dataset.day;EL("evall").checked=false;EL("evtimes").hidden=false;EL("evs").value=hhmm(m);EL("eve").value=hhmm(Math.min(m+60,23*60+59))});
+wk.addEventListener("keydown",function(e){var v=e.target.closest(".wev[data-wid]");if(v&&(e.key==="Enter"||e.key===" ")){e.preventDefault();openEdit(v.dataset.wid)}});
+wk.addEventListener("pointerdown",function(e){var v=e.target.closest(".wev.ed");if(!v||e.button>0)return;var ev=evById(v.dataset.wid);if(!ev||!T(ev))return;
+ var cols=[].slice.call(wk.querySelectorAll(".wkc")),c=v.parentNode,ci=cols.indexOf(c);
+ DR={v:v,ev:ev,resize:!!e.target.closest(".wrs2"),x:e.clientX,y:e.clientY,ci:ci,cols:cols,w:c.getBoundingClientRect().width,moved:false,dm:0,dd:0,id:e.pointerId,top:parseFloat(v.style.top),h:parseFloat(v.style.height)};
+ try{v.setPointerCapture(e.pointerId)}catch(x){}e.preventDefault()});
+wk.addEventListener("pointermove",function(e){if(!DR||e.pointerId!==DR.id)return;var dy=e.clientY-DR.y,dx=e.clientX-DR.x;if(!DR.moved&&Math.abs(dy)<4&&Math.abs(dx)<4)return;DR.moved=true;DR.v.classList.add("drag");
+ var dm=Math.round(dy/HH*60/SNAP)*SNAP;DR.dm=dm;
+ if(DR.resize){DR.v.style.height=Math.max(HH*SNAP/60-2,DR.h+dm/60*HH)+"px";var s0=mins(DR.ev[0]),e0=DR.ev[4]?mins(DR.ev[4]):s0+60;DR.v.querySelector("span").textContent=hhmm(s0)+"–"+hhmm(Math.max(s0+SNAP,e0+dm));return}
+ var dd=VIEW==="week"?Math.max(-DR.ci,Math.min(DR.cols.length-1-DR.ci,Math.round(dx/DR.w))):0;DR.dd=dd;
+ DR.v.style.transform="translate("+(dd*DR.w)+"px,"+(dm/60*HH)+"px)";var s1=mins(DR.ev[0])+dm,len=(DR.ev[4]?(Date.parse(DR.ev[4])-Date.parse(DR.ev[0]))/60000:60);DR.v.querySelector("span").textContent=hhmm(s1)+"–"+hhmm(s1+len)});
+function drop(e){if(!DR||(e&&e.pointerId!==DR.id))return;var d=DR;setTimeout(function(){DR=null},0);if(!d.moved){openEdit(d.ev[3]);return}
+ var ev=d.ev,st=Date.parse(ev[0]),en=ev[4]?Date.parse(ev[4]):st+36e5,nst,nen;
+ if(d.resize){nst=st;nen=Math.max(st+SNAP*60e3,en+d.dm*60e3)}else{var sh=d.dm*60e3+d.dd*864e5;nst=st+sh;nen=en+sh}
+ if(nst===st&&nen===en){render();return}move(ev,nst,nen,true)}
+wk.addEventListener("pointerup",drop);wk.addEventListener("pointercancel",function(){if(DR){DR=null;render()}});
+function local(t){var k=tk.format(new Date(t));return [k,hhmm(mins(new Date(t).toISOString()))]}
+function move(ev,nst,nen,undoable){var old=[ev[0],ev[4]],a=local(nst),b=local(nen);
+ ev[0]=new Date(nst).toISOString();ev[4]=new Date(nen).toISOString();E.sort(function(x,y){return V(x)-V(y)});rebuildHas();render();
+ Promise.resolve(window.claude&&claude.use("mcp")).then(function(m){if(!m)throw 0;return m.callTool("Google Calendar","update_event",{eventId:ev[3],calendarId:CAL[ev[2]][0],summary:ev[1],allDay:false,startTime:a[0]+"T"+a[1]+":00",endTime:b[0]+"T"+b[1]+":00"})})
+ .then(function(){drawGrid();renderAg();if(!undoable)return;var tt=EL("toast");tt.innerHTML=esc(ev[1])+' moved to '+new Intl.DateTimeFormat("en-GB",{weekday:"short",day:"numeric",month:"short",hour:"2-digit",minute:"2-digit",timeZone:tz}).format(new Date(nst))+' <button type="button" class="undo" id="wkundo">Undo</button>';tt.hidden=false;clearTimeout(tt._k);tt._k=setTimeout(function(){tt.hidden=true},6000);
+   EL("wkundo").onclick=function(){tt.hidden=true;move(ev,Date.parse(old[0]),old[1]?Date.parse(old[1]):Date.parse(old[0])+36e5,false)}},
+  function(){ev[0]=old[0];ev[4]=old[1];E.sort(function(x,y){return V(x)-V(y)});rebuildHas();render();say("Couldn’t move that event.",4000)})}
+setView(VIEW);
+window.__wk={setView:setView,render:render};
 })();
