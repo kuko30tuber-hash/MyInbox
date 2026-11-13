@@ -14,7 +14,7 @@
 <script src="config.js"></script>
 <script src="google-shim.js"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap">
 <style>
 :root{--bg:#eef0f4;--panel:#fff;--ink:#161b2b;--mute:#667088;--line:#dde1ea;--accent:#2b3cff;--dot:#2b3cff;--today:#2b3cff;--todayink:#fff;color-scheme:light;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -22,7 +22,7 @@ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:en
 :root[data-theme="dark"]{--bg:#10131c;--panel:#181c28;--ink:#eceff7;--mute:#98a1b8;--line:#2a3042;--accent:#8c97ff;--dot:#8c97ff;--today:#8c97ff;--todayink:#10131c;color-scheme:dark}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.45}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.45}
 header{max-width:760px;margin:0 auto;padding:28px 20px 8px}
 h1{margin:0;font-size:clamp(28px,5vw,44px);font-weight:800;letter-spacing:-.02em}
 .sub{color:var(--mute);margin:4px 0 0;font-size:14px}
@@ -1345,6 +1345,76 @@ html.motion .wpc .wpt,html.motion .wpkc,html.motion .wgc{transition:translate .3
 /* the toast slides up from below instead of popping */
 @keyframes mToast2{from{opacity:0;translate:0 18px;scale:.96}}
 html.motion .toast:not([hidden]){animation:mToast2 .42s var(--spring) both}
+/* ===== Premium ===== */
+:root{--font-ui:"Inter",-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,sans-serif;--font-display:"Instrument Serif","Iowan Old Style","Georgia",serif;
+--hair:color-mix(in srgb,var(--ink) 9%,transparent);--hair-hi:rgba(255,255,255,.65);
+--lift:0 1px 1px rgba(16,18,30,.04),0 8px 24px -6px rgba(16,18,30,.10),0 32px 64px -24px rgba(16,18,30,.16)}
+:root[data-theme="dark"],:root:not([data-theme="light"]){--hair-hi:rgba(255,255,255,.10)}
+@media(prefers-color-scheme:light){:root:not([data-theme="dark"]){--hair-hi:rgba(255,255,255,.65)}}
+body{font-family:var(--font-ui);font-feature-settings:"cv11","ss01","ss03";-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;letter-spacing:-.006em}
+button,input,select,textarea{font-family:inherit}
+/* header: an editorial greeting, a quieter status line */
+header h1{font-family:var(--font-display);font-weight:400;font-size:clamp(40px,5.2vw,64px);letter-spacing:-.02em;line-height:1;text-shadow:none}
+header .sub{font-size:13px;font-weight:500;letter-spacing:.02em;text-transform:uppercase;color:color-mix(in srgb,var(--ink) 55%,transparent);text-shadow:none}
+.brand{font-size:15px;font-weight:600;letter-spacing:-.01em;text-shadow:none}
+#conn.allok .cchips::after{font-size:12px;letter-spacing:.01em;text-shadow:none;color:color-mix(in srgb,var(--ink) 55%,transparent)}
+.cc{border-color:var(--hair);background:color-mix(in srgb,var(--panel) 55%,transparent);box-shadow:none;font-weight:500}
+.cc.acct .acx{opacity:0;transition:opacity .2s}
+.cc.acct:hover .acx,.cc.acct:focus-within .acx{opacity:1}
+/* section titles */
+main>section>h2{font-family:var(--font-ui);font-size:22px;font-weight:650;letter-spacing:-.025em;text-shadow:none}
+main>section>h2 span{text-shadow:none;font-size:12px;color:color-mix(in srgb,var(--ink) 50%,transparent)}
+.wbt{font-weight:600;letter-spacing:-.01em;text-shadow:none}
+/* surfaces: hairline edges, a top highlight and long soft shadows */
+.mcol,#mpane,.cal,.nl,.ne,.wds .wd,.top,.hact,.wps,#st .sheet,.modal .sheet{border:1px solid var(--hair)!important;box-shadow:inset 0 1px 0 var(--hair-hi),var(--lift)!important}
+.mcol,#mpane,.cal,.nl,.ne{background:color-mix(in srgb,var(--panel) 62%,transparent)}
+.wds .wd{background:color-mix(in srgb,var(--panel) 58%,transparent)}
+.wds .wd::after{opacity:.35}
+html.motion .wds:not(.edit) .wd:hover{transform:translateY(-2px);box-shadow:inset 0 1px 0 var(--hair-hi),0 2px 2px rgba(16,18,30,.04),0 16px 36px -8px rgba(16,18,30,.16),0 40px 80px -30px rgba(16,18,30,.2)!important}
+/* widget type: lighter numbers, quieter labels */
+.wl{font-size:10.5px;font-weight:600;letter-spacing:.08em}
+.wds .wl{color:color-mix(in srgb,var(--ink) 52%,transparent)!important}
+.wn{font-weight:650;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.wds .wn{font-size:40px}
+.zl .wn{font-size:58px}
+.wtag{background:color-mix(in srgb,var(--ink) 6%,transparent);color:color-mix(in srgb,var(--ink) 62%,transparent);font-weight:600}
+.why{background:color-mix(in srgb,var(--ink) 6%,transparent)!important;color:color-mix(in srgb,var(--ink) 62%,transparent)!important}
+.why.imp{background:color-mix(in srgb,#ff9f0a 14%,transparent)!important;color:color-mix(in srgb,#c47400 80%,var(--ink))!important}
+/* avatars: softer, less candy */
+.av,.wav{background:linear-gradient(160deg,hsl(var(--h) 42% 72%),hsl(var(--h) 38% 56%))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 1px 2px rgba(0,0,0,.08);font-weight:600}
+:root[data-theme="dark"] .av,:root[data-theme="dark"] .wav{background:linear-gradient(160deg,hsl(var(--h) 30% 46%),hsl(var(--h) 28% 34%))!important}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .av,:root:not([data-theme="light"]) .wav{background:linear-gradient(160deg,hsl(var(--h) 30% 46%),hsl(var(--h) 28% 34%))!important}}
+/* mail list: more air, finer separators */
+li a{padding:14px 14px}
+.from{font-weight:600}
+.unread .from{font-weight:700}
+.subj{font-weight:500;color:color-mix(in srgb,var(--ink) 88%,transparent)}
+.snip{color:color-mix(in srgb,var(--ink) 50%,transparent)}
+li:not(:last-child)::after{background:var(--hair)!important;height:1px}
+li a .when{font-size:11.5px;font-variant-numeric:tabular-nums;color:color-mix(in srgb,var(--ink) 45%,transparent)}
+.unread .when{color:var(--accent)}
+li a[aria-expanded="true"]{background:color-mix(in srgb,var(--accent) 10%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 22%,transparent)}
+.acc{font-weight:600;letter-spacing:.01em}
+/* reader */
+.rds{font-family:var(--font-ui);font-weight:650;letter-spacing:-.025em}
+.mb2 p{color:color-mix(in srgb,var(--ink) 86%,transparent)}
+/* buttons: quiet pills; the main action is a soft accent gradient */
+.btn{border:1px solid var(--hair);background:color-mix(in srgb,var(--panel) 70%,transparent);box-shadow:inset 0 1px 0 var(--hair-hi),0 1px 2px rgba(16,18,30,.06);font-weight:550;letter-spacing:-.005em}
+.btn:hover{background:color-mix(in srgb,var(--panel) 92%,transparent)}
+.btn.pri{border-color:transparent;color:#fff;background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 88%,#fff),var(--accent));box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 1px 2px rgba(0,0,0,.12),0 8px 20px -6px color-mix(in srgb,var(--accent) 55%,transparent)}
+.btn.pri:hover{background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 80%,#fff),color-mix(in srgb,var(--accent) 92%,#000))}
+.btn.del{color:#e5484d}
+/* tabs and segmented controls */
+.segw,#sttabs,.wpstabs,.stseg{background:color-mix(in srgb,var(--ink) 5%,transparent)!important;border-color:var(--hair)!important}
+.sgi,.segw>button.on,.wpstabs button.on{box-shadow:0 1px 2px rgba(16,18,30,.08),0 4px 12px -4px rgba(16,18,30,.14)!important}
+/* side rail */
+.top button span{font-weight:550;letter-spacing:-.005em}
+/* a calmer default background */
+.vig{opacity:.6}
+::selection{background:color-mix(in srgb,var(--accent) 28%,transparent)}
+@media(max-width:600px){header h1{font-size:38px}header .sub{font-size:11.5px}}
+/* scrollbars that stay out of the way */
+*{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--ink) 18%,transparent) transparent}
 </style>
 <script>try{var t=localStorage.getItem("wth");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);var a=localStorage.getItem("wacc");if(/^#[0-9a-f]{6}$/i.test(a||"")){var r=document.documentElement.style;r.setProperty("--accent",a);r.setProperty("--dot",a);r.setProperty("--today",a)}}catch(e){}</script>
 </head>
@@ -3075,6 +3145,16 @@ var _bw=buildWds;buildWds=function(tab){var c=EL("wds-"+tab),before=c&&M()?rects
 document.addEventListener("click",function(e){var d=e.target.closest&&e.target.closest("#grid button[data-k]");if(d&&M())d.animate([{transform:"scale(.9)"},{transform:"scale(1.06)"},{transform:"none"}],{duration:360,easing:EASE})},true);
 /* switches settle with a little bounce */
 document.addEventListener("change",function(e){var t=e.target;if(!M()||t.type!=="checkbox")return;var k=t.nextElementSibling;if(k&&k.tagName==="I")k.animate([{transform:"scale(.92)"},{transform:"scale(1.04)"},{transform:"none"}],{duration:320,easing:EASE})},true);
+})();
+/* ===== Premium: one accent for widgets, a calmer default wallpaper ===== */
+(function(){
+/* widgets use the accent colour unless you picked a colour for one */
+var _TN=TN;TN=function(id){var l=jparse("wd-look",{})[id];return l&&l.col&&/^#[0-9a-f]{6}$/i.test(l.col)?l.col:"var(--accent)"};
+/* the default wallpaper becomes quiet: a soft off-white, or near-black with a faint violet glow */
+var d=WP.filter(function(w){return w.id==="default"})[0];
+if(d){d.n="Calm";d.l=["#f4f3f7","#e4dcff","#f3e6f1","#e2ecf4","#ece6ff","#f6eef0"];d.d=["#09090d","#2a1f55","#1a1330","#0f1a2c","#22183f","#140f24"]}
+if(typeof applyWp==="function"&&(jparse("wpx",{}).mode||"scene")==="scene")applyWp(ls("wp","default"),false);
+buildWds("mail");buildWds("calendar");tickWds();
 })();
 </script>
 </body>
