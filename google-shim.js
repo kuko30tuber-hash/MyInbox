@@ -181,6 +181,25 @@
     signedIn: function () { return live().length > 0 || accounts().some(kept); },
     accounts: function () { return accounts().map(function (e) { return { email: e, on: !!readTok(e) || kept(e) }; }); },
     staysSignedIn: function () { return srvOn; },
+    /* ask Google for one more permission (for example settings sync) for an account */
+    grant: function (scope, email) {
+      return gisReady().then(function () {
+        return new Promise(function (res, rej) {
+          google.accounts.oauth2.initTokenClient({
+            client_id: CLIENT_ID, scope: SCOPES + " " + scope, hint: email || primary(), include_granted_scopes: true,
+            callback: function (r) {
+              if (!(r && r.access_token)) return rej(r);
+              if (r.scope && r.scope.indexOf(scope) < 0) return rej(err("not_granted"));
+              saveTok(email || primary(), { t: r.access_token, exp: Date.now() + (Number(r.expires_in) || 3600) * 1000 });
+              res(true);
+            },
+            error_callback: function (e) { rej(e); }
+          }).requestAccessToken({ prompt: "", hint: email || primary() });
+        });
+      });
+    },
+    /* a signed request to any Google API for one account */
+    api: function (url, opt, email) { return api(url, opt, email); },
     primary: primary,
     ready: ready
   };

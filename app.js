@@ -2617,3 +2617,60 @@ EL("mail").addEventListener("click",function(e){if(Date.now()-blockClick<400){e.
 
 window.__m3={archive:archive,setUnread:setUnread,serverSearch:serverSearch,endSearch:endSearch};
 })();
+/* ===== Settings sync through your Google account (Drive app data, private to this app) ===== */
+(function(){
+if(!window.gAuth||!gAuth.api)return;
+var SCOPE="https://www.googleapis.com/auth/drive.appdata",FILE="owninbox-settings.json",DRIVE="https://www.googleapis.com/drive/v3/files",UP="https://www.googleapis.com/upload/drive/v3/files";
+var KEYS=["wd","wd-size","wd-col","wd-cfg","wd-look","wd-w3","wd-packs","wd-packsel","wd-spamfrom","wd-notspam","wd-imp","wd-notimp","wd-cd","wd-water","wd-todo","wd-hab","wd-notes","wprefs","wacc","wth","wp","wpx","wpo","acccol","colrecent","hidcal","wxp-places","wxp-sel","nt2","sp-cid"];
+var KS={};KEYS.forEach(function(k){KS[k]=1});
+function st(){return jparse("sync",{})}            /* {on, email, at (last local change), seen (remote time we have), fid, last} */
+function saveSt(x){try{_set.call(localStorage,"sync",JSON.stringify(x))}catch(e){}}
+var applying=false,pushT=0,busy=false;
+/* notice every settings change on this device */
+var _set=Storage.prototype.setItem,_rm=Storage.prototype.removeItem;
+Storage.prototype.setItem=function(k,v){var old=this===localStorage&&KS[k]?this.getItem(k):null;_set.call(this,k,v);if(this===localStorage&&KS[k]&&!applying&&old!==String(v))changed()};
+Storage.prototype.removeItem=function(k){var had=this===localStorage&&KS[k]&&this.getItem(k)!==null;_rm.call(this,k);if(had&&!applying)changed()};
+function changed(){var s=st();if(!s.on)return;s.at=Date.now();saveSt(s);clearTimeout(pushT);pushT=setTimeout(push,4000)}
+function snapshot(){var d={};KEYS.forEach(function(k){var v=localStorage.getItem(k);if(v!=null)d[k]=v});return d}
+function api(url,opt){return gAuth.api(url,opt,st().email||gAuth.primary())}
+function findFile(){var s=st();if(s.fid)return Promise.resolve(s.fid);
+ return api(DRIVE+"?"+new URLSearchParams({spaces:"appDataFolder",q:"name='"+FILE+"'",fields:"files(id,modifiedTime)"}).toString()).then(function(r){var f=(r.files||[])[0];if(f){var x=st();x.fid=f.id;saveSt(x);return f.id}return null})}
+function push(){var s=st();if(!s.on||busy)return Promise.resolve();busy=true;var body={app:"OwnInbox",v:1,at:s.at||Date.now(),data:snapshot()};
+ return findFile().then(function(id){if(id)return id;return api(DRIVE,{method:"POST",body:{name:FILE,parents:["appDataFolder"],mimeType:"application/json"}}).then(function(r){var x=st();x.fid=r.id;saveSt(x);return r.id})})
+ .then(function(id){return api(UP+"/"+id+"?uploadType=media",{method:"PATCH",body:body})})
+ .then(function(){var x=st();x.seen=body.at;x.last=Date.now();x.err="";saveSt(x);busy=false;paint()},function(e){busy=false;fail(e)})}
+function pull(first){var s=st();if(!s.on||busy)return Promise.resolve(false);busy=true;
+ return findFile().then(function(id){if(!id)return null;return api(DRIVE+"/"+id+"?alt=media")}).then(function(r){busy=false;var x=st();x.last=Date.now();x.err="";saveSt(x);
+  if(!r||!r.data){return push().then(function(){return false})}
+  if(r.at>(x.at||0)&&r.at!==x.seen){return apply(r)}
+  if((x.at||0)>(r.at||0))return push().then(function(){return false});
+  paint();return false},function(e){busy=false;if(e&&e.code==="tool_error"&&/not found/i.test(e.detail||"")){var x=st();delete x.fid;saveSt(x)}fail(e);return false})}
+function apply(r){var d=r.data||{},diff=false;applying=true;
+ KEYS.forEach(function(k){var cur=localStorage.getItem(k);if(k in d){if(cur!==d[k]){_set.call(localStorage,k,d[k]);diff=true}}});
+ applying=false;var x=st();x.at=r.at;x.seen=r.at;saveSt(x);
+ if(diff){try{sessionStorage.setItem("sync-applied","1")}catch(e){}
+  var a=document.activeElement;if(a&&/INPUT|TEXTAREA/.test(a.tagName)&&a.value){setTimeout(function(){location.reload()},45000)}else location.reload();return true}
+ paint();return false}
+function fail(e){var x=st();x.err=e&&e.code==="not_in_manifest"?"perm":e&&e.code==="needs_signin"?"signin":"net";saveSt(x);paint()}
+function turnOn(){var email=gAuth.primary();if(!email){say("Sign in with Google first.",4000);return}
+ gAuth.grant(SCOPE,email).then(function(){var x=st();x.on=true;x.email=email;x.err="";saveSt(x);paint();return pull(true)}).then(function(applied){if(!applied)say("Sync is on. Your settings are saved to your Google account.",5000)},function(){say("Sync needs that permission to work. Nothing was changed.",5000);paint()})}
+function turnOff(){var x=st();x.on=false;saveSt(x);paint();say("Sync is off. Settings stay as they are on this device.",4000)}
+function syncNow(){var x=st();if(!x.on)return;pull(false).then(function(applied){if(!applied)say("Settings are up to date.",2500)})}
+/* on start, every few minutes and when you come back to the tab */
+if(st().on)gAuth.ready.then(function(){setTimeout(function(){pull(true)},1500)});
+setInterval(function(){if(st().on&&!document.hidden)pull(false)},3*60e3);
+document.addEventListener("visibilitychange",function(){if(!document.hidden&&st().on){var x=st();if(!x.last||Date.now()-x.last>60e3)pull(false)}else if(document.hidden&&st().on&&pushT){clearTimeout(pushT);pushT=0;push()}});
+try{if(sessionStorage.getItem("sync-applied")){sessionStorage.removeItem("sync-applied");setTimeout(function(){say("Settings updated from your other device.",4000)},1200)}}catch(e){}
+
+/* ---------- Settings › Accounts ---------- */
+function ago(t){if(!t)return "not yet";var m=Math.round((Date.now()-t)/60000);return m<1?"just now":m<60?m+" min ago":new Intl.DateTimeFormat("en-GB",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}).format(new Date(t))}
+function html(){var x=st(),on=!!x.on;
+ var msg=!on?"Keep widgets, packs, wallpaper, colours, filters, notes and your to-do list the same on every device. Saved privately in your Google account, where only this app can read it.":
+  x.err==="perm"?"Google didn’t allow access. Turn sync off and on again to give permission.":x.err==="signin"?"Sign in again to keep syncing.":x.err==="net"?"Couldn’t reach Google. It’ll try again soon.":"Synced with "+esc(x.email||"")+" · "+ago(x.last);
+ return '<div class="s3g" id="s3sync"><div class="s3h">Sync</div><div class="s3r"><div class="s3l"><b>Same settings on every device</b><small>'+msg+'</small></div><div class="s3c"><label class="s3t"><input type="checkbox" role="switch" id="syncsw"'+(on?' checked':'')+' aria-label="Sync settings across devices"><i aria-hidden="true"></i></label></div></div>'+(on?'<button type="button" class="s3link" id="syncnow">Sync now</button>':'')+'</div>'}
+function paint(){var b=EL("stbody");if(!b||typeof stTab==="undefined"||stTab!=="acc")return;var g=EL("s3sync");if(g)g.outerHTML=html();else b.insertAdjacentHTML("beforeend",html())}
+var _ds=drawSettings;drawSettings=function(){_ds.apply(this,arguments);paint()};
+EL("st").addEventListener("change",function(e){if(e.target.id==="syncsw"){if(e.target.checked)turnOn();else turnOff()}});
+EL("st").addEventListener("click",function(e){if(e.target.closest("#syncnow"))syncNow()});
+window.__sync={push:push,pull:pull,st:st};
+})();

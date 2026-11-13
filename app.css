@@ -2398,3 +2398,5 @@ html.motion .m3ab.busy svg{animation:m3spin .8s linear infinite}
 #v-mail #mail li.m3sw.far::after{opacity:1}
 #v-mail #mail li.m3sw>a{position:relative;z-index:1;background:var(--panel)!important}
 @media(max-width:600px){.m3att{padding:4px 12px 18px}.m3rp{padding:0 12px}}
+/* sync */
+#s3sync .s3l small{max-width:420px}
