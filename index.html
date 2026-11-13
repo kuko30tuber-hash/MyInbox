@@ -1734,6 +1734,54 @@ html.motion .rg2.in .rgp,html.motion .wd.hov .rgp{animation:rgDraw 1.1s cubic-be
 html.motion .rg2.in .rgb i,html.motion .wd.hov .rgb i{animation:rgFill .9s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i)*70ms + 120ms)}
 html.motion .wd.hov .rgs{transform:scale(1.05) rotate(-4deg)}
 html.motion .wd.hov .rg2.still .rgp,html.motion .wd.hov .rg2.still .rgb i{animation:none}
+/* ===== Sun 2 ===== */
+.wd[data-w="sun"]{isolation:isolate}
+.sn2bg{position:absolute;inset:-32px -16px -38px;z-index:0;pointer-events:none;overflow:hidden;transition:opacity .4s}
+.sn2bg.day{background:linear-gradient(180deg,rgba(110,180,255,.30),rgba(110,180,255,.04) 75%)}
+.sn2bg.dawn{background:linear-gradient(180deg,rgba(150,140,255,.26),rgba(255,160,120,.26) 70%,rgba(255,200,120,.12))}
+.sn2bg.dusk{background:linear-gradient(180deg,rgba(120,90,200,.30),rgba(255,120,110,.28) 70%,rgba(255,170,90,.14))}
+.sn2bg.night{background:linear-gradient(180deg,rgba(30,40,110,.38),rgba(30,40,110,.06) 80%)}
+.sn2bg i{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;opacity:0}
+.sn2bg.night i{opacity:.7}
+.sn2bg i:nth-child(1){top:24%;left:62%}.sn2bg i:nth-child(2){top:36%;left:84%;transform:scale(.7)}.sn2bg i:nth-child(3){top:18%;left:90%;transform:scale(1.3)}
+html.motion .sn2bg.night i{animation:sn2tw 3s ease-in-out infinite alternate}
+html.motion .sn2bg.night i:nth-child(2){animation-delay:-1s}html.motion .sn2bg.night i:nth-child(3){animation-delay:-2s}
+@keyframes sn2tw{to{opacity:.15}}
+.sn2{position:relative;z-index:1;display:flex;flex-direction:column;flex:1;min-width:0}
+.sn2t{display:flex;align-items:flex-end;gap:12px;margin-top:6px;flex-wrap:wrap}
+.sn2hd{display:flex;flex-direction:column;line-height:1}
+.sn2hd small{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin-bottom:4px}
+.sn2hd b{font-family:var(--font-display,inherit);font-weight:400;font-size:clamp(32px,3vw,44px);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.sn2in{font-size:12.5px;font-weight:600;color:var(--mute);padding-bottom:5px}
+.sn2w{position:relative;flex:1;min-height:54px;margin:10px -4px 6px}
+.sn2c{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.sn2p{fill:none;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.sn2p.up{stroke:#ffb020;stroke-width:2.4}
+.sn2p.dn{stroke:color-mix(in srgb,var(--ink) 28%,transparent);stroke-width:1.6;stroke-dasharray:2 4}
+.sn2h{stroke:color-mix(in srgb,var(--ink) 22%,transparent);stroke-width:1;vector-effect:non-scaling-stroke}
+.sn2n{stroke:#ffb020;stroke-opacity:.5;stroke-width:1;stroke-dasharray:2 3;vector-effect:non-scaling-stroke}
+.sn2s{position:absolute;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:radial-gradient(circle at 40% 38%,#fff6cf,#ffc53d 55%,#ff9f0a);box-shadow:0 0 0 4px rgba(255,190,60,.22),0 0 18px 4px rgba(255,180,40,.45);transition:transform .5s cubic-bezier(.3,1.3,.5,1),box-shadow .5s}
+.sn2s.low{background:radial-gradient(circle at 40% 38%,#eef0ff,#b9c0e8 60%,#8e96c8);box-shadow:0 0 0 4px rgba(170,180,240,.18),0 0 14px 2px rgba(170,180,240,.3)}
+.sn2r{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:650;font-variant-numeric:tabular-nums}
+.sn2r span{display:flex;align-items:center;gap:4px}
+.sn2r svg{width:14px;height:14px;fill:none;stroke:#ff9f0a;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.sn2r .mid{flex:1;justify-content:center;font-weight:500;color:var(--mute);font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sn2x{margin-top:6px;font-size:11.5px;color:var(--mute)}
+/* sizes */
+.zs .sn2hd b{font-size:30px}.zs .sn2in{display:none}.zs .sn2r .mid,.zs .sn2x{display:none}
+.zs .sn2w{min-height:40px;margin-top:6px}.zs .sn2r{justify-content:space-between}
+.zw .sn2x{display:none}
+.zl .sn2hd b{font-size:56px}.zl .sn2w{min-height:120px;margin:16px -4px 12px}.zl .sn2x{font-size:12.5px}
+.st-vivid .sn2hd small,.st-vivid .sn2in,.st-vivid .sn2r .mid,.st-vivid .sn2x{color:rgba(255,255,255,.82)}
+/* hover: the sun brightens and the path draws again */
+html.motion .wd.hov .sn2s{transform:scale(1.35);box-shadow:0 0 0 6px rgba(255,190,60,.2),0 0 28px 8px rgba(255,180,40,.5)}
+html.motion .wd.hov .sn2s.low{box-shadow:0 0 0 6px rgba(170,180,240,.18),0 0 22px 6px rgba(170,180,240,.35)}
+html.motion .wd.hov .sn2p.up{stroke-dasharray:1000;animation:sn2draw 1.2s cubic-bezier(.2,.8,.2,1)}
+@keyframes sn2draw{from{stroke-dashoffset:1000}to{stroke-dashoffset:0}}
+html.motion .sn2s:not(.low){animation:sn2glow 4s ease-in-out infinite alternate}
+@keyframes sn2glow{to{box-shadow:0 0 0 6px rgba(255,190,60,.16),0 0 24px 6px rgba(255,180,40,.5)}}
+html.motion .wd.hov .sn2bg{opacity:1}
+html.motion .wd.hov .sn2.still .sn2p.up{animation:none}
 </style>
 <script>try{var t=localStorage.getItem("wth");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);var a=localStorage.getItem("wacc");if(/^#[0-9a-f]{6}$/i.test(a||"")){var r=document.documentElement.style;r.setProperty("--accent",a);r.setProperty("--dot",a);r.setProperty("--today",a)}}catch(e){}</script>
 </head>
@@ -3648,6 +3696,41 @@ ringsHtml=function(){var D=data(),first=!seen&&!document.querySelector(".rg2");s
  var rows=D.map(function(d,i){var pc=Math.floor(d.p*100);return '<div class="rgr" style="--a:'+COL[i][0]+';--b:'+COL[i][1]+';--p:'+(d.p*100).toFixed(2)+'%;--i:'+i+'"><div class="rgh"><span class="rgk"><i></i>'+d.k+'</span><b>'+pc+'%</b></div><div class="rgb"><i></i></div><small>'+d.t+'</small></div>'}).join("");
  return '<div class="wl">Progress</div><div class="rg2'+(first?' in':'')+(document.querySelector('.wd.hov[data-w="rings"]')?' still':'')+'" role="img" aria-label="'+D.map(function(d){return d.k+" "+Math.floor(d.p*100)+"%"}).join(", ")+'">'+svg+'<div class="rgl">'+rows+'</div></div>'};
 var w=wgById("rings");if(w)w.r=function(){return ringsHtml()};
+buildWds("mail");buildWds("calendar");
+})();
+/* ===== Sun 2: the day as a curve, the tile as the sky ===== */
+(function(){
+var w=wgById("sun");if(!w)return;
+var old=w.r;
+function hm(ms){var m=Math.max(0,Math.round(ms/60000)),h=Math.floor(m/60);return h?h+" h "+(m%60)+" min":m+" min"}
+function hhmm(s){return s.slice(11,16)}
+function sun2(){var h0=old(),SUN=jparse("wd-sun",null),pl=(jparse("wd-cfg",{}).weather||{}).place;if(!SUN||!SUN.rise||!pl||String(SUN.key).indexOf(pl.lat+","+pl.lon+",")!==0)return h0;var lab=(h0.match(/^<div class="wl[^>]*>[\s\S]*?<\/div>/)||['<div class="wl">Sun</div>'])[0];
+ var DAY=864e5,off=SUN.off*1000,loc=function(s){return Date.parse(s+":00Z")-off},r=loc(SUN.rise[0]),st=loc(SUN.set[0]),now=Date.now(),
+ lt=now+off,t0=lt-((lt%DAY)+DAY)%DAY-off,               /* local midnight at the place, as a UTC time */
+ noon=(r+st)/2,hz=Math.cos(2*Math.PI*(r-noon)/DAY),A=26,base=40,yH=base-A*hz;
+ function X(t){return 4+(t-t0)/DAY*152}function Y(t){return base-A*Math.cos(2*Math.PI*(t-noon)/DAY)}
+ var pts=[];for(var i=0;i<=72;i++){var t=t0+i*DAY/72;pts.push(X(t).toFixed(1)+" "+Y(t).toFixed(1))}var d="M"+pts.join(" L");
+ var sx=X(now),sy=Y(now),up=now>=r&&now<=st,TW=40*6e4,
+ ph=Math.abs(now-r)<TW?"dawn":Math.abs(now-st)<TW?"dusk":up?"day":"night";
+ var next=now<r?["Sunrise",SUN.rise[0],r-now]:up?["Sunset",SUN.set[0],st-now]:["Sunrise",SUN.rise[1]||SUN.rise[0],loc(SUN.rise[1]||SUN.rise[0])-now];
+ var len=SUN.len?SUN.len[0]:(st-r)/1000,len2=SUN.len&&SUN.len[1],diff=len2!=null?Math.round((len2-len)/60):null,
+ lh=Math.floor(len/3600),lm=Math.round(len%3600/60),left=up?hm(st-now):null;
+ var svg='<svg class="sn2c" viewBox="0 0 160 64" preserveAspectRatio="none" aria-hidden="true"><defs>'+
+  '<clipPath id="sn2up"><rect x="0" y="0" width="160" height="'+yH.toFixed(1)+'"/></clipPath><clipPath id="sn2dn"><rect x="0" y="'+yH.toFixed(1)+'" width="160" height="64"/></clipPath>'+
+  '<linearGradient id="sn2f" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc94d" stop-opacity=".45"/><stop offset="1" stop-color="#ffc94d" stop-opacity="0"/></linearGradient></defs>'+
+  '<path d="'+d+' L156 '+yH.toFixed(1)+' L4 '+yH.toFixed(1)+'Z" fill="url(#sn2f)" clip-path="url(#sn2up)"/>'+
+  '<path d="'+d+'" class="sn2p dn" clip-path="url(#sn2dn)"/><path d="'+d+'" class="sn2p up" clip-path="url(#sn2up)"/>'+
+  '<line x1="0" y1="'+yH.toFixed(1)+'" x2="160" y2="'+yH.toFixed(1)+'" class="sn2h"/>'+
+  '<line x1="'+sx.toFixed(1)+'" y1="'+yH.toFixed(1)+'" x2="'+sx.toFixed(1)+'" y2="'+sy.toFixed(1)+'" class="sn2n"/>'+
+  '</svg>';
+ var dot='<span class="sn2s'+(up?"":" low")+'" style="left:'+(sx/160*100).toFixed(2)+'%;top:'+(sy/64*100).toFixed(2)+'%"></span>';
+ return '<div class="sn2bg '+ph+'" aria-hidden="true"><i></i><i></i><i></i></div>'+
+ '<div class="sn2 '+ph+(document.querySelector('.wd.hov[data-w="sun"]')?' still':'')+'">'+lab+
+ '<div class="sn2t"><div class="sn2hd"><small>'+next[0]+'</small><b>'+hhmm(next[1])+'</b></div><span class="sn2in">in '+hm(next[2])+'</span></div>'+
+ '<div class="sn2w">'+svg+dot+'</div>'+
+ '<div class="sn2r"><span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 10V3M5 6l3-3 3 3M2 13h12"/></svg>'+hhmm(SUN.rise[0])+'</span><span class="mid">'+lh+' h '+lm+' min of light</span><span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v7M5 7l3 3 3-3M2 13h12"/></svg>'+hhmm(SUN.set[0])+'</span></div>'+
+ (diff!=null?'<div class="sn2x">'+(left?hm(st-now)+' of daylight left · ':'')+'Tomorrow '+(diff===0?"about the same":Math.abs(diff)+' min '+(diff>0?"longer":"shorter"))+'</div>':'')+'</div>'}
+w.r=sun2;
 buildWds("mail");buildWds("calendar");
 })();
 </script>
