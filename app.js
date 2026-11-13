@@ -2484,7 +2484,7 @@ var WSP=[{id:"spnow",tab:"both",live:1,name:"Now playing",desc:"What’s playing
  {id:"spqueue",tab:"both",name:"Up next",desc:"The next songs in your Spotify queue",r:wQueue}];
 WSP.forEach(function(w){if(!wgById(w.id))WG.push(w)});
 try{if(typeof CAT==="object")WSP.forEach(function(w){CAT[w.id]="Music"})}catch(e){}
-function paintW(){WSP.forEach(function(w){document.querySelectorAll('.wds [data-w="'+w.id+'"] .wb').forEach(function(b){var a=document.activeElement;if(a&&b.contains(a)&&a.tagName==="INPUT")return;b.innerHTML=w.r()})})}
+function paintW(){WSP.forEach(function(w){var h=null;document.querySelectorAll('.wds [data-w="'+w.id+'"] .wb').forEach(function(b){var a=document.activeElement;if(a&&b.contains(a)&&a.tagName==="INPUT")return;if(h===null)h=w.r();if(b._sph===h&&b.querySelector(".wl"))return;b._sph=h;b.innerHTML=h})})}
 function wTick(pb,it){var pos=Math.min(it.duration_ms,(pb.progress_ms||0)+(pb.is_playing?Date.now()-S.at:0)),pc=(pos/(it.duration_ms||1)*100).toFixed(2)+"%";
  document.querySelectorAll('.wds [data-w="spnow"]').forEach(function(t){var i=t.querySelector(".wspp i"),s0=t.querySelector(".wsp0");if(i)i.style.width=pc;if(s0)s0.textContent=mmss(pos)})}
 document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("[data-spw],[data-spwplay],[data-spwctxplay]");if(!b||!b.closest(".wds")||b.closest(".wds.edit"))return;var pb=S.pb||{},a=b.dataset.spw;

@@ -20,3 +20,21 @@ The helper needs your OAuth **client secret**, which must never go in this repos
 
 Without the variable, the app works as before: you sign in again when the hour is up.
 Signing out of an account in Settings removes it from this device only.
+
+## Optional: settings sync
+
+Settings › Accounts › Sync keeps widgets, packs, wallpaper, colours, filters, notes
+and to-dos the same on every device. It saves one private file in your Google
+account's app-data space that only this app can read. To use it, turn on the
+**Google Drive API** once for this app's project in Google Cloud Console
+(APIs & Services → Library → Google Drive API → Enable). Each person then
+allows the extra permission the first time they switch sync on.
+
+## Files
+
+- `index.html`: the page's markup
+- `app.css`, `app.js`, `boot.js`: styles and code (cached by the browser)
+- `google-shim.js`: talks to Gmail, Calendar and Drive
+- `sw.js`: lets the app open without internet
+- `netlify/functions/gauth.js`: optional helper for staying signed in
+- `netlify.toml`: hosting settings and security headers
