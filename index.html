@@ -2133,6 +2133,11 @@ html.motion #v-weather .wxt:nth-child(n){animation-delay:calc(.12s + var(--d,0s)
 <div id="agenda"></div>
 </div>
 </section>
+<section id="v-weather" hidden>
+<h2>Weather <span id="wxpstat"></span></h2>
+<div class="wds" id="wds-weather"></div>
+<div class="wxp" id="wxp"></div>
+</section>
 <section id="v-notes" hidden>
 <h2>Notes <span id="nsync">Saved on this device</span></h2>
 <div class="nwrap"><div class="npane nl"><div class="nbar"><input id="nq" type="search" placeholder="Search notes" aria-label="Search notes" autocomplete="off"><button id="nnew" class="btn pri" type="button">New</button></div><ul id="nlist"></ul></div><div class="npane ne" id="ned"></div></div>
@@ -2440,8 +2445,9 @@ function ini(s){var c=Array.from(String(s).replace(/[^\p{L}\p{N}]/gu," ").trim()
 function moveInd(){var b=document.querySelector(".top button.on"),i=document.querySelector(".top .ind");if(b&&i){i.style.width=b.offsetWidth+"px";i.style.transform="translateX("+b.offsetLeft+"px)"}}
 EL("today").textContent=new Intl.DateTimeFormat("en-GB",{weekday:"long",day:"numeric",month:"long",timeZone:tz}).format(now);
 window.addEventListener("resize",moveInd);window.addEventListener("load",moveInd);moveInd();
-var WD={mail:["unread","important"],calendar:["next","week"]};
-try{var sv=JSON.parse(localStorage.getItem("wd")||"null");if(sv&&sv.mail&&sv.calendar)WD=sv}catch(e){}
+var WTABS=["mail","calendar","weather"];
+var WD={mail:["unread","important"],calendar:["next","week"],weather:["sun","world","clock"]};
+try{var sv=JSON.parse(localStorage.getItem("wd")||"null");if(sv&&sv.mail&&sv.calendar){WD=sv;if(!WD.weather)WD.weather=["sun","world","clock"]}}catch(e){}
 function saveWd(){try{localStorage.setItem("wd",JSON.stringify(WD))}catch(e){}}
 function ls(k,d){try{var v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}}
 function ss(k,v){try{localStorage.setItem(k,v)}catch(e){}}
@@ -2467,7 +2473,7 @@ var WG=[
 {id:"todo",tab:"both",wide:1,name:"To-do list",desc:"A simple checklist saved in this browser",r:todoHtml}];
 function wgById(id){return WG.filter(function(w){return w.id===id})[0]}
 function buildWds(tab){var c=EL("wds-"+tab);c.innerHTML=WD[tab].map(function(id){var w=wgById(id);return w?'<div class="wd'+(w.wide?' wide':'')+'" data-w="'+id+'"><button class="wx" type="button" data-rm="'+id+'" aria-label="Remove '+w.name+' widget">×</button><div class="wb">'+w.r()+'</div></div>':""}).join("")+'<button class="wadd" type="button" data-add="'+tab+'">+ Add widget</button>'}
-function tickWds(){["mail","calendar"].forEach(function(tab){WD[tab].forEach(function(id){var w=wgById(id);if(!w||!w.live)return;var b=document.querySelector('#wds-'+tab+' [data-w="'+id+'"] .wb');if(b)b.innerHTML=w.r()})})}
+function tickWds(){WTABS.forEach(function(tab){WD[tab].forEach(function(id){var w=wgById(id);if(!w||!w.live)return;var b=document.querySelector('#wds-'+tab+' [data-w="'+id+'"] .wb');if(b)b.innerHTML=w.r()})})}
 function bindWds(tab){var c=EL("wds-"+tab);
 c.addEventListener("click",function(e){var t=e.target.closest("button,input");if(!t)return;
 if(t.dataset.rm){WD[tab]=WD[tab].filter(function(i){return i!==t.dataset.rm});saveWd();buildWds(tab);return}
@@ -2477,7 +2483,7 @@ c.addEventListener("change",function(e){var t=e.target;if(t.dataset&&t.dataset.t
 c.addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.classList.contains("tdi")){var v=e.target.value.trim();if(v){var a=todo();a.push({t:v,d:false});setTodo(a,true)}}});
 c.addEventListener("input",function(e){if(e.target.classList.contains("wt")){ss("wd-notes",e.target.value);document.querySelectorAll(".wt").forEach(function(x){if(x!==e.target)x.value=e.target.value})}})}
 var wgTab="mail";
-function buildWg(){EL("wgsub").textContent=wgTab==="mail"?"For the Mail tab":"For the Calendar tab";EL("wgl").innerHTML=WG.filter(function(w){return w.tab===wgTab||w.tab==="both"}).map(function(w){var on=WD[wgTab].indexOf(w.id)>-1;return '<div class="wgr"><div class="wgi"><b>'+w.name+'</b><span>'+w.desc+'</span></div><button class="btn'+(on?'':' pri')+'" type="button" data-id="'+w.id+'">'+(on?"Remove":"Add")+'</button></div>'}).join("")}
+function buildWg(){EL("wgsub").textContent=wgTab==="mail"?"For the Mail tab":wgTab==="weather"?"For the Weather tab":"For the Calendar tab";EL("wgl").innerHTML=WG.filter(function(w){return w.tab===wgTab||w.tab==="both"}).map(function(w){var on=WD[wgTab].indexOf(w.id)>-1;return '<div class="wgr"><div class="wgi"><b>'+w.name+'</b><span>'+w.desc+'</span></div><button class="btn'+(on?'':' pri')+'" type="button" data-id="'+w.id+'">'+(on?"Remove":"Add")+'</button></div>'}).join("")}
 function openWg(tab){wgTab=tab;buildWg();EL("wg").hidden=false;EL("wgdone").focus()}
 function closeWg(){EL("wg").hidden=true}
 EL("wgl").addEventListener("click",function(e){var b=e.target.closest("button[data-id]");if(!b)return;var id=b.dataset.id,i=WD[wgTab].indexOf(id);if(i>-1)WD[wgTab].splice(i,1);else WD[wgTab].push(id);saveWd();buildWds(wgTab);buildWg()});
@@ -2486,7 +2492,7 @@ EL("wg").addEventListener("click",function(e){if(e.target===EL("wg"))closeWg()})
 document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!EL("wg").hidden)closeWg()});
 var _rm=renderMail;renderMail=function(){_rm.apply(this,arguments);tickWds();spUi();paneSync()};
 var _ra=renderAg;renderAg=function(){_ra.apply(this,arguments);tickWds()};
-buildWds("mail");buildWds("calendar");bindWds("mail");bindWds("calendar");setInterval(tickWds,20000);
+buildWds("mail");buildWds("calendar");buildWds("weather");bindWds("mail");bindWds("calendar");bindWds("weather");setInterval(tickWds,20000);
 function wmData(){return {
 am:["Good morning","Morning"],
 pm:["Good afternoon","Afternoon"],
@@ -2601,14 +2607,14 @@ return '<div class="wl">Last 7 days</div><div class="bars">'+d.map(function(x){r
 {id:"countdown",tab:"both",name:"Countdown",desc:"Days until a date you choose",r:cdHtml},
 {id:"year",tab:"both",live:1,name:"Year progress",desc:"How much of the year has passed",r:function(){var n=new Date(),y=n.getFullYear(),a=new Date(y,0,1),b=new Date(y+1,0,1),p=Math.round((n-a)/(b-a)*100);return '<div class="wl">'+y+'</div><div class="wn">'+p+'%</div><div class="ws">'+Math.ceil((b-n)/864e5)+' days left</div><div class="bar"><i style="width:'+p+'%"></i></div>'}},
 {id:"quote",tab:"both",live:1,wide:1,name:"Quote of the day",desc:"A short thought that changes daily",r:function(){var n=new Date(),d=Math.floor((n-new Date(n.getFullYear(),0,0))/864e5);return '<div class="wl">Today</div><div class="wv" style="font-size:18px;font-weight:600;line-height:1.3">\u201c'+esc(QUOTES[d%QUOTES.length])+'\u201d</div>'}});
-["mail","calendar"].forEach(function(tab){EL("wds-"+tab).addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
+WTABS.forEach(function(tab){EL("wds-"+tab).addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
 if(b.dataset.ft==="toggle"){if(FT.run){FT.left=ftLeft();FT.run=false}else{if(FT.left<=0)FT.left=FT.len;FT.t0=Date.now();FT.run=true}renderFt()}
 else if(b.dataset.ft==="reset"){FT.run=false;FT.left=FT.len;renderFt()}
 else if(b.dataset.cdset){var t=b.closest(".wd"),d=t.querySelector(".cdd").value,n=t.querySelector(".cdn").value.trim();if(d){ss("wd-cd",JSON.stringify({d:d,n:n}));renderCd()}}
 else if(b.dataset.cdclr){try{localStorage.removeItem("wd-cd")}catch(x){}renderCd()}})});
 setInterval(function(){if(!FT.run)return;var l=ftLeft();document.querySelectorAll('[data-w="focus"] .ftt').forEach(function(x){x.textContent=mmss(l)});
 if(l<=0){FT.run=false;FT.left=0;renderFt();var tt=EL("toast");tt.textContent="Focus session finished";tt.hidden=false;setTimeout(function(){tt.hidden=true},5000)}},1000);
-buildWds("mail");buildWds("calendar");tickWds();
+buildWds("mail");buildWds("calendar");buildWds("weather");tickWds();
 var TH=ls("wth","auto"),SUN='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',MOON='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg>';
 function themeUi(){var d=isDark(),b=document.getElementById("thbtn"),l=d?"Switch to light mode":"Switch to dark mode";b.innerHTML=d?MOON:SUN;b.setAttribute("aria-label",l);b.title=l;
 Array.prototype.forEach.call(document.querySelectorAll(".seg button"),function(x){x.setAttribute("aria-pressed",x.dataset.th===TH)})}
@@ -2788,7 +2794,7 @@ return '<div class="wd z'+z+'" data-w="'+id+'" style="--tn:'+TN(id)+'"'+(ed?' dr
 c.innerHTML=bar+(col?'':'<div class="wgrid">'+tiles+(ids.length?'':'<div class="wemp">No widgets yet. Press + Add to pick some.</div>')+'</div>')}
 function wMove(tab,id,d){var a=WD[tab],i=a.indexOf(id),j=i+d;if(i<0||j<0||j>=a.length)return;a.splice(i,1);a.splice(j,0,id);saveWd();buildWds(tab);tickWds();var b=document.querySelector('#wds-'+tab+' [data-w="'+id+'"] [data-mv="'+d+'"]');if(b)b.focus()}
 function wSize(tab,id){var W=WS(),k=tab+":"+id,w=wgById(id),cur=W.sz[k]||(w.wide?"w":"s");W.sz[k]={s:"w",w:"l",l:"s"}[cur];ss("wd-size",JSON.stringify(W.sz));buildWds(tab);tickWds();var b=document.querySelector('#wds-'+tab+' [data-sz="'+id+'"]');if(b)b.focus()}
-["mail","calendar"].forEach(function(tab){var c=EL("wds-"+tab),drag=null;
+WTABS.forEach(function(tab){var c=EL("wds-"+tab),drag=null;
 c.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;var W=WS();
 if(b.dataset.edit){W.edit[tab]=!W.edit[tab];buildWds(tab);tickWds()}
 else if(b.dataset.wcol){W.col[tab]=!W.col[tab];ss("wd-col",JSON.stringify(W.col));buildWds(tab);tickWds()}
@@ -2798,11 +2804,11 @@ c.addEventListener("dragstart",function(e){var t=e.target.closest&&e.target.clos
 c.addEventListener("dragover",function(e){if(drag)e.preventDefault()});
 c.addEventListener("drop",function(e){var t=e.target.closest&&e.target.closest("[data-w]");if(!drag||!t)return;e.preventDefault();var a=WD[tab],id=drag,f=a.indexOf(id),to=a.indexOf(t.dataset.w);drag=null;if(f<0||to<0||f===to)return;a.splice(f,1);a.splice(to,0,id);saveWd();buildWds(tab);tickWds()});
 c.addEventListener("dragend",function(){drag=null})});
-function buildWg(){EL("wgsub").textContent=wgTab==="mail"?"For the Mail tab. Tap Add to put one on your page.":"For the Calendar tab. Tap Add to put one on your page.";
+function buildWg(){EL("wgsub").textContent=wgTab==="mail"?"For the Mail tab. Tap Add to put one on your page.":wgTab==="weather"?"For the Weather tab. Tap Add to put one on your page.":"For the Calendar tab. Tap Add to put one on your page.";
 EL("wgl").innerHTML='<div class="wgg">'+WG.filter(function(w){return w.tab===wgTab||w.tab==="both"}).map(function(w){var on=WD[wgTab].indexOf(w.id)>-1;
 return '<div class="wgc"><div class="wgp" aria-hidden="true"><div class="wd zs" style="--tn:'+TN(w.id)+'"><div class="wb">'+w.r()+'</div></div></div><div class="wgi"><b>'+esc(w.name)+'</b><span>'+esc(w.desc)+'</span></div><button class="btn'+(on?'':' pri')+'" type="button" data-id="'+w.id+'">'+(on?"Remove":"Add")+'</button></div>'}).join("")+'</div><button type="button" class="btn wreset" id="wreset">Reset to defaults</button>'}
-EL("wgl").addEventListener("click",function(e){if(!e.target.closest("#wreset"))return;WD={mail:["unread","important"],calendar:["next","week"]};WS().sz={};ss("wd-size","{}");saveWd();buildWds("mail");buildWds("calendar");tickWds();buildWg()});
-buildWds("mail");buildWds("calendar");tickWds();
+EL("wgl").addEventListener("click",function(e){if(!e.target.closest("#wreset"))return;WD={mail:["unread","important"],calendar:["next","week"],weather:["sun","world","clock"]};WS().sz={};ss("wd-size","{}");saveWd();buildWds("mail");buildWds("calendar");buildWds("weather");tickWds();buildWg()});
+buildWds("mail");buildWds("calendar");buildWds("weather");tickWds();
 EL("v-mail").addEventListener("click",function(e){var b=e.target.closest("[data-notspam],[data-isspam]");if(!b)return;
 var tid=b.dataset.notspam||b.dataset.isspam,row=lastL.filter(function(x){return x[6]===tid})[0];if(!row)return;
 var addr=(addrOf(row[5]||"")||row[0]||"").toLowerCase();if(!addr)return;
@@ -2922,7 +2928,7 @@ EL("setbody").addEventListener("change",function(e){if(e.target.name!=="city")re
 /* ---------- painting ---------- */
 var drag=null;
 function paintW(id){document.querySelectorAll('.wds [data-w="'+id+'"] .wb').forEach(function(b){var w=wgById(id);if(w)b.innerHTML=w.r()})}
-tickWds=function(){if(drag)return;var ae=document.activeElement;["mail","calendar"].forEach(function(tab){WD[tab].forEach(function(id){var w=wgById(id);if(!w||!w.live)return;var b=document.querySelector('#wds-'+tab+' [data-w="'+id+'"] .wb');if(b&&!(ae&&b.contains(ae)&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName)))b.innerHTML=w.r()})})};
+tickWds=function(){if(drag)return;var ae=document.activeElement;WTABS.forEach(function(tab){WD[tab].forEach(function(id){var w=wgById(id);if(!w||!w.live)return;var b=document.querySelector('#wds-'+tab+' [data-w="'+id+'"] .wb');if(b&&!(ae&&b.contains(ae)&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName)))b.innerHTML=w.r()})})};
 var GEAR='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>';
 buildWds=function(tab){var c=EL("wds-"+tab),W=WS(),ids=WD[tab],col=!!W.col[tab],ed=!!W.edit[tab];c.className="wds"+(ed?" edit":"")+(col?" col":"");
 var bar='<div class="wbar"><button type="button" class="wbtn wchev" data-wcol="'+tab+'" aria-expanded="'+!col+'" aria-label="'+(col?"Show":"Hide")+' widgets">'+CHEV+'</button><span class="wbt">Widgets</span><span class="wbn">'+ids.length+'</span><span class="wsp"></span>'+(col?'':(ed?'<span class="whint">Drag to move</span>':'')+'<button type="button" class="wbtn" data-add="'+tab+'">+ Add</button><button type="button" class="wbtn'+(ed?' on':'')+'" data-edit="'+tab+'">'+(ed?"Done":"Edit")+'</button>')+'</div>';
@@ -2933,7 +2939,7 @@ c.innerHTML=bar+(col?'':'<div class="wgrid">'+tiles+(ids.length?'':'<div class="
 /* ---------- interactions: long-press, drag, tile buttons ---------- */
 function setEdit(tab,on){WS().edit[tab]=on;buildWds(tab);if(on&&navigator.vibrate)try{navigator.vibrate(12)}catch(e){}}
 window.__setEdit=setEdit;window.__hasSet=function(id){return !!SETS[id]};window.__openSet=openSet;
-["mail","calendar"].forEach(function(tab){var c=EL("wds-"+tab),lp=null,sx=0,sy=0;
+WTABS.forEach(function(tab){var c=EL("wds-"+tab),lp=null,sx=0,sy=0;
 c.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
 if(b.dataset.cfg){openSet(b.dataset.cfg);return}
 if(b.dataset.hab!=null){var h=habList()[+b.dataset.hab],L=habLog(),td=dk();L[h]=L[h]||{};if(L[h][td])delete L[h][td];else L[h][td]=1;ss("wd-hab",JSON.stringify(L));paintW("habits");return}
@@ -2969,7 +2975,7 @@ var gq="",gcat="All",tools=document.createElement("div");tools.className="wgtool
 tools.innerHTML='<input id="wgq" type="search" placeholder="Search widgets" aria-label="Search widgets" autocomplete="off"><div class="wgcats" role="group" aria-label="Category"></div>';
 EL("wgl").parentNode.insertBefore(tools,EL("wgl"));
 function cats(){var s={};WG.forEach(function(w){if(w.tab===wgTab||w.tab==="both")s[CAT[w.id]||"Info"]=1});return ["All"].concat(["Smart","Mail","Calendar","Time","Productivity","Wellbeing","Personal","Info"].filter(function(k){return s[k]}))}
-buildWg=function(){EL("wgsub").textContent=(wgTab==="mail"?"For the Mail tab.":"For the Calendar tab.")+" Tap Add to put one on your page.";
+buildWg=function(){EL("wgsub").textContent=(wgTab==="mail"?"For the Mail tab.":wgTab==="weather"?"For the Weather tab.":"For the Calendar tab.")+" Tap Add to put one on your page.";
 var cs=cats();if(cs.indexOf(gcat)<0)gcat="All";tools.querySelector(".wgcats").innerHTML=cs.map(function(k){return '<button type="button" class="wbtn'+(k===gcat?' on':'')+'" data-gc="'+k+'" aria-pressed="'+(k===gcat)+'">'+k+'</button>'}).join("");
 var q=gq.toLowerCase(),list=WG.filter(function(w){return (w.tab===wgTab||w.tab==="both")&&(gcat==="All"||(CAT[w.id]||"Info")===gcat)&&(!q||(w.name+" "+w.desc+" "+(CAT[w.id]||"Info")).toLowerCase().indexOf(q)>-1)});
 EL("wgl").innerHTML='<div class="wgg">'+(list.length?list.map(function(w){var on=WD[wgTab].indexOf(w.id)>-1;
@@ -2977,7 +2983,7 @@ return '<div class="wgc'+(on?' added':'')+'"><div class="wgp" aria-hidden="true"
 EL("wgq").addEventListener("input",function(){gq=this.value;buildWg()});
 tools.addEventListener("click",function(e){var b=e.target.closest("[data-gc]");if(!b)return;gcat=b.dataset.gc;buildWg()});
 
-buildWds("mail");buildWds("calendar");
+buildWds("mail");buildWds("calendar");buildWds("weather");
 document.addEventListener("visibilitychange",function(){if(!document.hidden)paintW("weather")});
 })();
 /* ===== UI 3 ===== */
@@ -3308,17 +3314,17 @@ var n=t.querySelector(".wb>.wn,.wb .wxn>.wn");if(n){var v=parseInt(n.textContent
 c.querySelectorAll("[data-stk]").forEach(function(s){var r=s.querySelector(".stkr"),i=STK[tab]||0,n=r.children.length;if(i>=n)i=0;r.scrollLeft=i*r.clientWidth;dots(s,i)})}
 function roll(el,a,b){var t0=performance.now(),d=650;(function f(t){var p=Math.min(1,(t-t0)/d),e=1-Math.pow(1-p,3);el.textContent=Math.round(a+(b-a)*e);if(p<1)requestAnimationFrame(f)})(t0);el.classList.remove("wpop");void el.offsetWidth;el.classList.add("wpop")}
 function dots(s,i){s.querySelectorAll(".stkd button").forEach(function(b,j){b.classList.toggle("on",j===i);b.setAttribute("aria-current",j===i?"true":"false")})}
-function repaint3(id){document.querySelectorAll('.wds [data-w="'+id+'"] .wb').forEach(function(b){var w=wgById(id);if(w)b.innerHTML=w.r()});["mail","calendar"].forEach(decorate)}
+function repaint3(id){document.querySelectorAll('.wds [data-w="'+id+'"] .wb').forEach(function(b){var w=wgById(id);if(w)b.innerHTML=w.r()});WTABS.forEach(decorate)}
 var BRUSH='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r="1.5" fill="currentColor"/><circle cx="17.5" cy="10.5" r="1.5" fill="currentColor"/><circle cx="8.5" cy="7.5" r="1.5" fill="currentColor"/><circle cx="6.5" cy="12.5" r="1.5" fill="currentColor"/><path d="M12 2a10 10 0 0 0 0 20c1.1 0 2-.9 2-2 0-.5-.2-1-.5-1.3-.3-.4-.5-.8-.5-1.3 0-1.1.9-2 2-2h2.3A5.7 5.7 0 0 0 22 9.7C22 5.4 17.5 2 12 2Z"/></svg>';
 var _bw=buildWds;buildWds=function(tab){_bw(tab);decorate(tab)};
-var _tw=tickWds;tickWds=function(){_tw();["mail","calendar"].forEach(decorate)};
+var _tw=tickWds;tickWds=function(){_tw();WTABS.forEach(decorate)};
 /* the mail widgets follow the inbox right away */
-var _rm3=renderMail;renderMail=function(L,n){_rm3(L,n);["important","accounts"].forEach(function(id){document.querySelectorAll('.wds [data-w="'+id+'"] .wb').forEach(function(b){b.innerHTML=wgById(id).r()})});document.querySelectorAll('.wds [data-w="stack"]').length&&["mail","calendar"].forEach(decorate)};
+var _rm3=renderMail;renderMail=function(L,n){_rm3(L,n);["important","accounts"].forEach(function(id){document.querySelectorAll('.wds [data-w="'+id+'"] .wb').forEach(function(b){b.innerHTML=wgById(id).r()})});document.querySelectorAll('.wds [data-w="stack"]').length&&WTABS.forEach(decorate)};
 
 /* ---------- tap a widget to go where it points ---------- */
 var ACT={unread:function(){goMail("in")},spam:function(){goMail("sp")},important:function(){goMail("imp")},orders:function(){goMail("imp")},latest:function(){goMail("in");var a=document.querySelector("#mail>li>a[data-k]");if(a&&a.getAttribute("aria-expanded")!=="true")a.click()},
 next:goCal,week:goCal,today:goCal,tomorrow:goCal,agenda:goCal,busiest:goCal,mix:goCal,month:goCal,holiday:goCal};
-["mail","calendar"].forEach(function(tab){var c=EL("wds-"+tab);
+WTABS.forEach(function(tab){var c=EL("wds-"+tab);
 c.addEventListener("click",function(e){if(c.classList.contains("edit"))return;var acg=e.target.closest("[data-acgo]");if(acg){acctF=acg.dataset.acgo;try{localStorage.setItem("mailacct",acctF)}catch(x){}goMail("in");renderMail(lastL,lastNote);return}
 var sd=e.target.closest("[data-sd]");if(sd){var s=sd.closest("[data-stk]"),r=s.querySelector(".stkr"),i=+sd.dataset.sd;STK[tab]=i;r.scrollTo({left:i*r.clientWidth,behavior:motionOn()?"smooth":"auto"});dots(s,i);return}
 if(e.target.closest("[data-br]")){BR.on=!BR.on;BR.ph=0;clearTimeout(BR.t);repaint3("breathe");if(BR.on)setTimeout(brStep,30);return}
@@ -3370,7 +3376,7 @@ if(t.id==="wcfile"&&t.files&&t.files[0]){var f=t.files[0],img=new Image(),u=URL.
 var d=cv.toDataURL("image/jpeg",.82);try{localStorage.setItem("wd-photo",d);refreshCus()}catch(x){say("That photo is too big to save here. Try a smaller one.",5000)}};img.onerror=function(){say("Couldn’t open that image.",4000)};img.src=u}});
 cm.addEventListener("focusout",function(e){if(e.target.id==="wclinks"||e.target.id==="wccap")saveText()});
 document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!cm.hidden){e.stopPropagation();closeCus()}},true);
-["mail","calendar"].forEach(function(tab){EL("wds-"+tab).addEventListener("click",function(e){var b=e.target.closest("[data-cus]");if(b)openCus(tab,b.dataset.cus)})});
+WTABS.forEach(function(tab){EL("wds-"+tab).addEventListener("click",function(e){var b=e.target.closest("[data-cus]");if(b)openCus(tab,b.dataset.cus)})});
 document.addEventListener("click",function(){requestAnimationFrame(function(){if(!cm.hidden&&typeof pills==="function")pills()})});
 
 /* ---------- packs in the gallery ---------- */
@@ -3383,7 +3389,7 @@ undoPack={tab:wgTab,ids:WD[wgTab].slice()};WD[wgTab]=p[3].filter(function(id){re
 var tt=EL("toast");tt.innerHTML=esc(p[1])+' pack added <button type="button" class="undo" id="wpkundo">Undo</button>';tt.hidden=false;clearTimeout(tt._k);tt._k=setTimeout(function(){tt.hidden=true},6000);
 EL("wpkundo").onclick=function(){if(!undoPack)return;WD[undoPack.tab]=undoPack.ids;saveWd();buildWds(undoPack.tab);tickWds();if(!EL("wg").hidden)buildWg();undoPack=null;tt.hidden=true}});
 
-buildWds("mail");buildWds("calendar");
+buildWds("mail");buildWds("calendar");buildWds("weather");
 setInterval(function(){if(!document.hidden)["rings","sun","agenda"].forEach(function(id){if(document.querySelector('.wds [data-w="'+id+'"]'))repaint3(id)})},60000);
 })();
 /* ===== Custom emoji: one original set drawn for this app ===== */
@@ -3456,7 +3462,7 @@ else if(e.key==="Escape"){e.preventDefault();e.stopPropagation();close(true)}
 else if(e.key==="Tab"){e.preventDefault();close(true)}});
 document.addEventListener("pointerdown",function(e){if(!m.hidden&&!m.contains(e.target))close(false)},true);
 window.addEventListener("resize",function(){close(false)});window.addEventListener("scroll",function(){close(false)},true);window.addEventListener("blur",function(){close(false)});
-["mail","calendar"].forEach(function(tab){var c=EL("wds-"+tab);
+WTABS.forEach(function(tab){var c=EL("wds-"+tab);
 /* right-click: our menu. Shift + right-click, or right-click inside a text box, still gives the browser's own menu */
 c.addEventListener("contextmenu",function(e){if(e.shiftKey||e.target.closest("input,textarea,[contenteditable]"))return;var t=e.target.closest(".wgrid>.wd[data-w]"),inArea=e.target.closest(".wgrid,.wemp");if(!t&&!inArea)return;
 e.preventDefault();e.stopPropagation();open(tab,t?t.dataset.w:null,e.clientX,e.clientY,t||c)},true);
@@ -3466,7 +3472,7 @@ c.addEventListener("keydown",function(e){if(!(e.key==="ContextMenu"||(e.shiftKey
 var _bw=buildWds;buildWds=function(tab){_bw(tab);var c=EL("wds-"+tab);if(!c)return;
 c.querySelectorAll(".wgrid>.wd[data-w]").forEach(function(t){if(!t.hasAttribute("tabindex"))t.tabIndex=0;var w=wgById(t.dataset.w);if(w&&!t.getAttribute("aria-label"))t.setAttribute("aria-label",w.name+" widget. Press Shift+F10 for options")});
 var bar=c.querySelector(".wbar"),ed=c.classList.contains("edit");if(bar&&!ed&&!bar.querySelector(".wrch")&&WD[tab].length)bar.querySelector(".wsp").insertAdjacentHTML("afterend",'<span class="wrch">Right-click a widget to edit it</span>')};
-buildWds("mail");buildWds("calendar");tickWds();
+buildWds("mail");buildWds("calendar");buildWds("weather");tickWds();
 })();
 /* ===== Wallpaper studio ===== */
 (function(){
@@ -3674,10 +3680,10 @@ new MutationObserver(function(ms){var hit=false;ms.forEach(function(m){if(m.adde
 var _rm4=renderMail;renderMail=function(L,n){_rm4(L,n);["unread","latest","deliveries","senders"].forEach(function(id){var w=wgById(id);if(w)document.querySelectorAll('.wds [data-w="'+id+'"] .wb').forEach(function(b){if(!b.contains(document.activeElement))b.innerHTML=w.r()})});document.querySelectorAll(".wds").forEach(addIcons)};
 
 /* ---------- move saved layouts off the retired widgets ---------- */
-var ch=false;["mail","calendar"].forEach(function(tab){var out=[];(WD[tab]||[]).forEach(function(id){var n=id in GONE?GONE[id]:id;if(n&&out.indexOf(n)<0&&wgById(n))out.push(n);if(n!==id)ch=true});WD[tab]=out});
+var ch=false;WTABS.forEach(function(tab){var out=[];(WD[tab]||[]).forEach(function(id){var n=id in GONE?GONE[id]:id;if(n&&out.indexOf(n)<0&&wgById(n))out.push(n);if(n!==id)ch=true});WD[tab]=out});
 if(ch)saveWd();
 try{var w3=JSON.parse(localStorage.getItem("wd-w3")||"{}");if(w3.stack&&w3.stack.ids){var s=w3.stack.ids.map(function(id){return id in GONE?GONE[id]:id}).filter(function(id,i,a){return id&&a.indexOf(id)===i});if(s.join()!==w3.stack.ids.join()){w3.stack.ids=s;localStorage.setItem("wd-w3",JSON.stringify(w3))}}}catch(e){}
-buildWds("mail");buildWds("calendar");tickWds();
+buildWds("mail");buildWds("calendar");buildWds("weather");tickWds();
 })();
 /* ===== Resize widgets by dragging the corner, like on iPhone and iPad ===== */
 (function(){
@@ -3689,7 +3695,7 @@ function handles(tab){var c=EL("wds-"+tab);if(!c||!c.classList.contains("edit"))
 c.querySelectorAll(".wgrid>.wd[data-w]").forEach(function(t){if(t.querySelector(".wrz"))return;var id=t.dataset.w,z=sizeOf(tab,id),n=(wgById(id)||{}).name||id;
 t.insertAdjacentHTML("beforeend",'<button type="button" class="wrz" data-rz="'+id+'" aria-label="Resize '+esc(n)+', now '+NAME[z]+'. Drag, or use the arrow keys" title="Drag to resize">'+ARC+'</button>')})}
 var _bw=buildWds;buildWds=function(tab){_bw(tab);handles(tab)};
-var _tw=tickWds;tickWds=function(){_tw();handles("mail");handles("calendar")};
+var _tw=tickWds;tickWds=function(){_tw();handles("mail");handles("calendar");handles("weather")};
 
 /* spring the tiles from where they were to where they are now */
 function flipAll(grid,before,except){var M=window.motionOn&&motionOn();grid.querySelectorAll(":scope>.wd[data-w]").forEach(function(t){var a=before[t.dataset.w];if(!a||!M)return;var b=t.getBoundingClientRect();
@@ -3727,7 +3733,7 @@ var t=hd.closest(".wd"),tab=t.closest(".wds").id.replace("wds-",""),id=t.dataset
 /* clicks on the handle never reach the widget */
 document.addEventListener("click",function(e){if(e.target.closest&&e.target.closest(".wrz")){e.stopPropagation();e.preventDefault()}},true);
 /* the old S/M/L button gives way to the handle */
-handles("mail");handles("calendar");
+handles("mail");handles("calendar");handles("weather");
 window.__wrz={apply:apply};
 })();
 /* ===== Settings 3: one place for each setting, in plain words ===== */
@@ -3838,7 +3844,7 @@ var _TN=TN;TN=function(id){var l=jparse("wd-look",{})[id];return l&&l.col&&/^#[0
 var d=WP.filter(function(w){return w.id==="default"})[0];
 if(d){d.n="Calm";d.l=["#f4f3f7","#e4dcff","#f3e6f1","#e2ecf4","#ece6ff","#f6eef0"];d.d=["#09090d","#2a1f55","#1a1330","#0f1a2c","#22183f","#140f24"]}
 if(typeof applyWp==="function"&&(jparse("wpx",{}).mode||"scene")==="scene")applyWp(ls("wp","default"),false);
-buildWds("mail");buildWds("calendar");tickWds();
+buildWds("mail");buildWds("calendar");buildWds("weather");tickWds();
 })();
 /* ===== Premium 2: a sidebar on desktop ===== */
 (function(){
@@ -3989,7 +3995,7 @@ function apply(){raf=0;if(!cur)return;var r=cur.getBoundingClientRect(),x=(lx-r.
 document.addEventListener("pointermove",function(e){if(e.pointerType!=="mouse")return;var t=e.target.closest&&e.target.closest(".wds:not(.edit) .wgrid>.wd[data-w]");if(t!==cur){if(cur){cur.classList.remove("hov");cur.style.removeProperty("--rx");cur.style.removeProperty("--ry")}cur=t;if(cur&&on())cur.classList.add("hov")}if(!cur||!on())return;lx=e.clientX;ly=e.clientY;if(!raf)raf=requestAnimationFrame(apply)},{passive:true});
 document.addEventListener("pointerleave",function(){if(cur){cur.classList.remove("hov");cur=null}},true);
 window.addEventListener("blur",function(){if(cur){cur.classList.remove("hov");cur=null}});
-buildWds("mail");buildWds("calendar");tickWds();
+buildWds("mail");buildWds("calendar");buildWds("weather");tickWds();
 })();
 /* ===== Progress rings 2 ===== */
 (function(){
@@ -4012,7 +4018,7 @@ ringsHtml=function(){var D=data(),first=!seen&&!document.querySelector(".rg2");s
  var rows=D.map(function(d,i){var pc=Math.floor(d.p*100);return '<div class="rgr" style="--a:'+COL[i][0]+';--b:'+COL[i][1]+';--p:'+(d.p*100).toFixed(2)+'%;--i:'+i+'"><div class="rgh"><span class="rgk"><i></i>'+d.k+'</span><b>'+pc+'%</b></div><div class="rgb"><i></i></div><small>'+d.t+'</small></div>'}).join("");
  return '<div class="wl">Progress</div><div class="rg2'+(first?' in':'')+(document.querySelector('.wd.hov[data-w="rings"]')?' still':'')+'" role="img" aria-label="'+D.map(function(d){return d.k+" "+Math.floor(d.p*100)+"%"}).join(", ")+'">'+svg+'<div class="rgl">'+rows+'</div></div>'};
 var w=wgById("rings");if(w)w.r=function(){return ringsHtml()};
-buildWds("mail");buildWds("calendar");
+buildWds("mail");buildWds("calendar");buildWds("weather");
 })();
 /* ===== Sun 2: the day as a curve, the tile as the sky ===== */
 (function(){
@@ -4047,7 +4053,7 @@ function sun2(){var h0=old(),SUN=jparse("wd-sun",null),pl=(jparse("wd-cfg",{}).w
  '<div class="sn2r"><span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 10V3M5 6l3-3 3 3M2 13h12"/></svg>'+hhmm(SUN.rise[0])+'</span><span class="mid">'+lh+' h '+lm+' min of light</span><span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v7M5 7l3 3 3-3M2 13h12"/></svg>'+hhmm(SUN.set[0])+'</span></div>'+
  (diff!=null?'<div class="sn2x">'+(left?hm(st-now)+' of daylight left · ':'')+'Tomorrow '+(diff===0?"about the same":Math.abs(diff)+' min '+(diff>0?"longer":"shorter"))+'</div>':'')+'</div>'}
 w.r=sun2;
-buildWds("mail");buildWds("calendar");
+buildWds("mail");buildWds("calendar");buildWds("weather");
 })();
 /* ===== Wallpapers 2: soft, glossy, layered scenes ===== */
 (function(){
@@ -4233,13 +4239,12 @@ function tick(){var d=new Date(),s=d.getSeconds();if(!document.hidden&&s!==last)
 tick();align();window.addEventListener("resize",align);try{new ResizeObserver(align).observe(g);new ResizeObserver(align).observe(c)}catch(x){}if(document.fonts&&document.fonts.ready)document.fonts.ready.then(align);setTimeout(align,500)})();
 /* ===== Weather tab ===== */
 (function(){
-var nav=document.querySelector("nav.top"),main=document.querySelector("main");if(!nav||!main||EL("v-weather"))return;
+var nav=document.querySelector("nav.top"),main=document.querySelector("main");if(!nav||!main||EL("tweather"))return;
 /* tab button and page */
 var tb=document.createElement("button");tb.id="tweather";tb.type="button";
 tb.innerHTML='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3.5v1.2M3.5 8h1.2M4.8 4.8l.9.9M12.3 5.6l-.9.9"/><path d="M5.3 10.2A3.6 3.6 0 0 1 11.4 6.6"/><path d="M8.5 20h9a3.5 3.5 0 0 0 .4-7 5 5 0 0 0-9.6-1A4 4 0 0 0 8.5 20z"/></svg><span>Weather</span>';
 var tn=EL("tnotes");tn.parentNode.insertBefore(tb,tn.nextSibling);
-var sec=document.createElement("section");sec.id="v-weather";sec.hidden=true;sec.innerHTML='<h2>Weather <span id="wxpstat"></span></h2><div class="wxp" id="wxp"></div>';
-main.appendChild(sec);
+var sec=EL("v-weather");
 var ORDER=["mail","calendar","notes","weather"];
 function cur(){var s=document.querySelector("main>section:not([hidden])");return s?s.id.slice(2):"mail"}
 var _sh=show;show=function(v){var from=cur();if(v==="weather"){["mail","calendar","notes"].forEach(function(n){var s=EL("v-"+n);if(s)s.hidden=true;var t=EL("t"+n);if(t)t.classList.remove("on")});sec.hidden=false;tb.classList.add("on");
