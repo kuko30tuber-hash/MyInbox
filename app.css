@@ -2351,3 +2351,50 @@ html.motion .wd.hov .wspa{transform:scale(1.06) rotate(-2deg)}
 .wspth{flex:none;width:32px;height:32px;border-radius:6px;overflow:hidden;background:color-mix(in srgb,var(--ink) 8%,transparent);display:grid;place-items:center;color:var(--mute)}
 .wspth img{width:100%;height:100%;object-fit:cover}.wspth svg{width:15px;height:15px}
 .zs .wsprs>.wsprow:nth-child(n+3){display:none}.zw .wsprs>.wsprow:nth-child(n+4){display:none}
+/* ===== Mail 3 ===== */
+/* attachments */
+.m3att{max-width:760px;margin:0 auto;padding:4px 28px 26px}
+.m3atth{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin-bottom:10px}
+.m3atl{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.m3a{display:flex;align-items:center;gap:10px;padding:8px 8px 8px 10px;border-radius:14px;border:1px solid var(--line);background:color-mix(in srgb,var(--panel) 60%,transparent);min-width:0;transition:border-color .15s,box-shadow .15s}
+.m3a:hover{border-color:color-mix(in srgb,var(--accent) 40%,var(--line));box-shadow:0 8px 20px -14px rgba(0,0,0,.4)}
+.m3ai{flex:none;display:grid;place-items:center;width:38px;height:44px;border-radius:8px;font-size:9.5px;font-weight:800;letter-spacing:.04em;color:#fff;background:#8e8e93}
+.k-pdf .m3ai{background:#ff453a}.k-img .m3ai{background:#30b0c7}.k-sheet .m3ai{background:#30d158}.k-doc .m3ai{background:#0a84ff}.k-zip .m3ai{background:#a2845e}.k-audio .m3ai{background:#bf5af2}.k-video .m3ai{background:#ff9f0a}
+.m3an{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.3}
+.m3an b{font-size:13px;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.m3an small{font-size:11.5px;color:var(--mute)}
+.m3ab{flex:none;display:grid;place-items:center;width:32px;height:32px;border:0;border-radius:9px;background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--ink);cursor:pointer;transition:background .15s}
+.m3ab:hover{background:color-mix(in srgb,var(--accent) 16%,transparent)}
+.m3ab.busy{pointer-events:none;opacity:.5}
+html.motion .m3ab.busy svg{animation:m3spin .8s linear infinite}
+@keyframes m3spin{to{transform:rotate(360deg)}}
+/* inline reply */
+.m3rp{max-width:760px;margin:0 auto 26px;padding:0 28px}
+.m3rp>*{box-sizing:border-box}
+.m3rph{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--mute);margin-bottom:8px}
+.m3rph b{color:var(--ink)}
+.m3full{margin-left:auto;border:0;background:none;color:var(--accent);font:inherit;font-size:12.5px;font-weight:650;cursor:pointer}
+.m3rp textarea{width:100%;min-height:120px;padding:14px 16px!important;border-radius:16px!important;border:1px solid var(--line)!important;background:var(--panel)!important;font:inherit;font-size:15px;line-height:1.55;color:var(--ink);resize:vertical;outline:0;box-shadow:0 10px 30px -22px rgba(0,0,0,.45)!important;transition:border-color .2s,box-shadow .2s}
+.m3rp textarea:focus{border-color:var(--accent)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)!important}
+.m3rpb{display:flex;align-items:center;gap:8px;margin-top:10px}
+.m3rps{flex:1;font-size:12px;color:var(--mute)}
+.m3rpb .btn.pri{display:inline-flex;align-items:center;gap:6px}
+/* search all of Gmail */
+#mail .m3all{list-style:none;padding:6px 4px!important;border:0!important}
+#mail .m3all button{display:flex;align-items:center;gap:10px;width:100%;padding:12px 14px;border:1px dashed color-mix(in srgb,var(--accent) 45%,transparent);border-radius:14px;background:color-mix(in srgb,var(--accent) 6%,transparent);color:var(--accent);font:inherit;font-size:13.5px;font-weight:650;text-align:left;cursor:pointer}
+#mail .m3all button:hover{background:color-mix(in srgb,var(--accent) 12%,transparent)}
+#mail .m3all kbd{margin-left:auto;font:600 11px/1 inherit;padding:3px 6px;border-radius:5px;background:color-mix(in srgb,var(--accent) 14%,transparent)}
+.m3back{margin-left:6px;border:0;padding:3px 10px;border-radius:99px;background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent);font:inherit;font-size:12px;font-weight:650;cursor:pointer}
+/* swipe */
+#v-mail #mail li>a[data-k]{touch-action:pan-y}
+#v-mail #mail li.m3sw{position:relative;border-radius:14px;overflow:hidden}
+#v-mail #mail li.m3sw::before{content:"";position:absolute;inset:0;border-radius:14px;background:#8e8e93;transition:background .15s}
+#v-mail #mail li.m3sw[data-dir="arch"]::before{background:#30b0c7}
+#v-mail #mail li.m3sw[data-dir="read"]::before,#v-mail #mail li.m3sw[data-dir="unread"]::before{background:#0a84ff}
+#v-mail #mail li.m3sw::after{position:absolute;top:50%;transform:translateY(-50%);font-size:13px;font-weight:700;color:#fff;opacity:.55;transition:opacity .15s;display:block!important;border:0!important;left:auto;right:auto;height:auto;width:auto;background:none!important}
+#v-mail #mail li.m3sw[data-dir="arch"]::after{content:"Archive";right:18px}
+#v-mail #mail li.m3sw[data-dir="read"]::after{content:"Mark read";left:18px}
+#v-mail #mail li.m3sw[data-dir="unread"]::after{content:"Mark unread";left:18px}
+#v-mail #mail li.m3sw.far::after{opacity:1}
+#v-mail #mail li.m3sw>a{position:relative;z-index:1;background:var(--panel)!important}
+@media(max-width:600px){.m3att{padding:4px 12px 18px}.m3rp{padding:0 12px}}

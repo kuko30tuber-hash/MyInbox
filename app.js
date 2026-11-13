@@ -2503,3 +2503,117 @@ back.then(function(r){if(r||(window.__hash0||location.hash)==="#spotify"||locati
 
 /* images that fail to load and should just disappear (no inline handlers, for the security policy) */
 document.addEventListener("error",function(e){var t=e.target;if(t&&t.tagName==="IMG"&&t.hasAttribute("data-gone-on-error"))t.remove()},true);
+/* ===== Mail 3: archive, unread, attachments, inline reply, search all of Gmail, swipe ===== */
+(function(){
+function mcp(){return Promise.resolve(mcpNS||(window.claude&&claude.use("mcp")))}
+function toast(html,undo,ms){var tt=EL("toast");tt.innerHTML=html+(undo?' <button type="button" class="undo" id="m3undo">Undo</button>':'');tt.hidden=false;clearTimeout(tt._k);tt._k=setTimeout(function(){tt.hidden=true},ms||6000);if(undo)EL("m3undo").onclick=function(){tt.hidden=true;undo()}}
+function rowOf(tid){for(var i=0;i<lastL.length;i++)if(lastL[i][6]===tid)return i;return -1}
+function bust(m){try{m.invalidate("Gmail","search_threads")}catch(e){}}
+var IC={arch:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="5" rx="1.5"/><path d="M5 9v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9M10 13h4"/></svg>',
+ unread:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/><circle cx="19" cy="5" r="3" fill="currentColor" stroke="none"/></svg>',
+ read:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9.5 12 4l9 5.5V19a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="m3.5 10 8.5 6 8.5-6"/></svg>',
+ clip:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 11-8.5 8.5a5 5 0 0 1-7-7L14 4a3.5 3.5 0 0 1 5 5l-8.5 8.5a2 2 0 0 1-3-3L15 7"/></svg>',
+ dl:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>',
+ eye:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+ send:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg>'};
+
+/* ---------- archive and mark unread ---------- */
+var _ab=actBar;actBar=function(tid,m,subj){var h=_ab(tid,m,subj);
+ var extra='<button type="button" class="btn rep" data-arch="'+esc(tid)+'">'+IC.arch+' Archive</button><button type="button" class="btn rep" data-unread="'+esc(tid)+'">'+IC.unread+' Mark unread</button>';
+ return h.replace('<button type="button" class="btn del"',extra+'<button type="button" class="btn del"')};
+function archive(tid,silent){var i=rowOf(tid);var row=i>-1?lastL[i]:null;
+ return mcp().then(function(m){if(!m)throw 0;return m.callTool("Gmail","unlabel_thread",{threadId:tid,labelIds:["INBOX"]}).then(function(){bust(m);
+  if(i>-1){lastL.splice(rowOf(tid),1)}if(SEARCH&&SEARCH.saved){SEARCH.saved.L=SEARCH.saved.L.filter(function(x){return x[6]!==tid})}
+  if(openTid===tid)openTid=null;renderMail(lastL,lastNote);
+  if(!silent)toast("Archived",function(){m.callTool("Gmail","label_thread",{threadId:tid,labelIds:["INBOX"]}).then(function(){bust(m);if(row&&rowOf(tid)<0){lastL.splice(Math.min(i,lastL.length),0,row);renderMail(lastL,lastNote)}})})})}).catch(function(){toast("Couldn’t archive that email.",null,4000)})}
+function setUnread(tid,on){var i=rowOf(tid),row=i>-1?lastL[i]:null;
+ return mcp().then(function(m){if(!m)throw 0;return m.callTool("Gmail",on?"label_thread":"unlabel_thread",{threadId:tid,labelIds:["UNREAD"]}).then(function(){bust(m);if(row)row[3]=on?1:0;
+  if(on&&openTid===tid)openTid=null;renderMail(lastL,lastNote);toast(on?"Marked as unread":"Marked as read",null,3000)})}).catch(function(){toast("Couldn’t change that email.",null,4000)})}
+
+/* ---------- attachments ---------- */
+var ATT={},attN=0;
+function kb(n){return n>=1048576?(n/1048576).toFixed(1)+" MB":n>=1024?Math.round(n/1024)+" KB":n+" B"}
+function kind(a){var t=a.mimeType||"",n=(a.filename||"").toLowerCase();if(/^image\//.test(t))return "img";if(/pdf/.test(t)||/\.pdf$/.test(n))return "pdf";if(/sheet|excel|csv/.test(t)||/\.(xlsx?|csv|numbers)$/.test(n))return "sheet";if(/word|document|rtf|text\//.test(t)||/\.(docx?|txt|pages|rtf)$/.test(n))return "doc";if(/zip|compressed|tar|rar|7z/.test(t)||/\.(zip|rar|7z|gz)$/.test(n))return "zip";if(/^audio\//.test(t))return "audio";if(/^video\//.test(t))return "video";return "file"}
+var KL={img:"Image",pdf:"PDF",sheet:"Sheet",doc:"Document",zip:"Archive",audio:"Audio",video:"Video",file:"File"};
+var _rh=readerHtml;readerHtml=function(tid,ms,a){var h=_rh(tid,ms,a),L=[];
+ ms.forEach(function(m){(m.attachments||[]).forEach(function(x){if(!x.inline&&x.filename)L.push(x)})});
+ if(!L.length)return h;
+ var blk='<div class="m3att"><div class="m3atth">'+IC.clip+L.length+' attachment'+(L.length===1?'':'s')+'</div><div class="m3atl">'+L.map(function(x){var id="a"+(++attN);ATT[id]={tid:tid,x:x};var k=kind(x);
+  return '<div class="m3a k-'+k+'"><span class="m3ai">'+(k==="file"?"":k.toUpperCase().slice(0,4))+'</span><span class="m3an"><b title="'+esc(x.filename)+'">'+esc(x.filename)+'</b><small>'+KL[k]+(x.size?' · '+kb(x.size):'')+'</small></span>'+
+  ((k==="img"||k==="pdf")?'<button type="button" class="m3ab" data-attview="'+id+'" title="Open" aria-label="Open '+esc(x.filename)+'">'+IC.eye+'</button>':'')+'<button type="button" class="m3ab" data-attdl="'+id+'" title="Download" aria-label="Download '+esc(x.filename)+'">'+IC.dl+'</button></div>'}).join("")+'</div></div>';
+ var i=h.lastIndexOf("</div>");return h.slice(0,i)+blk+h.slice(i)};
+function attBlob(id){var a=ATT[id];if(!a)return Promise.reject();if(a.blob)return Promise.resolve(a.blob);
+ var get=a.x.data?Promise.resolve({data:a.x.data}):mcp().then(function(m){return m.callTool("Gmail","get_attachment",{threadId:a.tid,messageId:a.x.messageId,attachmentId:a.x.attachmentId})}).then(function(r){var p=r&&r.payload!==undefined?r.payload:r;if(typeof p==="string"){try{p=JSON.parse(p)}catch(e){}}return p});
+ return get.then(function(p){var s=String(p&&p.data||"").replace(/-/g,"+").replace(/_/g,"/"),bin=atob(s),b=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)b[i]=bin.charCodeAt(i);a.blob=new Blob([b],{type:a.x.mimeType||"application/octet-stream"});return a.blob})}
+function attDownload(id,btn){btn.classList.add("busy");attBlob(id).then(function(b){var u=URL.createObjectURL(b),l=document.createElement("a");l.href=u;l.download=ATT[id].x.filename||"attachment";document.body.appendChild(l);l.click();l.remove();setTimeout(function(){URL.revokeObjectURL(u)},60000);btn.classList.remove("busy")},function(){btn.classList.remove("busy");toast("Couldn’t download that file.",null,4000)})}
+function attView(id,btn){var w=window.open("","_blank");btn.classList.add("busy");attBlob(id).then(function(b){var u=URL.createObjectURL(b);if(w)w.location=u;else location.assign(u);btn.classList.remove("busy")},function(){if(w)w.close();btn.classList.remove("busy");toast("Couldn’t open that file.",null,4000)})}
+
+/* ---------- reply right under the email ---------- */
+var REPLY=null;
+function lastMsg(tid){var ms=THR[tid]||[];return ms[ms.length-1]||{}}
+function replyBox(){var tid=REPLY.tid,m=lastMsg(tid),who=sname(m.sender||"")||addrOf(m.sender||"");
+ return '<div class="m3rp" data-rtid="'+esc(tid)+'"><div class="m3rph">Reply to <b>'+esc(who)+'</b><button type="button" class="m3full" data-rfull="1">Full editor</button></div><textarea id="m3rt" rows="5" placeholder="Write your reply…" aria-label="Your reply">'+esc(REPLY.text||"")+'</textarea><div class="m3rpb"><span class="m3rps" id="m3rps">Ctrl + Enter sends</span><button type="button" class="btn" data-rcancel="1">Cancel</button><button type="button" class="btn pri" data-rsend="1">'+IC.send+' Send</button></div></div>'}
+function placeReply(focus){if(!REPLY)return;var rd=null;document.querySelectorAll("#v-mail .rd").forEach(function(r){var d=r.querySelector("[data-del]");if(d&&d.dataset.del===REPLY.tid&&r.offsetParent!==null)rd=r});if(!rd||rd.querySelector(".m3rp"))return;
+ var mcs=rd.querySelectorAll(":scope>.mc"),after=mcs[mcs.length-1];var div=document.createElement("div");div.innerHTML=replyBox();var box=div.firstChild;
+ rd.appendChild(box);var t=box.querySelector("textarea");if(!focus&&REPLY.f&&(!document.activeElement||document.activeElement===document.body)){t.focus();var c=REPLY.c!=null?REPLY.c:t.value.length;t.setSelectionRange(c,c)}if(focus){t.focus();t.setSelectionRange(t.value.length,t.value.length);if(window.motionOn&&motionOn())box.animate([{opacity:0,transform:"translateY(8px)"},{opacity:1,transform:"none"}],{duration:280,easing:"cubic-bezier(.2,.8,.2,1)"});box.scrollIntoView({block:"nearest",behavior:"smooth"})}}
+function sendReply(){var tid=REPLY.tid,m=lastMsg(tid),txt=(EL("m3rt").value||"").trim(),st=EL("m3rps");if(!txt){st.textContent="Write something first.";return}
+ var subj=dec(m.subject||"")||"",to=addrOf(m.sender||""),mine=accts();if(mine.indexOf(String(to).toLowerCase())>-1&&m.toRecipients&&m.toRecipients[0])to=addrOf(m.toRecipients[0]);
+ var b=document.querySelector('[data-rsend]');if(b)b.disabled=true;st.textContent="Sending…";
+ var who=tid.indexOf("~")>0?tid.slice(0,tid.indexOf("~")):"";
+ mcp().then(function(mm){return mm.callTool("Gmail","send_message",{to:[to],subject:/^re:/i.test(subj)?subj:"Re: "+subj,body:txt,from:who,threadId:tid,inReplyTo:m.messageIdHeader||"",references:m.references||""}).then(function(){bust(mm)})})
+ .then(function(){REPLY=null;var x=document.querySelector(".m3rp");if(x)x.remove();toast("Reply sent to "+esc(to),null,4000);if(typeof directRefresh==="function"&&mcpNS)directRefresh(mcpNS)},function(){if(b)b.disabled=false;st.textContent="Couldn’t send. Check your connection and try again."})}
+new MutationObserver(function(){if(REPLY)placeReply(false)}).observe(EL("v-mail"),{childList:true,subtree:true});
+
+/* ---------- search all of Gmail ---------- */
+var SEARCH=null;
+var _rl=renderLive;renderLive=function(p,ts){if(SEARCH){var L=fromThreads(p);if(L){SEARCH.saved.L=L;SEARCH.saved.note="updated "+hm(new Date(ts||Date.now()).toISOString())+", every 5 min";return true}return false}return _rl(p,ts)};
+function head(){if(!SEARCH)return;var t=EL("mlt"),c=EL("mlc"),n=document.querySelectorAll("#mail li>a[data-k]").length;if(t)t.textContent="Search";if(c)c.innerHTML=(SEARCH.busy?"Searching all of Gmail…":n+" result"+(n===1?"":"s")+" for “"+esc(SEARCH.q)+"”")+' <button type="button" class="m3back" data-sback="1">Back to Inbox</button>'}
+var _rm=renderMail;renderMail=function(L,n){_rm.apply(this,arguments);head();allRow()};
+function serverSearch(q){q=q.trim();if(!q)return;if(!SEARCH)SEARCH={q:q,saved:{L:lastL,note:lastNote,view:view}};SEARCH.q=q;SEARCH.busy=true;
+ var inp=EL("mlq");if(inp){inp.value="";inp.dispatchEvent(new Event("input",{bubbles:true}))}
+ if(typeof view!=="undefined")view="in";openTid=null;renderMail([],"");
+ mcp().then(function(m){return m.callTool("Gmail","search_threads",{query:q,pageSize:30,view:"THREAD_VIEW_SUMMARY"})}).then(function(r){if(!SEARCH||SEARCH.q!==q)return;SEARCH.busy=false;var L=fromThreads(r&&r.payload!==undefined?r.payload:r)||[];renderMail(L,"")},function(){if(!SEARCH)return;SEARCH.busy=false;renderMail([],"");toast("Couldn’t search Gmail right now.",null,4000)})}
+function endSearch(){if(!SEARCH)return;var s=SEARCH.saved;SEARCH=null;openTid=null;if(typeof view!=="undefined")view=s.view||"in";renderMail(s.L,s.note)}
+function allRow(){var ul=EL("mail"),inp=EL("mlq");if(!ul||!inp)return;var q=inp.value.trim(),r=ul.querySelector(".m3all");if(!q){if(r)r.remove();return}
+ if(!r){r=document.createElement("li");r.className="m3all";ul.appendChild(r)}else ul.appendChild(r);
+ r.innerHTML='<button type="button" data-sall="1">'+'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>'+'Search all of Gmail for “'+esc(q)+'”<kbd>Enter</kbd></button>'}
+document.addEventListener("input",function(e){if(e.target.id==="mlq")allRow()});
+document.addEventListener("keydown",function(e){if(e.target.id!=="mlq")return;if(e.key==="Enter"&&e.target.value.trim()){e.preventDefault();serverSearch(e.target.value)}else if(e.key==="Escape"&&SEARCH&&!e.target.value){endSearch()}},true);
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&SEARCH&&!kbBlocked(e)&&!EL("v-mail").hidden&&!openTid)endSearch()});
+
+/* ---------- clicks ---------- */
+EL("v-mail").addEventListener("click",function(e){var b=e.target.closest("button,[data-rep]");if(!b)return;
+ if(b.dataset.arch){e.preventDefault();archive(b.dataset.arch);return}
+ if(b.dataset.unread){e.preventDefault();setUnread(b.dataset.unread,true);return}
+ if(b.dataset.attdl){attDownload(b.dataset.attdl,b);return}
+ if(b.dataset.attview){attView(b.dataset.attview,b);return}
+ if(b.dataset.sall!=null){serverSearch(EL("mlq").value);return}
+ if(b.dataset.sback!=null){endSearch();return}
+ if(b.dataset.rcancel!=null){REPLY=null;var x=b.closest(".m3rp");if(x)x.remove();return}
+ if(b.dataset.rsend!=null){sendReply();return}
+ if(b.dataset.rfull!=null){var tid=REPLY&&REPLY.tid,m=tid?lastMsg(tid):{},txt=EL("m3rt")?EL("m3rt").value:"";REPLY=null;var bx=b.closest(".m3rp");if(bx)bx.remove();openCm();EL("cmto").value=addrOf(m.sender||"");var sj=dec(m.subject||"");EL("cmsub").value=/^re:/i.test(sj)?sj:"Re: "+sj;EL("cmbody").value=txt;if(EL("cmacct")&&tid&&tid.indexOf("~")>0)EL("cmacct").value=tid.slice(0,tid.indexOf("~"));EL("cmbody").focus();return}
+ if(b.dataset.rep!=null&&b.closest(".rd")){var d=b.closest(".rd").querySelector("[data-del]");if(!d)return;e.stopImmediatePropagation();e.preventDefault();
+  if(REPLY&&REPLY.tid===d.dataset.del){var t=EL("m3rt");if(t)t.focus();return}REPLY={tid:d.dataset.del,text:""};placeReply(true)}},true);
+document.addEventListener("input",function(e){if(e.target.id==="m3rt"&&REPLY){REPLY.text=e.target.value;REPLY.c=e.target.selectionStart}});
+document.addEventListener("focusin",function(e){if(REPLY)REPLY.f=e.target.id==="m3rt"});
+document.addEventListener("keydown",function(e){if(e.target.id==="m3rt"){if((e.ctrlKey||e.metaKey)&&e.key==="Enter"){e.preventDefault();sendReply()}else if(e.key==="Escape"&&!e.target.value.trim()){e.stopPropagation();REPLY=null;var x=e.target.closest(".m3rp");if(x)x.remove()}}},true);
+/* keyboard: E archives, U marks unread (R already replies) */
+document.addEventListener("keydown",function(e){if(kbBlocked(e)||EL("v-mail").hidden||!openTid)return;var k=e.key.toLowerCase();
+ if(k==="e"){e.preventDefault();archive(openTid)}else if(k==="u"){e.preventDefault();setUnread(openTid,true)}});
+
+/* ---------- swipe on touch screens ---------- */
+var SW=null,blockClick=0;
+EL("mail").addEventListener("pointerdown",function(e){if(e.pointerType!=="touch")return;var a=e.target.closest("li>a[data-k]");if(!a||!a.dataset.t)return;SW={a:a,li:a.parentNode,x:e.clientX,y:e.clientY,dx:0,on:false,id:e.pointerId}},{passive:true});
+EL("mail").addEventListener("pointermove",function(e){if(!SW||e.pointerId!==SW.id)return;var dx=e.clientX-SW.x,dy=e.clientY-SW.y;
+ if(!SW.on){if(Math.abs(dy)>12&&Math.abs(dy)>Math.abs(dx)){SW=null;return}if(Math.abs(dx)<14)return;SW.on=true;SW.li.classList.add("m3sw");try{SW.a.setPointerCapture(e.pointerId)}catch(x){}}
+ SW.dx=dx;var row=lastL[rowOf(SW.a.dataset.t)],w=SW.li.offsetWidth,far=Math.abs(dx)>Math.min(110,w*.3);
+ SW.li.dataset.dir=dx<0?"arch":(row&&row[3]?"read":"unread");SW.li.classList.toggle("far",far);SW.a.style.transform="translateX("+dx+"px)"},{passive:true});
+function swEnd(e){if(!SW||(e&&e.pointerId!==SW.id))return;var s=SW;SW=null;if(!s.on)return;blockClick=Date.now();var w=s.li.offsetWidth,far=Math.abs(s.dx)>Math.min(110,w*.3),tid=s.a.dataset.t,row=lastL[rowOf(tid)];
+ if(far&&s.dx<0){s.a.style.transition="transform .22s ease";s.a.style.transform="translateX(-110%)";setTimeout(function(){archive(tid)},200);return}
+ s.a.style.transition="transform .3s cubic-bezier(.3,1.3,.5,1)";s.a.style.transform="";setTimeout(function(){s.a.style.transition="";s.li.classList.remove("m3sw","far")},320);
+ if(far&&s.dx>0&&row)setUnread(tid,!row[3])}
+EL("mail").addEventListener("pointerup",swEnd);EL("mail").addEventListener("pointercancel",swEnd);
+EL("mail").addEventListener("click",function(e){if(Date.now()-blockClick<400){e.preventDefault();e.stopImmediatePropagation()}},true);
+
+window.__m3={archive:archive,setUnread:setUnread,serverSearch:serverSearch,endSearch:endSearch};
+})();

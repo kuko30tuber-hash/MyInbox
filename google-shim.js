@@ -349,6 +349,20 @@
     if (h) return htmlToText(decodePart(h));
     return msg.snippet || "";
   }
+  /* files attached to a message: name, type, size and the id to fetch them with */
+  function attachmentsOf(msg) {
+    var out = [];
+    (function walk(p) {
+      if (!p) return;
+      if (p.filename && p.body && (p.body.attachmentId || p.body.data)) {
+        var disp = ""; (p.headers || []).forEach(function (h) { if (h.name.toLowerCase() === "content-disposition") disp = h.value; });
+        var inline = /^inline/i.test(disp) && /^image\//.test(p.mimeType || "");
+        out.push({ filename: p.filename, mimeType: p.mimeType || "application/octet-stream", size: p.body.size || 0, attachmentId: p.body.attachmentId || "", data: p.body.attachmentId ? "" : (p.body.data || ""), messageId: msg.id, inline: inline });
+      }
+      (p.parts || []).forEach(walk);
+    })(msg.payload);
+    return out;
+  }
   function splitAddrs(s) { return (String(s || "").match(/(?:"[^"]*"|[^,])+/g) || []).map(function (x) { return x.trim(); }).filter(Boolean); }
   function b64(str) { var b = new TextEncoder().encode(str), s = ""; for (var i = 0; i < b.length; i++) s += String.fromCharCode(b[i]); return btoa(s); }
   function b64url(str) { return b64(str).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
@@ -427,7 +441,12 @@
               date: new Date(Number(m.internalDate) || Date.now()).toISOString(),
               toRecipients: splitAddrs(hdr(m, "To")).concat(splitAddrs(hdr(m, "Cc"))),
               plaintextBody: bodyText(m),
-              snippet: decodeEntities(m.snippet || "")
+              snippet: decodeEntities(m.snippet || ""),
+              id: m.id,
+              messageIdHeader: hdr(m, "Message-ID") || hdr(m, "Message-Id"),
+              references: hdr(m, "References"),
+              labelIds: m.labelIds || [],
+              attachments: attachmentsOf(m)
             };
           })
         };
@@ -436,16 +455,28 @@
     "Gmail/send_message": function (i) {
       var lines = [
         "To: " + [].concat(i.to || []).join(", "),
+      ].concat(i.inReplyTo ? ["In-Reply-To: " + i.inReplyTo, "References: " + ((i.references ? i.references + " " : "") + i.inReplyTo).trim()] : []).concat([
         "Subject: =?UTF-8?B?" + b64(i.subject || "") + "?=",
         "MIME-Version: 1.0",
         "Content-Type: text/plain; charset=UTF-8",
         "Content-Transfer-Encoding: base64",
         "",
         (b64(i.body || "").match(/.{1,76}/g) || [""]).join("\r\n")
-      ];
-      var from = String(i.from || "").toLowerCase();
+      ]);
+      var from = String(i.from || "").toLowerCase(), th = i.threadId ? split(i.threadId) : null;
+      if (th && accounts().indexOf(from) < 0) from = th.email;
       if (accounts().indexOf(from) < 0) from = primary();
-      return api(GM + "messages/send", { method: "POST", body: { raw: b64url(lines.join("\r\n")) } }, from);
+      var body = { raw: b64url(lines.join("\r\n")) };
+      if (th && th.email === from) body.threadId = th.id;
+      return api(GM + "messages/send", { method: "POST", body: body }, from);
+    },
+    "Gmail/label_thread": function (i) {
+      var x = split(i.threadId);
+      return api(GM + "threads/" + encodeURIComponent(x.id) + "/modify", { method: "POST", body: { addLabelIds: i.labelIds || [] } }, x.email);
+    },
+    "Gmail/get_attachment": function (i) {
+      var x = split(i.threadId);
+      return api(GM + "messages/" + encodeURIComponent(i.messageId) + "/attachments/" + encodeURIComponent(i.attachmentId), null, x.email).then(function (r) { return { data: r.data || "", size: r.size || 0 }; });
     },
     "Gmail/trash_thread": function (i) { var x = split(i.threadId); return api(GM + "threads/" + encodeURIComponent(x.id) + "/trash", { method: "POST" }, x.email); },
     "Gmail/untrash_thread": function (i) { var x = split(i.threadId); return api(GM + "threads/" + encodeURIComponent(x.id) + "/untrash", { method: "POST" }, x.email); },
