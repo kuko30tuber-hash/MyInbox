@@ -164,7 +164,7 @@
   /* thread ids carry their account: "me@gmail.com~18c3f..." */
   function split(id) {
     id = String(id || ""); var k = id.indexOf("~");
-    return k > 0 ? { email: id.slice(0, k), id: id.slice(k + 1) } : { email: primary(), id: id };
+    return k > 0 && accounts().indexOf(id.slice(0, k)) > -1 ? { email: id.slice(0, k), id: id.slice(k + 1) } : { email: primary(), id: id };
   }
   function qs(o) {
     return Object.keys(o).filter(function (k) { return o[k] != null && o[k] !== ""; })
@@ -325,26 +325,46 @@
       var x = split(i.threadId);
       return api(GM + "threads/" + encodeURIComponent(x.id) + "/modify", { method: "POST", body: { removeLabelIds: i.labelIds || [] } }, x.email);
     },
+    /* calendars from every signed-in account; the first account's ids stay plain,
+       others are "email~calendarId"; a calendar two accounts share is listed once */
     "Google Calendar/list_calendars": function () {
-      return api(CA + "users/me/calendarList?" + qs({ maxResults: 50 })).then(function (r) {
-        var items = (r.items || []).filter(function (c) { return !c.hidden; });
-        items.sort(function (a, b) { return (b.primary ? 1 : 0) - (a.primary ? 1 : 0); });
-        return { calendars: items.map(function (c) { return { id: c.id, summary: c.summaryOverride || c.summary || c.id, accessRole: c.accessRole }; }) };
+      return ready.then(function () {
+        var on = live(), first = primary();
+        if (!on.length) return api(CA + "users/me/calendarList"); /* triggers the sign-in prompt */
+        on.sort(function (a, b) { return (b === first ? 1 : 0) - (a === first ? 1 : 0); });
+        var firstErr = null;
+        return Promise.all(on.map(function (email) {
+          return api(CA + "users/me/calendarList?" + qs({ maxResults: 50 }), null, email).then(function (r) {
+            var items = (r.items || []).filter(function (c) { return !c.hidden; });
+            items.sort(function (a, b) { return (b.primary ? 1 : 0) - (a.primary ? 1 : 0); });
+            return items.map(function (c) {
+              return { id: email === first ? c.id : email + "~" + c.id, rawId: c.id, account: email, primary: !!c.primary,
+                summary: c.summaryOverride || c.summary || c.id, accessRole: c.accessRole };
+            });
+          }, function (e) { firstErr = firstErr || e; return null; });
+        })).then(function (parts) {
+          var ok = parts.filter(Boolean);
+          if (!ok.length) throw firstErr || err("tool_error");
+          var seen = {}, out = [];
+          [].concat.apply([], ok).forEach(function (c) { if (!seen[c.rawId]) { seen[c.rawId] = 1; out.push(c); } });
+          return { calendars: out, accounts: on };
+        });
       });
     },
     "Google Calendar/list_events": function (i) {
-      return api(CA + "calendars/" + encodeURIComponent(i.calendarId) + "/events?" + qs({
+      var x = split(i.calendarId);
+      return api(CA + "calendars/" + encodeURIComponent(x.id) + "/events?" + qs({
         timeMin: rfc(i.startTime), timeMax: rfc(i.endTime), singleEvents: "true",
         orderBy: "startTime", maxResults: i.pageSize || 100
-      })).then(function (r) { return { summary: r.summary || "", accessRole: r.accessRole, events: r.items || [] }; });
+      }), null, x.email).then(function (r) { return { summary: r.summary || "", accessRole: r.accessRole, events: r.items || [] }; });
     },
     "Google Calendar/create_event": function (i) {
-      var b = evTimes(i); b.summary = i.summary;
-      return api(CA + "calendars/" + encodeURIComponent(i.calendarId) + "/events", { method: "POST", body: b });
+      var b = evTimes(i), x = split(i.calendarId); b.summary = i.summary;
+      return api(CA + "calendars/" + encodeURIComponent(x.id) + "/events", { method: "POST", body: b }, x.email);
     },
     "Google Calendar/update_event": function (i) {
-      var b = evTimes(i); if (i.summary != null) b.summary = i.summary;
-      return api(CA + "calendars/" + encodeURIComponent(i.calendarId) + "/events/" + encodeURIComponent(i.eventId), { method: "PATCH", body: b });
+      var b = evTimes(i), x = split(i.calendarId); if (i.summary != null) b.summary = i.summary;
+      return api(CA + "calendars/" + encodeURIComponent(x.id) + "/events/" + encodeURIComponent(i.eventId), { method: "PATCH", body: b }, x.email);
     }
   };
 

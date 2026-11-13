@@ -724,6 +724,16 @@ main>section>h2{padding-left:0!important;padding-right:0!important}
 .btn.imp.on svg{fill:#ff9f0a;stroke:#ff9f0a}
 .gexp{flex-direction:column;align-items:stretch;gap:6px;border-radius:22px;padding:8px 8px 8px 16px}
 .gexr{display:flex;align-items:center;justify-content:space-between;gap:12px}
+
+.accpick{flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:6px;padding:10px 0}
+.accpick button{display:inline-flex;align-items:center;gap:7px;max-width:100%;font:inherit;font-size:14px;font-weight:500;padding:7px 12px 7px 10px;border-radius:999px;border:1px solid var(--line);background:var(--glass-lo);color:var(--ink);cursor:pointer;transition:background .15s,border-color .15s,box-shadow .15s}
+.accpick button span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.accpick button i{flex:none;width:9px;height:9px;border-radius:50%;background:var(--ac)}
+.accpick button .ck{flex:none;display:none;color:var(--ac)}
+.accpick button:hover{background:color-mix(in srgb,var(--ac) 10%,var(--glass-lo))}
+.accpick button.on{background:color-mix(in srgb,var(--ac) 18%,transparent);border-color:color-mix(in srgb,var(--ac) 65%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--ac) 40%,transparent);font-weight:600}
+.accpick button.on .ck{display:block}
+.accpick button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 </style>
 <script>try{var t=localStorage.getItem("wth");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 </head>
@@ -774,7 +784,7 @@ main>section>h2{padding-left:0!important;padding-right:0!important}
 <div id="cm" class="modal" hidden><div class="sheet cmsheet" role="dialog" aria-modal="true" aria-labelledby="cmh">
 <div class="shh"><div><h3 id="cmh">New message</h3><p class="shsub" id="cmfrom">From your Gmail account</p></div><button class="x" id="cmx" type="button" aria-label="Close">×</button></div>
 <div class="grp">
-<div class="row" id="cmfr" hidden><label for="cmacct">From</label><select id="cmacct" aria-label="Send from"></select></div><div class="row"><label for="cmto">To</label><input id="cmto" type="text" inputmode="email" autocomplete="off" placeholder="name@example.com, other@example.com"></div>
+<div class="row" id="cmfr" hidden><label id="cmfrl">From</label><select id="cmacct" hidden tabindex="-1" aria-hidden="true"></select><div id="cmpick" class="accpick" role="radiogroup" aria-labelledby="cmfrl"></div></div><div class="row"><label for="cmto">To</label><input id="cmto" type="text" inputmode="email" autocomplete="off" placeholder="name@example.com, other@example.com"></div>
 <div class="row"><label for="cmsub">Subject</label><input id="cmsub" type="text" maxlength="300" autocomplete="off" placeholder="What’s it about?"></div>
 <textarea id="cmbody" rows="8" placeholder="Write your message…" aria-label="Message"></textarea>
 </div>
@@ -1625,7 +1635,7 @@ function top0(){if(/^#(mail|calendar|notes)$/.test(location.hash))window.scrollT
 top0();window.addEventListener("load",function(){top0();setTimeout(top0,0)});window.addEventListener("hashchange",function(){setTimeout(top0,0)})})();
 /* ===== Important + several accounts ===== */
 function acctChips(){if(!(window.gAuth&&gAuth.accounts))return "";var A=gAuth.accounts();if(!A.length)return "";
-return A.map(function(a,i){return '<span class="cc acct'+(a.on?'':' off')+'" title="'+esc(a.email+(i===0?" · your calendar comes from this account":""))+'"><i style="background:'+ACOL[i%ACOL.length]+'"></i><span class="acm">'+esc(a.email)+'</span>'+(a.on?'':'<button type="button" class="acin" data-acin="'+esc(a.email)+'">Sign in</button>')+'<button type="button" class="acx" data-acrm="'+esc(a.email)+'" aria-label="Sign out of '+esc(a.email)+'">×</button></span>'}).join("")+'<button type="button" class="cc gso" id="gadd">+ Add account</button>'}
+return A.map(function(a,i){return '<span class="cc acct'+(a.on?'':' off')+'" title="'+esc(a.email)+'"><i style="background:'+ACOL[i%ACOL.length]+'"></i><span class="acm">'+esc(a.email)+'</span>'+(a.on?'':'<button type="button" class="acin" data-acin="'+esc(a.email)+'">Sign in</button>')+'<button type="button" class="acx" data-acrm="'+esc(a.email)+'" aria-label="Sign out of '+esc(a.email)+'">×</button></span>'}).join("")+'<button type="button" class="cc gso" id="gadd">+ Add account</button>'}
 function say(t,ms){var tt=EL("toast");tt.textContent=t;tt.hidden=false;clearTimeout(say.k);say.k=setTimeout(function(){tt.hidden=true},ms||4000)}
 EL("conn").addEventListener("click",function(e){if(!window.gAuth)return;var b=e.target.closest("[data-acrm],[data-acin],#gadd");if(!b)return;b.disabled=true;
 if(b.id==="gadd"){gAuth.addAccount().then(function(){location.reload()},function(){b.disabled=false;say("Couldn’t add that account. In Google Cloud, add it as a test user of the app first.",7000)});return}
@@ -1636,7 +1646,7 @@ renderConn();
 /* compose: pick the account to send from */
 function fillFrom(acct){var A=accts(),sel=EL("cmacct"),row=EL("cmfr");if(!sel)return;
 sel.innerHTML=A.map(function(e){return '<option value="'+esc(e)+'">'+esc(e)+'</option>'}).join("");
-row.hidden=A.length<2;var v=acct&&A.indexOf(acct)>-1?acct:(acctF&&A.indexOf(acctF)>-1?acctF:A[0]||"");sel.value=v;
+row.hidden=A.length<2;var v=acct&&A.indexOf(acct)>-1?acct:(acctF&&A.indexOf(acctF)>-1?acctF:A[0]||"");sel.value=v;drawPick();
 var f=EL("cmfrom");if(f)f.textContent=A.length>1?"Choose which account sends it":v?"From "+v:"From your Gmail account"}
 var _oc=openCm;openCm=function(){_oc();fillFrom()};
 EL("v-mail").addEventListener("click",function(e){var b=e.target.closest("[data-rep]");if(!b||!openTid)return;var k=openTid.indexOf("~");if(k>0)fillFrom(openTid.slice(0,k))});
@@ -1652,6 +1662,16 @@ var yes=listOf("wd-imp").filter(function(x){return x!==addr}),no=listOf("wd-noti
 (on?yes:no).push(addr);ss("wd-imp",JSON.stringify(yes));ss("wd-notimp",JSON.stringify(no));
 var ms=THR[tid];if(ms&&openHTML){var sm=/data-sub="([^"]*)"/.exec(openHTML);openHTML=openHTML.replace(/<div class="tb">[\s\S]*?<\/div>/,actBar(tid,ms[ms.length-1],sm?dec(sm[1]):""))}
 renderMail(lastL,lastNote);say(on?"Emails from "+addr+" show in Important":"Emails from "+addr+" stay out of Important",3500)});
+/* compose: account picker */
+function drawPick(){var sel=EL("cmacct"),pk=EL("cmpick");if(!sel||!pk)return;var v=sel.value;
+pk.innerHTML=accts().map(function(e){var on=e===v;return '<button type="button" role="radio" aria-checked="'+on+'" tabindex="'+(on?0:-1)+'" data-pick="'+esc(e)+'" class="'+(on?"on":"")+'" style="--ac:'+accColor(e)+'"><i></i><span>'+esc(e)+'</span><svg class="ck" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>'}).join("")}
+function pickAcct(e,focus){var sel=EL("cmacct");sel.value=e;drawPick();if(focus){var b=EL("cmpick").querySelector('[data-pick="'+e+'"]');if(b)b.focus()}}
+EL("cmpick").addEventListener("click",function(e){var b=e.target.closest("[data-pick]");if(b)pickAcct(b.dataset.pick,true)});
+EL("cmpick").addEventListener("keydown",function(e){var d={ArrowRight:1,ArrowDown:1,ArrowLeft:-1,ArrowUp:-1}[e.key];if(!d)return;e.preventDefault();var A=accts(),i=A.indexOf(EL("cmacct").value);pickAcct(A[(i+d+A.length)%A.length],true)});
+/* calendar: name the account of calendars that come from the other accounts */
+var _sc=setCals;setCals=function(cs){_sc(cs);var first=window.gAuth&&gAuth.primary?gAuth.primary():"",multi=accts().length>1;
+if(multi)cs.forEach(function(c,i){if(c.account&&c.account!==first&&C[i]&&C[i][0]!==c.account)C[i][0]=C[i][0]+" · "+accShort(c.account)});
+buildLegend();buildCalSelect()};
 </script>
 </body>
 </html>
