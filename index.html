@@ -1561,6 +1561,12 @@ html.motion .pk-pop:not([hidden]){animation:pkIn .18s cubic-bezier(.2,.9,.3,1.1)
 /* clock beside the greeting */
 .hclock{position:absolute;right:var(--gut,40px);display:none;align-items:center;font-family:var(--font-display);font-weight:400;font-size:clamp(36px,3.6vw,48px);line-height:1;letter-spacing:-.015em;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap;pointer-events:none}
 html.sidebar .hclock{display:flex}
+
+/* a bigger header */
+header{padding-top:52px!important;padding-bottom:18px!important}
+header h1,.hclock{font-size:clamp(52px,5.2vw,84px)!important;line-height:1!important;letter-spacing:-.02em!important}
+header .sub{font-size:14.5px!important;letter-spacing:.06em!important;margin-top:12px!important}
+@media(max-width:600px){header{padding-top:28px!important}header h1{font-size:46px!important}header .sub{font-size:12.5px!important;margin-top:8px!important}}
 </style>
 <script>try{var t=localStorage.getItem("wth");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);var a=localStorage.getItem("wacc");if(/^#[0-9a-f]{6}$/i.test(a||"")){var r=document.documentElement.style;r.setProperty("--accent",a);r.setProperty("--dot",a);r.setProperty("--today",a)}}catch(e){}</script>
 </head>
