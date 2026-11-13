@@ -3245,6 +3245,8 @@ buildWds("mail");buildWds("calendar");tickWds();
 (function(){
 var mq=matchMedia("(min-width: 1100px)"),top=document.querySelector(".top"),brand=document.querySelector(".brand"),hact=document.querySelector(".hact"),header=document.querySelector("header");
 if(!top||!brand||!hact||!header)return;
+/* the bar lives outside the header, so the header’s opening animation can never pull it into the page */
+var mainEl=document.querySelector("main");if(top.parentNode!==document.body)document.body.insertBefore(top,mainEl||null);
 var box=document.createElement("div");box.className="sbx";box.innerHTML='<div class="sbh">Accounts</div><div class="sbacc" id="sbacc"></div><div class="sbsp"></div><div class="sbst" id="sbst"></div><div class="sbtools" id="sbtools"></div>';
 var hold=document.createElement("div");hold.className="sbtop";
 function place(){var on=mq.matches;document.documentElement.classList.toggle("sidebar",on);
