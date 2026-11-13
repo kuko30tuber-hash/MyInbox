@@ -2442,3 +2442,4 @@ html.motion .m3ab.busy svg{animation:m3spin .8s linear infinite}
 .cvseg button{flex:none;border:0!important;border-radius:8px!important;background:none!important;color:var(--mute)!important;font:inherit;font-weight:650!important;cursor:pointer;box-shadow:none!important;white-space:nowrap;transition:background .2s,color .2s}
 .cvseg button.on{background:var(--panel)!important;color:var(--ink)!important;box-shadow:0 1px 3px rgba(0,0,0,.12)!important}
 @media(max-width:600px){.cvseg{width:auto}}
+.top button[hidden]{display:none!important}

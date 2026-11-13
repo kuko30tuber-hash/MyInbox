@@ -2621,7 +2621,7 @@ window.__m3={archive:archive,setUnread:setUnread,serverSearch:serverSearch,endSe
 (function(){
 if(!window.gAuth||!gAuth.api)return;
 var SCOPE="https://www.googleapis.com/auth/drive.appdata",FILE="owninbox-settings.json",DRIVE="https://www.googleapis.com/drive/v3/files",UP="https://www.googleapis.com/upload/drive/v3/files";
-var KEYS=["wd","wd-size","wd-col","wd-cfg","wd-look","wd-w3","wd-packs","wd-packsel","wd-spamfrom","wd-notspam","wd-imp","wd-notimp","wd-cd","wd-water","wd-todo","wd-hab","wd-notes","wprefs","wacc","wth","wp","wpx","wpo","acccol","colrecent","hidcal","wxp-places","wxp-sel","nt2","sp-cid","notif","calview"];
+var KEYS=["wd","wd-size","wd-col","wd-cfg","wd-look","wd-w3","wd-packs","wd-packsel","wd-spamfrom","wd-notspam","wd-imp","wd-notimp","wd-cd","wd-water","wd-todo","wd-hab","wd-notes","wprefs","wacc","wth","wp","wpx","wpo","acccol","colrecent","hidcal","wxp-places","wxp-sel","nt2","sp-cid","notif","calview","tabs-hide"];
 var KS={};KEYS.forEach(function(k){KS[k]=1});
 function st(){return jparse("sync",{})}            /* {on, email, at (last local change), seen (remote time we have), fid, last} */
 function saveSt(x){try{_set.call(localStorage,"sync",JSON.stringify(x))}catch(e){}}
@@ -2807,3 +2807,21 @@ function move(ev,nst,nen,undoable){var old=[ev[0],ev[4]],a=local(nst),b=local(ne
 setView(VIEW);
 window.__wk={setView:setView,render:render};
 })();
+/* ===== Choose which tabs show ===== */
+(function(){
+var OPT=[["notes","Notes"],["weather","Weather"],["spotify","Spotify"]];
+function H(){return jparse("tabs-hide",{})}
+function apply(){var h=H();OPT.forEach(function(o){var b=EL("t"+o[0]);if(b)b.hidden=!!h[o[0]]});
+ var cur=document.querySelector("main>section:not([hidden])");if(cur&&h[cur.id.slice(2)])show("mail");
+ document.documentElement.style.setProperty("--ntabs",String(2+OPT.filter(function(o){return !h[o[0]]}).length));
+ if(typeof moveInd==="function")setTimeout(moveInd,0)}
+var _sh=show;show=function(v){if(H()[v])v="mail";return _sh.apply(this,[v].concat([].slice.call(arguments,1)))};
+function html(){var h=H();return '<div class="s3g" id="s3tabs"><div class="s3h">Tabs</div>'+OPT.map(function(o){return '<div class="s3r"><div class="s3l"><b>'+o[1]+'</b></div><div class="s3c"><label class="s3t"><input type="checkbox" role="switch" data-tabshow="'+o[0]+'"'+(h[o[0]]?'':' checked')+' aria-label="Show the '+o[1]+' tab"><i aria-hidden="true"></i></label></div></div>'}).join("")+'<p class="s3p ntnote">Mail and Calendar are always there. Hidden tabs keep their widgets and settings for when you turn them back on.</p></div>'}
+function paint(){var b=EL("stbody");if(!b||typeof stTab==="undefined"||stTab!=="look")return;var g=EL("s3tabs");if(g)g.outerHTML=html();else b.insertAdjacentHTML("beforeend",html())}
+var _ds=drawSettings;drawSettings=function(){_ds.apply(this,arguments);paint()};
+EL("st").addEventListener("change",function(e){var k=e.target.dataset&&e.target.dataset.tabshow;if(!k)return;var h=H();if(e.target.checked)delete h[k];else h[k]=1;ss("tabs-hide",JSON.stringify(h));apply()});
+apply();window.addEventListener("storage",function(e){if(e.key==="tabs-hide")apply()});
+})();
+/* keep the tab bar's highlight under the right tab after layout changes */
+(function(){var nav=document.querySelector("nav.top");if(!nav||typeof moveInd!=="function")return;var r=0;function go(){cancelAnimationFrame(r);r=requestAnimationFrame(function(){requestAnimationFrame(moveInd)})}
+try{new ResizeObserver(go).observe(nav)}catch(e){}window.addEventListener("resize",go);window.addEventListener("orientationchange",go);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(go)})();
