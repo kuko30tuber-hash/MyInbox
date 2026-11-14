@@ -1,21 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs>
-<linearGradient id="b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6FD6FF"/><stop offset=".45" stop-color="#2F7BFF"/><stop offset="1" stop-color="#1B2FC9"/></linearGradient>
-<radialGradient id="m" cx=".12" cy=".95" r=".7"><stop offset="0" stop-color="#7DF3D8" stop-opacity=".85"/><stop offset="1" stop-color="#7DF3D8" stop-opacity="0"/></radialGradient>
-<radialGradient id="p" cx=".95" cy=".1" r=".6"><stop offset="0" stop-color="#B9A4FF" stop-opacity=".55"/><stop offset="1" stop-color="#B9A4FF" stop-opacity="0"/></radialGradient>
-<radialGradient id="g" cx=".3" cy="0" r=".75"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".7" stop-color="#fff" stop-opacity="0"/></radialGradient>
-<linearGradient id="c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#E4EEFF"/></linearGradient>
-<linearGradient id="c2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity=".18"/></linearGradient>
-<linearGradient id="f" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3D8BFF"/><stop offset="1" stop-color="#2140D8"/></linearGradient>
-<linearGradient id="s" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE38A"/><stop offset="1" stop-color="#FF8A3D"/></linearGradient>
-<filter id="d" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#0B1B7A" flood-opacity=".35"/></filter>
-<filter id="d2" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#B4410A" flood-opacity=".35"/></filter>
-<clipPath id="r"><rect width="512" height="512" rx="116"/></clipPath></defs>
-<g clip-path="url(#r)"><rect width="512" height="512" fill="url(#b)"/><rect width="512" height="512" fill="url(#m)"/><rect width="512" height="512" fill="url(#p)"/><rect width="512" height="512" fill="url(#g)"/>
-<circle cx="256" cy="268" r="196" fill="none" stroke="#fff" stroke-opacity=".12" stroke-width="2"/><circle cx="256" cy="268" r="230" fill="none" stroke="#fff" stroke-opacity=".07" stroke-width="2"/></g>
-<rect x="1.5" y="1.5" width="509" height="509" rx="114.5" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="3"/>
-<g transform="rotate(-9 256 270)"><rect x="118" y="150" width="276" height="196" rx="40" fill="url(#c2)" stroke="#fff" stroke-opacity=".5" stroke-width="2"/></g>
-<g filter="url(#d)"><rect x="110" y="180" width="292" height="208" rx="44" fill="url(#c)"/>
-<path d="M134 216 238 292a30 30 0 0 0 36 0L378 216" fill="none" stroke="url(#f)" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
-<rect x="110" y="180" width="292" height="208" rx="44" fill="none" stroke="#fff" stroke-width="3"/></g>
-<g filter="url(#d2)" transform="translate(384 150)"><path d="M0-62C6-20 20-6 62 0 20 6 6 20 0 62-6 20-20 6-62 0-20-6-6-20 0-62Z" fill="url(#s)"/><path d="M0-62C6-20 20-6 62 0 20 6 6 20 0 62-6 20-20 6-62 0-20-6-6-20 0-62Z" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/></g>
+<linearGradient id="b" x1=".1" y1="0" x2=".9" y2="1"><stop offset="0" stop-color="#4C5FF0"/><stop offset=".5" stop-color="#2A33B8"/><stop offset="1" stop-color="#0E1150"/></linearGradient>
+<radialGradient id="h" cx=".28" cy=".02" r=".8"><stop offset="0" stop-color="#B7C4FF" stop-opacity=".55"/><stop offset=".55" stop-color="#B7C4FF" stop-opacity="0"/></radialGradient>
+<radialGradient id="v" cx=".85" cy="1" r=".75"><stop offset="0" stop-color="#05061E" stop-opacity=".7"/><stop offset="1" stop-color="#05061E" stop-opacity="0"/></radialGradient>
+<linearGradient id="gl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset="1" stop-color="#fff" stop-opacity=".16"/></linearGradient>
+<linearGradient id="ed" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".5" stop-color="#fff" stop-opacity=".25"/><stop offset="1" stop-color="#fff" stop-opacity=".55"/></linearGradient>
+<linearGradient id="au" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF4D6"/><stop offset=".45" stop-color="#F2CF86"/><stop offset="1" stop-color="#C8933F"/></linearGradient>
+<linearGradient id="rim" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".5" stop-color="#fff" stop-opacity=".06"/><stop offset="1" stop-color="#fff" stop-opacity=".18"/></linearGradient>
+<filter id="sh" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#02031A" flood-opacity=".55"/></filter>
+<filter id="gw" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="9"/></filter>
+<clipPath id="r"><rect width="512" height="512" rx="116"/></clipPath><clipPath id="env"><rect x="112" y="166" width="288" height="200" rx="38"/></clipPath></defs>
+<g clip-path="url(#r)"><rect width="512" height="512" fill="url(#b)"/><rect width="512" height="512" fill="url(#h)"/><rect width="512" height="512" fill="url(#v)"/>
+<path d="M-40 360C120 300 300 420 560 300" fill="none" stroke="#fff" stroke-opacity=".06" stroke-width="2"/><path d="M-40 392C140 330 300 450 560 336" fill="none" stroke="#fff" stroke-opacity=".04" stroke-width="2"/></g>
+<rect x="2" y="2" width="508" height="508" rx="114" fill="none" stroke="url(#rim)" stroke-width="4"/>
+<g filter="url(#sh)"><rect x="112" y="166" width="288" height="200" rx="38" fill="url(#gl)"/></g>
+<g clip-path="url(#env)"><rect x="112" y="166" width="288" height="200" fill="#fff" fill-opacity=".06"/><path d="M112 166h288v70c-90 50-198 50-288 0z" fill="#fff" fill-opacity=".07"/></g>
+<rect x="113.5" y="167.5" width="285" height="197" rx="36.5" fill="none" stroke="url(#ed)" stroke-width="4"/>
+<path d="M146 206 239 274a28 28 0 0 0 34 0L366 206" fill="none" stroke="url(#au)" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="372" cy="160" r="20" fill="#F2CF86" opacity=".55" filter="url(#gw)"/>
+<path transform="translate(372 160)" d="M0-30C3-9 9-3 30 0 9 3 3 9 0 30-3 9-9 3-30 0-9-3-3-9 0-30Z" fill="url(#au)"/>
 </svg>
