@@ -903,7 +903,7 @@ function recent(){try{var a=JSON.parse(localStorage.getItem("colrecent")||"[]");
 function pushRecent(c){var a=recent().filter(function(x){return x!==c});a.unshift(c);try{localStorage.setItem("colrecent",JSON.stringify(a.slice(0,8)))}catch(e){}}
 
 /* --- what a picker controls: an account ("acc:email") or the app accent ("accent") --- */
-var ACC_DEF="#2f6bf5";
+var ACC_DEF="#3346d3";
 function getAccent(){var c=ls("wacc","");return HEX.test(c)?c:""}
 function applyAccent(){var c=getAccent(),r=document.documentElement.style;if(c){r.setProperty("--accent",c);r.setProperty("--dot",c);r.setProperty("--today",c)}else{r.removeProperty("--accent");r.removeProperty("--dot");r.removeProperty("--today")}}
 applyAccent();
@@ -2924,7 +2924,7 @@ var _r=renderMail;renderMail=function(L,note){_r.apply(this,arguments);
 var isNew=false;try{var L=localStorage;isNew=!L.getItem("oi-welcome")&&!L.getItem("wd")&&!L.getItem("gaccts")&&!L.getItem("gsigned")&&!L.getItem("wp")&&!L.getItem("wth")&&!L.getItem("wacc")}catch(e){}
 var force=/(^|[#&])welcome\b/.test(window.__hash0||location.hash||"");
 if(!isNew&&!force)return;
-var ACC=[["","Blue","#2f6bf5"],["#7c4dff","Violet"],["#00c7be","Mint"],["#34c759","Green"],["#ff9500","Orange"],["#ff2d55","Pink"],["#af52de","Purple"],["#455a64","Graphite"]];
+var ACC=[["","Sapphire","#3346d3"],["#7c4dff","Violet"],["#00c7be","Mint"],["#34c759","Green"],["#ff9500","Orange"],["#ff2d55","Pink"],["#af52de","Purple"],["#455a64","Graphite"]];
 var PK=[["ess","Essentials","A bit of everything",["unread","next","weather"]],["mail","Mail","Unread, important, latest, deliveries",["unread","important","latest","deliveries"]],["calendar","Calendar","Next up, agenda, week, month",["next","agenda","week","month"]],["weather","Weather","Forecast, sun, world clock",["weather","sun","world"]],["notes","Notes","Notes, to-do, habits, focus",["notes","todo","habits","focus"]],["none","Start empty","Add widgets later",[]]];
 var S={step:0,pk:"ess"},N=4;
 var LOGO='<img src="logo.svg" alt="" width="76" height="76">';
