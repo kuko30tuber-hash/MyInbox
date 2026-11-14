@@ -1592,7 +1592,7 @@ new MutationObserver(function(ms){var hit=false;ms.forEach(function(m){if(m.adde
 var _rm4=renderMail;renderMail=function(L,n){_rm4(L,n);["unread","latest","deliveries","senders"].forEach(function(id){var w=wgById(id);if(w)document.querySelectorAll('.wds [data-w="'+id+'"] .wb').forEach(function(b){if(!b.contains(document.activeElement))b.innerHTML=w.r()})});document.querySelectorAll(".wds").forEach(addIcons)};
 
 /* ---------- move saved layouts off the retired widgets ---------- */
-var ch=false;WTABS.forEach(function(tab){var out=[];(WD[tab]||[]).forEach(function(id){var n=id in GONE?GONE[id]:id;if(n&&out.indexOf(n)<0&&(wgById(n)||/^sp(now|lists|recent|queue)$/.test(n)))out.push(n);if(n!==id)ch=true});WD[tab]=out});
+var ch=false;WTABS.forEach(function(tab){var out=[];(WD[tab]||[]).forEach(function(id){var n=id in GONE?GONE[id]:id;if(n&&out.indexOf(n)<0&&(wgById(n)||/^(sp(now|lists|recent|queue)|izs|moon|rain|fmusic|mailwx)$/.test(n)))out.push(n);if(n!==id)ch=true});WD[tab]=out});
 if(ch)saveWd();
 try{var w3=JSON.parse(localStorage.getItem("wd-w3")||"{}");if(w3.stack&&w3.stack.ids){var s=w3.stack.ids.map(function(id){return id in GONE?GONE[id]:id}).filter(function(id,i,a){return id&&a.indexOf(id)===i});if(s.join()!==w3.stack.ids.join()){w3.stack.ids=s;localStorage.setItem("wd-w3",JSON.stringify(w3))}}}catch(e){}
 buildWds("mail");buildWds("calendar");buildWds("weather");buildWds("spotify");tickWds();
@@ -2336,6 +2336,7 @@ function notListed(){setTok(null);ME=null;loaded=false;ERR="This Spotify account
 function say2(t){if(typeof say==="function")say(t,4000)}
 function why(e){return e&&e.code==="premium"?"Playing and skipping need Spotify Premium.":e&&e.code==="nodevice"?"Open Spotify on your phone or computer first, or pick a device below.":e&&e.code==="slow"?"Spotify asked us to slow down. Try again in a moment.":e&&e.code==="signin"?"Connect Spotify again.":"Spotify didn’t do that"+(e&&e.msg?": "+e.msg:".")}
 function act(p){return p.then(function(){setTimeout(poll,350);setTimeout(poll,1500)},function(e){say2(why(e));if(e&&e.code==="nodevice")loadDevices(true)})}
+window.__sp={sp:sp,tok:function(){return tok()},connect:function(){return connect()},why:why,poll:function(){try{poll()}catch(e){}}};
 
 /* ---------- state ---------- */
 var S={pb:null,at:0,dev:[],q:[],recent:[],lists:[],liked:{},res:null,qs:""},pollT=0,tickT=0,lastTrack="";
@@ -2626,7 +2627,7 @@ window.__m3={archive:archive,setUnread:setUnread,serverSearch:serverSearch,endSe
 (function(){
 if(!window.gAuth||!gAuth.api)return;
 var SCOPE="https://www.googleapis.com/auth/drive.appdata",FILE="owninbox-settings.json",DRIVE="https://www.googleapis.com/drive/v3/files",UP="https://www.googleapis.com/upload/drive/v3/files";
-var KEYS=["wd","wd-size","wd-col","wd-cfg","wd-look","wd-w3","wd-packs","wd-packsel","wd-spamfrom","wd-notspam","wd-imp","wd-notimp","wd-cd","wd-water","wd-todo","wd-hab","wd-notes","wprefs","wacc","wth","wp","wpx","wpo","acccol","colrecent","hidcal","wxp-places","wxp-sel","nt2","sp-cid","notif","calview","tabs-hide","oled","snd"];
+var KEYS=["wd","wd-size","wd-col","wd-cfg","wd-look","wd-w3","wd-packs","wd-packsel","wd-spamfrom","wd-notspam","wd-imp","wd-notimp","wd-cd","wd-water","wd-todo","wd-hab","wd-notes","wprefs","wacc","wth","wp","wpx","wpo","acccol","colrecent","hidcal","wxp-places","wxp-sel","nt2","sp-cid","notif","calview","tabs-hide","oled","snd","wd-izs","fm-uri"];
 var KS={};KEYS.forEach(function(k){KS[k]=1});
 function st(){return jparse("sync",{})}            /* {on, email, at (last local change), seen (remote time we have), fid, last} */
 function saveSt(x){try{_set.call(localStorage,"sync",JSON.stringify(x))}catch(e){}}
@@ -2687,6 +2688,7 @@ function save(c){ss("notif",JSON.stringify(c))}
 function allowed(){return NS&&Notification.permission==="granted"}
 var ICON="icon-192.png?v=7";
 function notify(title,body,tag,onclick){
+ try{if(localStorage.getItem("notif-mute")==="1")return}catch(e){}
  if(document.visibilityState==="visible"&&document.hasFocus()){var tt=EL("toast");tt.innerHTML='<b>'+esc(title)+'</b> '+esc(body)+(onclick?' <button type="button" class="undo" id="ntgo">Open</button>':'');tt.hidden=false;clearTimeout(tt._k);tt._k=setTimeout(function(){tt.hidden=true},7000);if(onclick)EL("ntgo").onclick=function(){tt.hidden=true;onclick()};return}
  if(!allowed())return;try{var n=new Notification(title,{body:body,tag:tag,icon:ICON,badge:ICON});n.onclick=function(){window.focus();if(onclick)onclick();n.close()}}catch(e){
   if(navigator.serviceWorker&&navigator.serviceWorker.ready)navigator.serviceWorker.ready.then(function(r){r.showNotification(title,{body:body,tag:tag,icon:ICON,data:{tag:tag}})})}}
@@ -3054,3 +3056,112 @@ Object.keys(WD).forEach(function(t){if(!Array.isArray(WD[t]))return;var n=WD[t].
 if(changed){saveWd();WTABS.forEach(function(t){try{buildWds(t)}catch(e){}})}
 try{var P=jparse("wd-packs",[]);if(Array.isArray(P)){var pc=false;P.forEach(function(p){["ids","w","items"].forEach(function(k){if(Array.isArray(p[k])){var n=p[k].filter(function(id){return !GONE[id]});if(n.length!==p[k].length){p[k]=n;pc=true}}})});if(pc)ss("wd-packs",JSON.stringify(P))}}catch(e){}
 })();
+/* ===== New widgets: Inbox zero streak, Moon phase, Rain radar, Focus music, Mail weather ===== */
+(function(){
+var SV=function(p){return '<svg class="wic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+p+'</svg>'};
+var ICN={izs:'<path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5.3 1.6 1.2 2.5 2 2.5-1-3 0-6 1-8z"/>',moon:'<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',rain:'<path d="M7 15a4 4 0 0 1-.5-8A6 6 0 0 1 18 6a4.5 4.5 0 0 1-.5 9z"/><path d="M8 19l-1 2M12 19l-1 2M16 19l-1 2"/>',fmusic:'<path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/>',mailwx:'<path d="M3 7l9 6 9-6"/><rect x="3" y="5" width="18" height="14" rx="3"/>'};
+function wl(id,t,extra){return '<div class="wl hasi">'+SV(ICN[id])+esc(t)+(extra||'')+'</div>'}
+function dkey(d){d=d||new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function fmtT(t){return new Intl.DateTimeFormat("en-GB",{hour:"2-digit",minute:"2-digit"}).format(new Date(t))}
+function rep(id){document.querySelectorAll('.wds [data-w="'+id+'"] .wb').forEach(function(b){var w=wgById(id);if(w){var h=w.r();if(b._h!==h){b._h=h;b.innerHTML=h}}})}
+
+/* ---------- 1. Inbox zero streak ---------- */
+function IZ(){var z=jparse("wd-izs",{});z.d=z.d||{};return z}
+function streak(z){var n=0,d=new Date();if(!z.d[dkey(d)])d.setDate(d.getDate()-1);while(z.d[dkey(d)]){n++;d.setDate(d.getDate()-1)}return n}
+var inboxN=null;
+var _rmz=renderMail;renderMail=function(L,note){_rmz.apply(this,arguments);
+ try{var srch=EL("count")&&/^Searching|results? for/i.test(EL("count").textContent);if(typeof view==="string"&&view==="in"&&!srch&&!/loading/i.test(note||"")&&Array.isArray(L)&&(typeof acctF==="undefined"||!acctF||acctF==="all")){inboxN=L.length;
+  if(L.length===0){var z=IZ(),k=dkey();if(!z.d[k]){z.d[k]=1;var s=streak(z);z.best=Math.max(z.best||0,s);var ks=Object.keys(z.d).sort();while(ks.length>120)delete z.d[ks.shift()];ss("wd-izs",JSON.stringify(z));if(window.oiSound)oiSound("chime")}}
+  rep("izs")}}catch(e){}};
+function izsHtml(){var z=IZ(),s=streak(z),today=!!z.d[dkey()],sz=Math.min(1,.45+s*.06);
+ var flame='<svg class="izf'+(s?' lit':'')+'" viewBox="0 0 48 60" style="--s:'+sz.toFixed(2)+'" aria-hidden="true"><defs><linearGradient id="izg" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ff5a1f"/><stop offset=".55" stop-color="#ffb02e"/><stop offset="1" stop-color="#ffe7a3"/></linearGradient></defs><path d="M24 2c3 10 18 16 18 34a18 18 0 0 1-36 0c0-7 3-12 7-15 1 6 4 9 7 9-3-10 0-20 4-28z" fill="'+(s?'url(#izg)':'currentColor')+'"/><path d="M24 30c2 5 8 8 8 15a8 8 0 0 1-16 0c0-4 2-6 4-7 0 3 2 4 3 4-1-4 0-8 1-12z" fill="'+(s?'#fff6d6':'none')+'" opacity=".85"/></svg>';
+ var sub=today?"Inbox is empty today. Nice.":s?(inboxN!=null?inboxN+" left to clear today":"Clear your inbox today to keep it going"):(inboxN!=null?inboxN+" in your inbox. Clear it to start a streak":"Empty your inbox to start a streak");
+ return wl("izs","Inbox zero")+'<div class="izw">'+flame+'<div><div class="wn">'+s+'<span class="izu"> day'+(s===1?"":"s")+'</span></div><div class="ws">'+esc(sub)+'</div>'+(z.best?'<div class="izb">Best: '+z.best+' day'+(z.best===1?"":"s")+'</div>':'')+'</div></div>'}
+
+/* ---------- 2. Moon phase ---------- */
+var SYN=29.530588853,EP=Date.UTC(2000,0,6,18,14);
+function moonAt(t){var age=((t-EP)/864e5%SYN+SYN)%SYN,p=age/SYN,f=(1-Math.cos(2*Math.PI*p))/2;return {age:age,p:p,f:f}}
+function phaseName(p){var n=["New moon","Waxing crescent","First quarter","Waxing gibbous","Full moon","Waning gibbous","Last quarter","Waning crescent"];return n[Math.floor((p*8)+.5)%8]}
+function nextAt(target){var now=Date.now(),k=Math.floor((now-EP)/864e5/SYN);for(var i=0;i<3;i++){var t=EP+((k+i)+target)*SYN*864e5;if(t>now)return t}return now}
+function moonSvg(m){var r=30,cx=36,cy=36,f=m.f,rx=Math.abs(1-2*f)*r,wax=m.p<.5,cres=f<.5;
+ var outer=wax?1:0,inner=wax?(cres?0:1):(cres?1:0);
+ var lit='M'+cx+' '+(cy-r)+' A'+r+' '+r+' 0 0 '+outer+' '+cx+' '+(cy+r)+' A'+rx.toFixed(2)+' '+r+' 0 0 '+inner+' '+cx+' '+(cy-r)+'Z';
+ return '<svg class="mnv" viewBox="0 0 72 72" aria-hidden="true"><defs><radialGradient id="mnl" cx=".4" cy=".35" r=".75"><stop offset="0" stop-color="#fffdf2"/><stop offset=".7" stop-color="#e9e3cf"/><stop offset="1" stop-color="#c9c1a6"/></radialGradient><clipPath id="mnc"><path d="'+lit+'"/></clipPath></defs>'+
+ '<circle cx="36" cy="36" r="34" fill="#fff8d8" opacity="'+(.06+f*.16).toFixed(2)+'"/><circle cx="36" cy="36" r="30" fill="#2a2d3a"/><circle cx="36" cy="36" r="30" fill="#8a8fa8" opacity=".12"/>'+
+ '<g clip-path="url(#mnc)"><circle cx="36" cy="36" r="30" fill="url(#mnl)"/><circle cx="27" cy="27" r="6" fill="#d6cfb6" opacity=".55"/><circle cx="44" cy="44" r="8" fill="#d6cfb6" opacity=".45"/><circle cx="45" cy="25" r="3.5" fill="#d6cfb6" opacity=".5"/><circle cx="30" cy="47" r="3" fill="#d6cfb6" opacity=".5"/></g></svg>'}
+function moonHtml(){var m=moonAt(Date.now()),nf=nextAt(.5),nn=nextAt(0),d=function(t){return new Intl.DateTimeFormat("en-GB",{weekday:"short",day:"numeric",month:"short"}).format(new Date(t))};
+ var days=Math.ceil((nf-Date.now())/864e5);
+ return wl("moon","Moon")+'<div class="mnw">'+moonSvg(m)+'<div><div class="mnn">'+phaseName(m.p)+'</div><div class="ws">'+Math.round(m.f*100)+'% lit</div><div class="mnx">Full moon '+(days<=1?(days<=0?"tonight":"tomorrow"):"in "+days+" days")+' · '+d(nf)+'</div><div class="mnx mnnew">New moon '+d(nn)+'</div></div></div>'}
+
+/* ---------- 3. Rain radar (next 2 hours) ---------- */
+var RN={d:null,at:0,busy:false,err:""};
+function place(){return (jparse("wd-cfg",{}).weather||{}).place||RN.guess||null}
+var guessing=false;
+function rainLoad(force){var p=place();if(!p){try{var PL=jparse("wxp-places",[]),sel=ls("wxp-sel","");p=PL.filter(function(x){return x.lat+","+x.lon===sel})[0]||PL[0]||null}catch(e){}}
+ if(!p){if(guessing||RN.err)return;guessing=true;var g=(tz.split("/").pop()||"London").replace(/_/g," ");
+  fetch("https://geocoding-api.open-meteo.com/v1/search?count=1&language=en&name="+encodeURIComponent(g)).then(function(r){return r.json()}).then(function(j){guessing=false;var x=(j.results||[])[0];if(!x){RN.err="Choose a city in the Weather tab";setTimeout(function(){rep("rain")});return}RN.guess={name:x.name,lat:x.latitude,lon:x.longitude};rainLoad(true)},function(){guessing=false;RN.err="Couldn’t reach the forecast";setTimeout(function(){rep("rain")})});return}
+ var k=p.lat+","+p.lon;
+ if(RN.busy||(!force&&RN.d&&RN.d.k===k&&Date.now()-RN.at<10*60e3))return;RN.busy=true;
+ fetch("https://api.open-meteo.com/v1/forecast?latitude="+p.lat+"&longitude="+p.lon+"&minutely_15=precipitation&forecast_minutely_15=9&timezone=auto").then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){RN.busy=false;var m=j.minutely_15||{},off=(j.utc_offset_seconds||0)*1000;
+  var T=(m.time||[]).map(function(t){return Date.parse(t+"Z")-off}),V=m.precipitation||[];var now=Date.now(),pts=[];
+  for(var i=0;i<T.length;i++)if(T[i]>=now-15*60e3)pts.push([T[i],V[i]||0]);RN.d={k:k,name:p.name,pts:pts.slice(0,9)};RN.at=Date.now();RN.err="";setTimeout(function(){rep("rain")})},function(){RN.busy=false;RN.err="Couldn’t reach the forecast";setTimeout(function(){rep("rain")})})}
+function rainHtml(){rainLoad();if(RN.err&&!RN.d)return wl("rain","Rain")+'<div class="ws">'+esc(RN.err)+'</div>';if(!RN.d)return wl("rain","Rain")+'<div class="ws">Checking the sky…</div>';
+ var P=RN.d.pts,now=Date.now(),wet=function(v){return v>=0.1},mx=Math.max(1,Math.max.apply(null,P.map(function(x){return x[1]})));
+ var first=P.findIndex(function(x){return wet(x[1])}),rainingNow=P[0]&&wet(P[0][1]),msg;
+ var mins=function(t){var m=Math.max(0,Math.round((t-now)/60000/5)*5);return m<5?"a few":String(m)};
+ if(first<0)msg="No rain in the next 2 hours";
+ else if(rainingNow){var stop=P.findIndex(function(x,i){return i>0&&!wet(x[1])});msg=stop<0?"Rain for the next 2 hours":"Rain stops in "+mins(P[stop][0])+" min"}
+ else msg="Rain starts in "+mins(P[first][0])+" min";
+ var bars=P.map(function(x,i){var h=x[1]>0?Math.max(8,Math.round(Math.min(1,x[1]/Math.max(2.5,mx))*100)):4;return '<i class="'+(wet(x[1])?"wet":"")+'" style="height:'+h+'%" title="'+fmtT(x[0])+' · '+x[1].toFixed(1)+' mm"></i>'}).join("");
+ return wl("rain","Rain · "+(RN.d.name||""))+'<div class="rnm'+(first<0?" dry":"")+'">'+msg+'</div><div class="rnc" role="img" aria-label="'+esc(msg)+'">'+bars+'</div><div class="rnx"><span>Now</span><span>+1 h</span><span>+2 h</span></div>'}
+setInterval(function(){if(!document.hidden&&document.querySelector('.wds [data-w="rain"]')){rainLoad();rep("rain")}},60e3);
+
+/* ---------- 4. Focus music ---------- */
+function FMS(){return jparse("fm-state",{})}
+function fmOn(){return !!FMS().on}
+function spOK(){return window.__sp&&__sp.tok()}
+function fmHtml(){var s=FMS(),on=!!s.on;
+ if(!spOK())return wl("fmusic","Focus music")+'<div class="fmw"><button type="button" class="fmb" data-fm="go" aria-label="Start focus music"><span class="fmi"></span></button><div><div class="fmt">Calm music, no interruptions</div><div class="ws">Connect Spotify to start</div><button type="button" class="btn sm" data-spw="connect">Connect</button></div></div>';
+ var el=on&&s.at?Math.max(0,Math.floor((Date.now()-s.at)/60000)):0;
+ return wl("fmusic","Focus music")+'<div class="fmw'+(on?" on":"")+'"><button type="button" class="fmb" data-fm="go" aria-pressed="'+on+'" aria-label="'+(on?"Stop focus music":"Start focus music")+'"><span class="fmi"></span><span class="fmr" aria-hidden="true"></span></button><div><div class="fmt">'+(on?"Focusing · "+(el<1?"just started":el+" min"):"Ready to focus")+'</div><div class="ws">'+(on?esc(s.name||"Focus playlist")+" · notifications paused":"One tap: music on, notifications off")+'</div></div></div>'}
+function fmStart(){var S=__sp,uri=ls("fm-uri",""),nm=ls("fm-name","");
+ var pick=uri?Promise.resolve({uri:uri,name:nm}):S.sp("/search?type=playlist&limit=8&q="+encodeURIComponent("deep focus")).then(function(j){var it=((j&&j.playlists&&j.playlists.items)||[]).filter(Boolean)[0];if(!it)throw {code:"api",msg:"no playlist found"};ss("fm-uri",it.uri);ss("fm-name",it.name);return {uri:it.uri,name:it.name}});
+ return pick.then(function(pl){return S.sp("/me/player/play",{method:"PUT",body:{context_uri:pl.uri}}).then(function(){ss("fm-state",JSON.stringify({on:1,at:Date.now(),name:pl.name}));try{localStorage.setItem("notif-mute","1")}catch(e){}S.poll();rep("fmusic");say("Focus music on. Notifications are paused.",3500)})})
+ .catch(function(e){say(S.why(e),4500);rep("fmusic")})}
+function fmStop(){ss("fm-state",JSON.stringify({on:0}));try{localStorage.removeItem("notif-mute")}catch(e){}rep("fmusic");if(spOK())__sp.sp("/me/player/pause",{method:"PUT"}).then(function(){__sp.poll()},function(){});say("Focus music off. Notifications are back.",3000)}
+document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest('[data-fm="go"]');if(!b||b.closest(".wds.edit"))return;e.preventDefault();if(!spOK()){var c=document.querySelector('[data-spw="connect"]');if(window.__sp)__sp.connect();return}if(fmOn())fmStop();else fmStart()});
+setInterval(function(){if(fmOn())rep("fmusic")},30e3);
+
+/* ---------- 5. Mail weather ---------- */
+var PARTS=[["Morning",6,12],["Afternoon",12,18],["Evening",18,23]];
+function mailwxHtml(){var L=(typeof lastL!=="undefined"&&lastL)||[],now=Date.now(),cut=now-14*864e5,h=new Array(24).fill(0),days={};
+ L.forEach(function(m){var t=Date.parse(m[2]);if(isNaN(t)||t<cut)return;var d=new Date(t);h[d.getHours()]++;days[dkey(d)]=1});
+ var nd=Math.max(1,Object.keys(days).length),tot=h.reduce(function(a,b){return a+b},0);
+ if(tot<3)return wl("mailwx","Mail weather")+'<div class="ws">Not enough mail yet to read the weather. Check back after a few days.</div>';
+ var per=PARTS.map(function(p){var s=0;for(var i=p[1];i<p[2];i++)s+=h[i];return s/nd}),mx=Math.max.apply(null,per)||1;
+ var hr=new Date().getHours(),idx=PARTS.findIndex(function(p){return hr<p[2]});
+ var lab=per.map(function(v){return v>=mx*.7&&v>=1?"busy":v<=mx*.35||v<.5?"quiet":"steady"});
+ var ic={busy:'<path d="M7 15a4 4 0 0 1-.5-8A6 6 0 0 1 18 6a4.5 4.5 0 0 1-.5 9z"/><path d="M8 19l-1 2M12 19l-1 2M16 19l-1 2"/>',steady:'<path d="M7 18a4 4 0 0 1-.5-8A6 6 0 0 1 18 9a4.5 4.5 0 0 1-.5 9z"/>',quiet:'<circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/>'};
+ var rest=PARTS.map(function(p,i){return {n:p[0],l:lab[i],v:per[i],i:i}}).filter(function(x){return idx<0||x.i>=idx});if(!rest.length)rest=PARTS.map(function(p,i){return {n:p[0],l:lab[i],v:per[i],i:i}});
+ var cap=function(s){return s.charAt(0).toUpperCase()+s.slice(1)};
+ var head=idx<0?"Quiet night ahead":rest.slice(0,2).map(function(x,j){return (j?x.l:cap(x.l))+" "+x.n.toLowerCase()}).join(", ");
+ var lastHr=L.filter(function(m){var t=Date.parse(m[2]);return now-t<3600e3}).length;
+ return wl("mailwx","Mail weather")+'<div class="mwh">'+esc(head)+'</div><div class="mwr">'+PARTS.map(function(p,i){return '<div class="mwp'+(i===idx?" now":"")+(idx>=0&&i<idx?" past":"")+'"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="mw-'+lab[i]+'" aria-hidden="true">'+ic[lab[i]]+'</svg><b>'+p[0]+'</b><small>'+(per[i]<1&&per[i]>0?"under 1 email":Math.round(per[i])===1?"1 email":Math.round(per[i])+" emails")+'</small></div>'}).join("")+'</div><div class="ws mwf">'+(lastHr?lastHr+" in the last hour":"Nothing new in the last hour")+' · based on the last 2 weeks</div>'}
+var _rmw=renderMail;renderMail=function(){_rmw.apply(this,arguments);try{rep("mailwx")}catch(e){}};
+
+/* ---------- register ---------- */
+var NEW=[{id:"izs",tab:"both",live:1,name:"Inbox zero",desc:"Your streak of days with an empty inbox",r:izsHtml},
+ {id:"moon",tab:"both",live:1,name:"Moon phase",desc:"Tonight’s moon and the next full moon",r:moonHtml},
+ {id:"rain",tab:"both",live:1,name:"Rain radar",desc:"Rain in the next 2 hours, minute by minute",wide:1,r:rainHtml},
+ {id:"fmusic",tab:"both",live:1,name:"Focus music",desc:"One tap: a focus playlist on Spotify and notifications off",r:fmHtml},
+ {id:"mailwx",tab:"both",live:1,name:"Mail weather",desc:"A forecast of how busy your mail will be today",wide:1,r:mailwxHtml}];
+NEW.forEach(function(w){if(!wgById(w.id))WG.push(w)});
+WTABS.forEach(function(t){if((WD[t]||[]).some(function(id){return NEW.some(function(w){return w.id===id})}))try{buildWds(t)}catch(e){}});
+try{CAT.izs="Mail";CAT.mailwx="Mail";CAT.moon="Time";CAT.rain="Weather";CAT.fmusic="Music"}catch(e){}
+setInterval(function(){rep("moon");rep("izs")},10*60e3);
+window.__nw={rainLoad:rainLoad,RN:RN,moonAt:moonAt,streak:function(){return streak(IZ())}};
+})();
+(function(){var M={izs:function(){show("mail")},mailwx:function(){show("mail")},rain:function(){show("weather")},moon:function(){show("weather")}};
+document.addEventListener("click",function(e){var t=e.target.closest&&e.target.closest(".wds:not(.edit) .wgrid>.wd[data-w]");if(!t||!M[t.dataset.w]||e.target.closest("button,a,input,textarea,select,label"))return;M[t.dataset.w]()});
+function mark(){document.querySelectorAll(".wgrid>.wd[data-w]").forEach(function(t){if(M[t.dataset.w]&&!t.hasAttribute("data-go")){t.setAttribute("data-go","1");if(!t.hasAttribute("tabindex"))t.tabIndex=0}})}
+var _b=buildWds;buildWds=function(){var r=_b.apply(this,arguments);mark();return r};mark()})();
