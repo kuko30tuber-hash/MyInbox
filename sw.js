@@ -1,6 +1,6 @@
 /* OwnInbox offline support: the app itself is kept on the device so it opens without internet.
    Your mail, calendar and Spotify data never go through this file. */
-const CACHE = "owninbox-v9";
+const CACHE = "owninbox-v10";
 const SHELL = ["/", "index.html", "app.css", "app.js", "boot.js", "google-shim.js", "config.js", "logo.svg", "icon-192.png", "icon-512.png", "apple-touch-icon.png", "manifest.webmanifest", "i18n.js", "i18n-data.js"];
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));

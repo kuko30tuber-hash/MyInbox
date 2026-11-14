@@ -21,6 +21,23 @@ var T=window.OI_T||{};
 function w(s){var r=T[s];return r&&r[IX]?r[IX]:null}
 /* sentences with numbers or names in them: [pattern, [sk, cs, de, es, fr]] with $1, $2 for the parts */
 var P=[
+[/^(.+), (\d+) events?$/,["$1, $2 udalostí","$1, $2 událostí","$1, $2 Termine","$1, $2 eventos","$1, $2 événements"]],
+[/^Time (.+)$/,["Čas $1","Čas $1","Zeit $1","Hora $1","Heure $1"]],
+[/^Colour for (.+)$/,["Farba pre $1","Barva pro $1","Farbe für $1","Color para $1","Couleur pour $1"]],
+[/^Received in (.+)$/,["Prijaté do $1","Přijato do $1","Empfangen in $1","Recibido en $1","Reçu dans $1"]],
+[/^Sign out of (.+)$/,["Odhlásiť sa z $1","Odhlásit se z $1","Abmelden von $1","Cerrar sesión de $1","Se déconnecter de $1"]],
+[/^From (.+@.+)$/,["Od $1","Od $1","Von $1","De $1","De $1"]],
+[/^(.+), shown$/,["$1, zobrazené","$1, zobrazeno","$1, angezeigt","$1, visible","$1, affiché"]],
+[/^(.+) \(read-only\)$/,["$1 (len na čítanie)","$1 (jen pro čtení)","$1 (schreibgeschützt)","$1 (solo lectura)","$1 (lecture seule)"]],
+[/^Day (\d+)%, Week (\d+)%, Month (\d+)%, Year (\d+)%$/,["Deň $1 %, týždeň $2 %, mesiac $3 %, rok $4 %","Den $1 %, týden $2 %, měsíc $3 %, rok $4 %","Tag $1 %, Woche $2 %, Monat $3 %, Jahr $4 %","Día $1 %, semana $2 %, mes $3 %, año $4 %","Jour $1 %, semaine $2 %, mois $3 %, année $4 %"]],
+[/^Starts with the (\d+) widgets on this tab$/,["Začína s $1 widgetmi na tejto karte","Začíná s $1 widgety na této kartě","Beginnt mit den $1 Widgets dieses Tabs","Empieza con los $1 widgets de esta pestaña","Commence avec les $1 widgets de cet onglet"]],
+[/^(.+) done today$/,["$1 dnes splnené","$1 dnes splněno","$1 heute erledigt","$1 hecho hoy","$1 fait aujourd’hui"],1],
+[/^\+(\d+) more$/,["+$1 ďalšie","+$1 další","+$1 weitere","+$1 más","+$1 de plus"]],
+[/^Today · (.+)$/,["Dnes · $1","Dnes · $1","Heute · $1","Hoy · $1","Aujourd’hui · $1"]],
+[/^Edited (.+) · (\d+) words?$/,["Upravené $1 · $2 slov","Upraveno $1 · $2 slov","Bearbeitet $1 · $2 Wörter","Editado $1 · $2 palabras","Modifié $1 · $2 mots"]],
+[/^(.+) settings…$/,["Nastavenia: $1…","Nastavení: $1…","Einstellungen: $1…","Ajustes: $1…","Réglages : $1…"],1],
+[/^(Morning|Afternoon|Evening|Night) · (.+) in (.+)$/,["$1 · $2 v $3","$1 · $2 v $3","$1 · $2 in $3","$1 · $2 en $3","$1 · $2 à $3"],1],
+[/^(.+) · H (.+) L (.+)$/,["$1 · max $2 min $3","$1 · max $2 min $3","$1 · H $2 T $3","$1 · máx $2 mín $3","$1 · max $2 min $3"],1],
 [/^Tomorrow, (.+)$/,["Zajtra, $1","Zítra, $1","Morgen, $1","Mañana, $1","Demain, $1"]],
 [/^Today, (.+)$/,["Dnes, $1","Dnes, $1","Heute, $1","Hoy, $1","Aujourd’hui, $1"]],
 [/^Tomorrow · (.+)$/,["Zajtra · $1","Zítra · $1","Morgen · $1","Mañana · $1","Demain · $1"]],
@@ -87,7 +104,7 @@ function tr(s){if(!s)return null;var k=s.trim();if(!k||!/[A-Za-z]/.test(k))retur
 window.oiT=function(s){return tr(s)||s};
 
 /* ---------- translate the page as it changes ---------- */
-var SKIP="script,style,[contenteditable],.rd .rbody,.rd .body,.rbody,#mail>li>a .ms,#mail>li>a .sn,#mail>li>a .snip,#mail>li>a .who,.nwrap .ne,code,pre,[data-noi18n]";
+var SKIP="script,style,[contenteditable],.rd .rbody,.rd .body,.rbody,#mail>li>a .ms,#mail>li>a .sn,#mail>li>a .snip,#mail>li>a .who,code,pre,[data-noi18n]";
 var ATTR=["placeholder","aria-label","title"];
 function doText(n){var p=n.parentElement;if(!p||p.closest(SKIP)||p.closest("textarea,option"))return;var v=n.nodeValue,t=tr(v);if(t&&t!==v.trim()){var lead=v.match(/^\s*/)[0],tail=v.match(/\s*$/)[0];n.nodeValue=lead+t+tail}}
 function doAttrs(e){for(var i=0;i<ATTR.length;i++){var v=e.getAttribute(ATTR[i]);if(v){var t=tr(v);if(t&&t!==v)e.setAttribute(ATTR[i],t)}}}
