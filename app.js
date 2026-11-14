@@ -2918,3 +2918,52 @@ var _r=renderMail;renderMail=function(L,note){_r.apply(this,arguments);
  if(ul&&(!L||!L.length)&&(/loading/i.test(note||"")||(c&&/^Searching/.test(c.textContent)))){ul.innerHTML=skel(6);ul.setAttribute("aria-busy","true");var lc=EL("mlc");if(lc&&/loading/i.test(note||""))lc.textContent="Loading…"}else if(ul)ul.removeAttribute("aria-busy");
  if(from)requestAnimationFrame(grow)};
 })();
+/* ===== First-run welcome: make it yours, then connect ===== */
+(function(){
+var isNew=false;try{var L=localStorage;isNew=!L.getItem("oi-welcome")&&!L.getItem("wd")&&!L.getItem("gaccts")&&!L.getItem("gsigned")&&!L.getItem("wp")&&!L.getItem("wth")&&!L.getItem("wacc")}catch(e){}
+var force=/(^|[#&])welcome\b/.test(window.__hash0||location.hash||"");
+if(!isNew&&!force)return;
+var ACC=[["","Violet","#7c4dff"],["#0a84ff","Blue"],["#00c7be","Mint"],["#34c759","Green"],["#ff9500","Orange"],["#ff2d55","Pink"],["#af52de","Purple"],["#455a64","Graphite"]];
+var PK=[["ess","Essentials","A bit of everything",["unread","next","weather"]],["mail","Mail","Unread, important, latest, deliveries",["unread","important","latest","deliveries"]],["calendar","Calendar","Next up, agenda, week, month",["next","agenda","week","month"]],["weather","Weather","Forecast, sun, world clock",["weather","sun","world"]],["notes","Notes","Notes, to-do, habits, focus",["notes","todo","habits","focus"]],["none","Start empty","Add widgets later",[]]];
+var S={step:0,pk:"ess"},N=4;
+var LOGO='<img src="logo.svg" alt="" width="76" height="76">';
+var m=document.createElement("div");m.id="welc";m.className="modal";m.innerHTML='<div class="sheet frsheet" role="dialog" aria-modal="true" aria-labelledby="frh"><div id="frbody"></div><div class="frfoot"><div class="frdots" aria-hidden="true"></div><div class="frbtns"></div></div></div>';
+document.body.appendChild(m);
+function curAcc(){var c=ls("wacc","");return c}
+function themeNow(){return ls("wth","auto")}
+function wpNow(){return ls("wp",typeof cur==="string"?cur:"")}
+function stepHtml(){
+ if(S.step===0)return '<div class="fr0"><div class="frlogo">'+LOGO+'</div><h2 id="frh">Welcome to OwnInbox</h2><p>Your mail, calendar, notes, weather and music in one calm place. Let’s set it up. It takes about a minute.</p></div>';
+ if(S.step===1){var th=themeNow(),ac=curAcc(),wp=wpNow();
+  return '<h2 id="frh">Make it yours</h2><p class="frsub">You can change all of this later in Settings.</p>'+
+  '<div class="frrow"><span class="frlab">Appearance</span><div class="stseg frseg" role="radiogroup" aria-label="Appearance">'+[["auto","Automatic"],["light","Light"],["dark","Dark"]].map(function(x){var on=th===x[0];return '<button type="button" role="radio" aria-checked="'+on+'" data-frth="'+x[0]+'"'+(on?' class="on"':'')+'>'+x[1]+'</button>'}).join("")+'</div></div>'+
+  '<div class="frrow"><span class="frlab">Accent colour</span><div class="fracc" role="radiogroup" aria-label="Accent colour">'+ACC.map(function(x){var on=ac===x[0];return '<button type="button" role="radio" aria-checked="'+on+'" aria-label="'+x[1]+'" title="'+x[1]+'" data-fracc="'+x[0]+'" style="--c:'+(x[2]||x[0])+'"'+(on?' class="on"':'')+'></button>'}).join("")+'</div></div>'+
+  '<div class="frrow frcol"><span class="frlab">Wallpaper</span><div class="frwp" role="radiogroup" aria-label="Wallpaper">'+WP.slice(0,8).map(function(w){var p=pal(w),on=w.id===wp;return '<button type="button" role="radio" aria-checked="'+on+'" data-frwp="'+w.id+'"'+(on?' class="on"':'')+'><span class="frpv" style="background:'+p[0]+'">'+scene(w,p)+'</span><span class="frn">'+esc(w.n)+'</span></button>'}).join("")+'</div></div>'}
+ if(S.step===2)return '<h2 id="frh">Pick your widgets</h2><p class="frsub">These sit at the top of your Mail tab. Each tab has its own, and you can mix them any way you like.</p><div class="frpk" role="radiogroup" aria-label="Widgets">'+PK.map(function(p){var on=S.pk===p[0];return '<button type="button" role="radio" aria-checked="'+on+'" data-frpk="'+p[0]+'"'+(on?' class="on"':'')+'><b>'+esc(p[1])+'</b><small>'+esc(p[2])+'</small><i class="frck" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i></button>'}).join("")+'</div>';
+ return '<div class="fr0"><div class="frlogo frg"><svg width="40" height="40" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.6 12.3c0-.8-.1-1.5-.2-2.3H12v4.4h5.9a5 5 0 0 1-2.2 3.3v2.7h3.6c2.1-1.9 3.3-4.8 3.3-8.1z"/><path fill="#34A853" d="M12 23c3 0 5.5-1 7.3-2.7l-3.6-2.7c-1 .7-2.2 1.1-3.7 1.1-2.9 0-5.3-1.9-6.2-4.5H2.1v2.8A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.8 14.2a6.6 6.6 0 0 1 0-4.3V7.1H2.1a11 11 0 0 0 0 9.9z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3.1.6 4.2 1.7l3.2-3.2A11 11 0 0 0 2.1 7.1l3.7 2.8C6.7 7.3 9.1 5.4 12 5.4z"/></svg></div><h2 id="frh">Connect your Google account</h2><p>See your Gmail and Google Calendar here. Your emails go straight between this browser and Google, and you can add more accounts later.</p></div>'}
+function btns(){var b="";
+ if(S.step>0)b+='<button type="button" class="btn" data-frgo="back">Back</button>';
+ if(S.step===0)b+='<button type="button" class="btn pri" data-frgo="next">Get started</button>';
+ else if(S.step<N-1)b+='<button type="button" class="btn pri" data-frgo="next">Continue</button>';
+ else b+='<button type="button" class="btn" data-frgo="later">Not now</button><button type="button" class="btn pri" data-frgo="google">Sign in with Google</button>';
+ return b}
+function draw(dir){var body=EL("frbody");body.innerHTML='<div class="frstep'+(dir?" "+(dir>0?"in-r":"in-l"):"")+'">'+stepHtml()+'</div>';
+ m.querySelector(".frdots").innerHTML=Array.apply(null,{length:N}).map(function(_,i){return '<i'+(i===S.step?' class="on"':'')+'></i>'}).join("");
+ m.querySelector(".frbtns").innerHTML=btns();var f=m.querySelector(".frbtns .btn.pri");if(f)f.focus({preventScroll:true})}
+function finish(){try{localStorage.setItem("oi-welcome","1")}catch(e){}
+ var p=PK.filter(function(x){return x[0]===S.pk})[0];if(p&&typeof WD!=="undefined"){WD.mail=p[3].filter(function(id){return typeof wgById!=="function"||wgById(id)});saveWd();try{buildWds("mail");tickWds()}catch(e){}}
+ if(!ls("wp",""))ss("wp",typeof cur==="string"?cur:"default");
+ m.classList.add("out");setTimeout(function(){m.hidden=true;m.remove()},280)}
+m.addEventListener("click",function(e){var b;
+ if((b=e.target.closest("[data-frth]"))){setTheme(b.dataset.frth);ss("wth",b.dataset.frth);draw();return}
+ if((b=e.target.closest("[data-fracc]"))){if(b.dataset.fracc)ss("wacc",b.dataset.fracc);else{try{localStorage.removeItem("wacc")}catch(x){}}applyAccent();m.querySelectorAll("[data-fracc]").forEach(function(x){var on=x===b;x.classList.toggle("on",on);x.setAttribute("aria-checked",on)});return}
+ if((b=e.target.closest("[data-frwp]"))){applyWp(b.dataset.frwp,true);m.querySelectorAll("[data-frwp]").forEach(function(x){var on=x===b;x.classList.toggle("on",on);x.setAttribute("aria-checked",on)});return}
+ if((b=e.target.closest("[data-frpk]"))){S.pk=b.dataset.frpk;m.querySelectorAll("[data-frpk]").forEach(function(x){var on=x===b;x.classList.toggle("on",on);x.setAttribute("aria-checked",on)});return}
+ if((b=e.target.closest("[data-frgo]"))){var g=b.dataset.frgo;
+  if(g==="next"){S.step=Math.min(N-1,S.step+1);draw(1)}else if(g==="back"){S.step=Math.max(0,S.step-1);draw(-1)}
+  else if(g==="later")finish();
+  else if(g==="google"){b.disabled=true;finish();if(window.gAuth&&gAuth.signIn)gAuth.signIn().then(function(){location.reload()},function(){})}}});
+m.addEventListener("keydown",function(e){if(e.key==="Escape"){e.stopPropagation();finish()}else if(e.key==="Enter"&&e.target===document.body){var f=m.querySelector(".frbtns .btn.pri");if(f)f.click()}});
+draw();m.hidden=false;
+window.__welcome={finish:finish,S:S};
+})();
