@@ -2629,3 +2629,28 @@ html.nosplash #splash{display:none}
 .glsl:active::-webkit-slider-thumb{transform:scale(1.12,1.18);cursor:grabbing;box-shadow:0 6px 22px rgba(0,0,0,.3),inset 0 1px 0 #fff}
 .glsl:active::-moz-range-thumb{transform:scale(1.12,1.18)}
 .wpglnote{margin-top:4px}
+/* ===== liquid glass slider ===== */
+.lqs{position:relative;flex:1;min-width:0;height:34px;display:block;touch-action:none}
+.lqs .lqs-track{position:absolute;left:0;right:0;top:50%;height:8px;transform:translateY(-50%);border-radius:99px;background:color-mix(in srgb,var(--mute) 28%,transparent);box-shadow:inset 0 1px 2px rgba(0,0,0,.14);overflow:hidden}
+.lqs .lqs-fill{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:linear-gradient(90deg,color-mix(in srgb,var(--accent) 80%,#fff),var(--accent))}
+.lqs .lqs-knob{position:absolute;left:0;top:50%;width:52px;height:30px;border-radius:99px;pointer-events:none;will-change:transform;
+ background:rgba(255,255,255,calc(1 - var(--p,0)*.94));
+ box-shadow:0 calc(3px + var(--p,0)*6px) calc(12px + var(--p,0)*14px) rgba(0,0,0,calc(.26 - var(--p,0)*.12)),0 1px 2px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.95);
+ overflow:hidden;isolation:isolate}
+.lqs.on .lqs-knob{-webkit-backdrop-filter:blur(1.5px) saturate(1.8) brightness(1.08);backdrop-filter:blur(1.5px) saturate(1.8) brightness(1.08)}
+/* the magnified track inside the lens */
+.lqs .lqs-lens{position:absolute;inset:0;opacity:var(--p,0);border-radius:inherit}
+.lqs .lqs-mag{position:absolute;left:0;top:50%;right:auto;height:8px;box-shadow:inset 0 1px 3px rgba(0,0,0,.2)}
+/* glass edges: bright rim, light caught at the top, a little colour fringe */
+.lqs .lqs-rim{position:absolute;inset:0;border-radius:inherit;opacity:var(--p,0);pointer-events:none;
+ box-shadow:inset 0 0 0 1px rgba(255,255,255,.75),inset 0 2px 3px rgba(255,255,255,.85),inset 0 -3px 6px rgba(0,0,0,.10),inset 2px 0 4px rgba(120,200,255,.25),inset -2px 0 4px rgba(255,140,200,.22);
+ background:radial-gradient(120% 70% at 30% 0%,rgba(255,255,255,.55),rgba(255,255,255,0) 55%),radial-gradient(90% 60% at 70% 110%,rgba(255,255,255,.28),transparent 60%)}
+/* the real input sits on top, invisible, so dragging, keys and screen readers all still work */
+.lqs input.glsl{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:grab;background:none;box-shadow:none}
+.lqs input.glsl:active{cursor:grabbing}
+.lqs input.glsl::-webkit-slider-thumb{width:52px;height:30px}
+.lqs input.glsl::-moz-range-thumb{width:52px;height:30px}
+.lqs:has(input:focus-visible) .lqs-knob{outline:2px solid var(--accent);outline-offset:2px}
+:root[data-theme="dark"] .lqs .lqs-track{background:rgba(255,255,255,.14)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .lqs .lqs-track{background:rgba(255,255,255,.14)}}
+.wpglb{padding:14px 16px}
