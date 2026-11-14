@@ -2467,3 +2467,66 @@ html.sidebar header #conn .cchips{flex-wrap:wrap}
 html body .grid button.today .dn{background:var(--accent-fill)}
 html body main>section>h2>span,html body #count,html body #calstat,html body #nsync,html body #wxpstat{color:color-mix(in srgb,var(--ink) 70%,transparent)!important;opacity:1!important}
 html body .sbx .sbn,html body #sbadd{color:color-mix(in srgb,var(--ink) 75%,transparent)!important;opacity:1!important}
+
+/* =====================================================================
+   Design system: one set of corners, shadows, controls and icon weights.
+   Everything below wins over earlier rounds of styling on purpose.
+   ===================================================================== */
+:root{
+ --r-xs:6px;--r-sm:10px;--r-md:14px;--r-lg:22px;--r-xl:28px;--r-pill:999px;
+ --sh-1:inset 0 1px 0 var(--hair-hi,rgba(255,255,255,.5)),0 1px 2px rgba(16,18,30,.06);
+ --sh-2:inset 0 1px 0 var(--hair-hi,rgba(255,255,255,.5)),0 1px 2px rgba(16,18,30,.05),0 18px 44px -26px rgba(16,18,30,.32);
+ --sh-3:0 1px 2px rgba(16,18,30,.08),0 20px 50px -14px rgba(16,18,30,.38);
+ --sh-4:0 2px 6px rgba(16,18,30,.08),0 40px 90px -30px rgba(16,18,30,.5);
+ --ctl-h:36px;--ctl-h-sm:30px;--ctl-fs:13.5px;--ctl-fw:600;
+ --ease-out:cubic-bezier(.2,.8,.2,1);--spring2:cubic-bezier(.3,1.3,.5,1);
+}
+:root[data-theme="dark"]{--sh-2:inset 0 1px 0 rgba(255,255,255,.06),0 1px 2px rgba(0,0,0,.3),0 18px 44px -26px rgba(0,0,0,.7);--sh-3:0 1px 2px rgba(0,0,0,.4),0 20px 50px -14px rgba(0,0,0,.7);--sh-4:0 2px 6px rgba(0,0,0,.4),0 40px 90px -30px rgba(0,0,0,.85)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--sh-2:inset 0 1px 0 rgba(255,255,255,.06),0 1px 2px rgba(0,0,0,.3),0 18px 44px -26px rgba(0,0,0,.7);--sh-3:0 1px 2px rgba(0,0,0,.4),0 20px 50px -14px rgba(0,0,0,.7);--sh-4:0 2px 6px rgba(0,0,0,.4),0 40px 90px -30px rgba(0,0,0,.85)}}
+
+/* surfaces: panels, widgets and cards share one corner and one lift */
+.wds .wd,#v-mail .mwrap,.cal,.nwrap,.wxc,.wxt,.spk,.wpked,.wkv{border-radius:var(--r-lg)!important}
+.wds .wd,.wxc,.wxt,.spk{box-shadow:var(--sh-2)!important}
+.sheet{border-radius:var(--r-xl)!important;box-shadow:inset 0 1px 0 var(--hair-hi),var(--sh-4)!important}
+@media(max-width:600px){.sheet{border-radius:var(--r-xl) var(--r-xl) 0 0!important}}
+/* floating things: menus, pickers, results, the toast */
+.pk-pop,#wctx,.wxpres,#toast{border-radius:var(--r-md)!important;box-shadow:var(--sh-3)!important}
+#toast{border-radius:var(--r-pill)!important}
+/* rows and small cards */
+.sprow,.wsprow,.m3a,.wpkc,.spdv,.wkac,#v-mail #mail li>a{border-radius:var(--r-md)!important}
+
+/* buttons: one height, one weight, one corner */
+.btn{min-height:var(--ctl-h);display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:0 14px!important;border-radius:var(--r-sm)!important;font-size:var(--ctl-fs)!important;font-weight:var(--ctl-fw)!important;letter-spacing:-.005em;line-height:1;transition:background .18s var(--ease-out),border-color .18s,box-shadow .18s,transform .12s,filter .18s}
+.btn.sm{min-height:var(--ctl-h-sm);padding:0 11px!important;font-size:12.5px!important;border-radius:9px!important}
+.btn:active:not(:disabled){transform:scale(.97)}
+.btn.pri{color:#fff!important;border-color:transparent!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 1px 2px rgba(0,0,0,.12),0 8px 18px -8px color-mix(in srgb,var(--accent) 75%,transparent)!important}
+.btn.pri:hover:not(:disabled){filter:brightness(1.07)}
+.btn:disabled{opacity:.5;cursor:default}
+/* the green Spotify buttons keep their own colour */
+.spcid .btn.pri,.spgo,.wspgo{color:#000!important}
+
+/* segmented switches: Mail tabs, Settings, Calendar views, Notifications */
+.stseg,.segw,.cvseg{display:inline-flex!important;gap:2px!important;padding:3px!important;border-radius:12px!important;background:color-mix(in srgb,var(--ink) 6.5%,transparent)!important;border:0!important;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ink) 4%,transparent)!important}
+.stseg{display:flex!important}
+.stseg button,.segw button,.cvseg button{border:0!important;border-radius:9px!important;background:none!important;color:color-mix(in srgb,var(--ink) 66%,transparent)!important;font:inherit;font-size:13px!important;font-weight:600!important;min-height:30px;padding:0 12px!important;box-shadow:none!important;cursor:pointer;transition:background .2s var(--ease-out),color .2s,box-shadow .2s}
+.stseg button:hover,.segw button:hover,.cvseg button:hover{color:var(--ink)!important}
+.stseg button.on,.stseg button[aria-checked="true"],.segw button.on,.segw button[aria-selected="true"],.cvseg button.on{background:var(--panel)!important;color:var(--ink)!important;box-shadow:0 1px 2px rgba(0,0,0,.08),0 2px 8px -2px rgba(0,0,0,.12)!important}
+:root[data-theme="dark"] .stseg button.on,:root[data-theme="dark"] .segw button.on,:root[data-theme="dark"] .cvseg button.on,:root[data-theme="dark"] .stseg button[aria-checked="true"],:root[data-theme="dark"] .segw button[aria-selected="true"]{background:color-mix(in srgb,var(--ink) 16%,transparent)!important}
+/* the sliding pill some switches draw sits under the same shape */
+.stseg::before,.segw::before{border-radius:9px!important}
+
+/* text fields */
+input[type="text"],input[type="search"],input[type="email"],input[type="date"],input[type="time"],input:not([type]),textarea,select{border-radius:var(--r-sm)}
+#v-mail .mlq,.spq{border-radius:var(--r-sm)!important}
+
+/* icons: one line weight, a touch heavier when small */
+svg[stroke="currentColor"]{stroke-width:1.85}
+svg[stroke="currentColor"][width="12"],svg[stroke="currentColor"][width="13"],svg[stroke="currentColor"][width="14"],svg[stroke="currentColor"][width="15"]{stroke-width:2.1}
+svg[stroke="currentColor"][width="40"],svg[stroke="currentColor"][width="44"]{stroke-width:1.5}
+.wds .wgrid>.wd[data-w],.wds .wgrid>.wd{border-radius:var(--r-lg)!important}
+.modal .sheet,#st .sheet,.sheet.stsheet{border-radius:var(--r-xl)!important}
+@media(max-width:600px){.modal .sheet,#st .sheet,.sheet.stsheet{border-radius:var(--r-xl) var(--r-xl) 0 0!important}}
+#st .s3g,.s3g{border-radius:16px!important}
+html body .sbr,html body nav.top button,html body #sttabs button,.wbtn,.wpbtn{border-radius:var(--r-sm)!important}
+#wgl .wd,.wd.wghost{border-radius:var(--r-lg)!important}
+html.sidebar .top .sbx .sbr,html.sidebar .top .sbx #sbadd{border-radius:var(--r-sm)!important}
