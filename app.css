@@ -2670,3 +2670,6 @@ html.nosplash #splash{display:none}
 :root[data-theme="dark"] .lqs .lqs-rim{background:radial-gradient(42% 22% at 32% 14%,rgba(255,255,255,.28),rgba(255,255,255,0) 100%)}
 /* tabs you switched off stay gone, in the sidebar too */
 html body nav.top button[hidden],html.sidebar body nav.top button[hidden],html.sidebar body nav.top .sbx button[hidden]{display:none!important}
+.wds:not(.edit) .wgrid>.wd[data-go]{cursor:pointer}
+html.motion .wds:not(.edit) .wgrid>.wd[data-go]:active{scale:.97;transition:scale .12s}
+.wgrid>.wd[data-go]:focus-visible{outline:2px solid var(--accent);outline-offset:3px}

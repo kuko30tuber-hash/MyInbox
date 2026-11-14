@@ -3020,3 +3020,28 @@ function scan(root){(root||document).querySelectorAll("input.glsl").forEach(enha
 scan();
 if(window.MutationObserver)new MutationObserver(function(ms){for(var i=0;i<ms.length;i++)if(ms[i].addedNodes.length){scan();return}}).observe(document.body,{childList:true,subtree:true});
 })();
+/* ===== Every widget does something when you click it ===== */
+(function(){
+function tab(v){if(typeof show==="function")show(v)}
+function goMail(v){show("mail");if(v&&typeof view==="string"&&view!==v){var b=EL({in:"tin",imp:"timp",sp:"tsp"}[v]);if(b)b.click()}var t=document.querySelector(".mcol");if(t)t.scrollIntoView({behavior:window.motionOn&&motionOn()?"smooth":"auto",block:"start"})}
+function goCal(){show("calendar");var t=document.querySelector(".cal");if(t)t.scrollIntoView({behavior:window.motionOn&&motionOn()?"smooth":"auto",block:"start"})}
+function press(t,sel){var b=t.querySelector(sel);if(b)b.click()}
+var GO={
+ senders:function(){goMail("in")},activity:function(){goMail("in")},accounts:function(){goMail("in")},deliveries:function(){goMail("imp")},
+ rings:function(){goCal()},
+ clock:function(){tab("weather")},world:function(){tab("weather")},sun:function(){tab("weather")},weather:function(){tab("weather")},
+ notes:function(){tab("notes")},todo:function(t){var i=t.querySelector("input.tdi");if(i)i.focus();else tab("notes")},habits:function(){tab("notes")},
+ focus:function(t){press(t,'[data-ft="toggle"]')},stopwatch:function(t){press(t,'[data-sw="go"]')},water:function(t){press(t,'[data-wat="1"]')},
+ countdown:function(t){var i=t.querySelector("input");if(i)i.focus();else{var b=t.querySelector("button:not([data-rm])");if(b)b.click()}},
+ photo:function(t){var tb=(t.closest(".wds")||{id:"wds-mail"}).id.replace("wds-","");if(window.__openCus)__openCus(tb,"photo")},
+ f1:function(){window.open("https://www.formula1.com/en/racing","_blank","noopener")},
+ links:function(t){var a=t.querySelector("a[href]");if(a)a.focus()},
+ spnow:function(){tab("spotify")},splists:function(){tab("spotify")},sprecent:function(){tab("spotify")},spqueue:function(){tab("spotify")}};
+var HINT={senders:"Open Mail",activity:"Open Mail",accounts:"Open Mail",deliveries:"Open Important",rings:"Open Calendar",clock:"Open Weather",world:"Open Weather",sun:"Open Weather",weather:"Open Weather",notes:"Open Notes",todo:"Add a task",habits:"Open Notes",focus:"Start or pause",stopwatch:"Start or pause",water:"Add a glass",countdown:"Set the countdown",photo:"Choose a photo",f1:"Open the F1 calendar",links:"Open a link",spnow:"Open Spotify",splists:"Open Spotify",sprecent:"Open Spotify",spqueue:"Open Spotify"};
+function mark(c){c.querySelectorAll(".wgrid>.wd[data-w]").forEach(function(t){if(GO[t.dataset.w]){t.setAttribute("data-go","1");if(!t.hasAttribute("tabindex"))t.tabIndex=0;if(!t.title)t.title=HINT[t.dataset.w]||""}})}
+var _bw=buildWds;buildWds=function(tb){var r=_bw.apply(this,arguments);var c=EL("wds-"+tb);if(c)mark(c);return r};
+WTABS.forEach(function(tb){var c=EL("wds-"+tb);if(!c)return;mark(c);
+ function run(e,t){if(c.classList.contains("edit"))return;var f=GO[t.dataset.w];if(!f)return;f(t)}
+ c.addEventListener("click",function(e){if(c.classList.contains("edit")||e.defaultPrevented)return;if(e.target.closest("button,a,input,textarea,select,label,[data-acgo],[data-sd],[data-br],[data-si]"))return;var t=e.target.closest(".wgrid>.wd[data-w]");if(t)run(e,t)});
+ c.addEventListener("keydown",function(e){if(e.key!=="Enter"&&e.key!==" ")return;var t=e.target;if(!t.matches||!t.matches(".wgrid>.wd[data-go]"))return;e.preventDefault();run(e,t)})});
+})();
