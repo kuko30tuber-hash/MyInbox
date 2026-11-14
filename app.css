@@ -2668,3 +2668,5 @@ html.nosplash #splash{display:none}
 :root[data-theme="dark"] .lqs .lqs-track{background:color-mix(in srgb,#fff 14%,var(--panel))}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .lqs .lqs-track{background:color-mix(in srgb,#fff 14%,var(--panel))}}
 :root[data-theme="dark"] .lqs .lqs-rim{background:radial-gradient(42% 22% at 32% 14%,rgba(255,255,255,.28),rgba(255,255,255,0) 100%)}
+/* tabs you switched off stay gone, in the sidebar too */
+html body nav.top button[hidden],html.sidebar body nav.top button[hidden],html.sidebar body nav.top .sbx button[hidden]{display:none!important}
