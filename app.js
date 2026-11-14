@@ -3192,3 +3192,23 @@ if(window.MutationObserver)new MutationObserver(upd).observe(document.body,{attr
  if(q.renderMail)try{renderMail(lastL,lastNote)}catch(e){console.error(e)}
  try{tickWds()}catch(e){console.error(e)}
  try{if(typeof moveInd==="function")moveInd()}catch(e){}})();
+/* ===== Smooth light/dark switch =====
+   A soft circle of the new theme's colour grows from where you tapped (only a moving layer, so it stays smooth),
+   the theme changes underneath while it's covered, then the circle fades away. */
+(function(){
+var px=innerWidth-60,py=60;document.addEventListener("pointerdown",function(e){px=e.clientX;py=e.clientY},true);
+var inner=setTheme,busy=false;
+function motionOK(){return !(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)&&document.documentElement.classList.contains("motion")}
+function darkFor(m){return m==="dark"||(m!=="light"&&window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches)}
+function colourFor(dark){try{var w=WP.filter(function(x){return x.id===cur})[0];if(w){if(dark&&ls("oled","")==="1")return "#000";return (dark?w.d:w.l)[1]||(dark?w.d:w.l)[0]}}catch(e){}return dark?"#0b0c10":"#f3f4f6"}
+setTheme=function(m,save){
+ if(!save||busy||!motionOK()||darkFor(m)===isDark()){var r=inner(m,false);if(save)ss("wth",m);return r}
+ busy=true;var dark=darkFor(m),R=Math.hypot(Math.max(px,innerWidth-px),Math.max(py,innerHeight-py))+40,S=160,k=R/(S/2);
+ var o=document.createElement("div");o.setAttribute("aria-hidden","true");
+ o.style.cssText="position:fixed;left:"+(px-S/2)+"px;top:"+(py-S/2)+"px;width:"+S+"px;height:"+S+"px;border-radius:50%;z-index:9998;pointer-events:none;will-change:transform,opacity;transform:scale(0);background:radial-gradient(circle,"+colourFor(dark)+" 62%,"+colourFor(dark)+"00 72%)";
+ document.body.appendChild(o);
+ var grow=o.animate([{transform:"scale(0)"},{transform:"scale("+(k*1.3).toFixed(2)+")"}],{duration:420,easing:"cubic-bezier(.45,0,.2,1)",fill:"forwards"});
+ var done=false;function swap(){if(done)return;done=true;inner(m,false);ss("wth",m);
+  requestAnimationFrame(function(){requestAnimationFrame(function(){var f=o.animate([{opacity:1},{opacity:0}],{duration:320,easing:"ease-out",fill:"forwards"});f.onfinish=f.oncancel=function(){o.remove();busy=false}})})}
+ grow.onfinish=swap;setTimeout(swap,700)};
+})();
