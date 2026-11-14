@@ -373,8 +373,20 @@ var SC=[
 {id:"stars",n:"Starfield",t:"stars",l:["#e7e9f7","#d6dafc","#f0dcf8","#b9c3ee","#8e9be0","#5563b5"],d:["#03040a","#0b1030","#1b1547","#2c1d5f","#ffffff","#c9d4ff"]},
 {id:"bokeh",n:"Bokeh",t:"bokeh",l:["#f6e8f0","#ffd7e6","#ffe7b8","#cfe3ff","#d8c6ff","#bff0dc"],d:["#0b0610","#3a1245","#14304f","#4a2a12","#1c4a3f","#4a1230"]}];
 SC.forEach(function(s){if(!WP.some(function(w){return w.id===s.id}))WP.push(s)});
+/* two copies of a picture can sit in the page at once, so each copy gets its own gradient names */
+function uniq(h,k){var x="_"+k.replace(/[^a-z0-9]/gi,"");return h.replace(/\bid="([^"]+)"/g,'id="$1'+x+'"').replace(/url\(#([^)]+)\)/g,"url(#$1"+x+")").replace(/href="#([^"]+)"/g,'href="#$1'+x+'"')}
 function applyWp(id,save){cur=id;var w=WP.filter(function(x){return x.id===id})[0]||WP[0],p=pal(w),bg=document.getElementById("bg");document.documentElement.style.setProperty("--bg",p[0]);
-if(bg){var old=bg.querySelectorAll(".lyr"),ly=document.createElement("div");ly.className="lyr";ly.innerHTML=scene(w,p);bg.insertBefore(ly,bg.querySelector(".vig"));requestAnimationFrame(function(){requestAnimationFrame(function(){ly.classList.add("in")})});setTimeout(function(){Array.prototype.forEach.call(old,function(o){o.remove()})},1100)}
+if(bg){var sweep=function(){var top=bg.querySelector(".lyr.lyon"),tk=top&&top.getAttribute("data-k"),id=tk&&tk.split(":")[0];var L=bg.querySelectorAll(".lyr"),newest=L[L.length-1];if(newest&&!newest.getAttribute("data-k"))return;Array.prototype.forEach.call(L,function(o){if(o===top)return;var k=o.getAttribute("data-k");if(!k){o.remove();return}if(!id||k.split(":")[0]!==id||k===tk)o.remove()})};
+ var dk=isDark(),key=w.id+(dk?":d":":l"),alt=w.id+(dk?":l":":d"),have=bg.querySelector('.lyr[data-k="'+key+'"]'),all=Array.prototype.slice.call(bg.querySelectorAll(".lyr"));
+ /* the same picture in the other theme was drawn ahead of time: just bring it to the front (no redrawing) */
+ if(have){all.forEach(function(o){o.classList.toggle("lyon",o===have)});have.classList.add("in");
+  setTimeout(sweep,1100)}
+ else{var ly=document.createElement("div");ly.className="lyr lyon";ly.setAttribute("data-k",key);ly.innerHTML=uniq(scene(w,p),key);bg.insertBefore(ly,bg.querySelector(".vig"));all.forEach(function(o){o.classList.remove("lyon")});
+  requestAnimationFrame(function(){requestAnimationFrame(function(){ly.classList.add("in")})});
+  setTimeout(sweep,1100)}
+ /* draw the other theme's version behind it when the browser is idle, so switching light/dark later is instant */
+ var pre=function(){if(cur!==w.id||bg.querySelector('.lyr[data-k="'+alt+'"]'))return;var q=document.createElement("div");q.className="lyr in";q.setAttribute("data-k",alt);q.innerHTML=uniq(scene(w,(!dk?w.d:w.l).slice().concat((!dk?w.d:w.l).length<6?[rot((!dk?w.d:w.l)[1],50),rot((!dk?w.d:w.l)[3],-50)]:[])),alt);bg.insertBefore(q,bg.firstChild)};
+ if(window.requestIdleCallback)requestIdleCallback(pre,{timeout:4000});else setTimeout(pre,2500)}
 Array.prototype.forEach.call(document.querySelectorAll("#wpg button"),function(b){b.setAttribute("aria-pressed",b.dataset.id===w.id)});
 if(save){try{localStorage.setItem("wp",w.id)}catch(e){}}}
 function buildWp(){document.getElementById("wpg").innerHTML=WP.map(function(w){var p=pal(w);return '<button type="button" data-id="'+w.id+'" aria-pressed="'+(w.id===cur)+'"><span class="sw2"><span class="pv" style="background:'+p[0]+'">'+scene(w,p)+'</span></span>'+w.n+'</button>'}).join("");
@@ -3193,22 +3205,21 @@ if(window.MutationObserver)new MutationObserver(upd).observe(document.body,{attr
  try{tickWds()}catch(e){console.error(e)}
  try{if(typeof moveInd==="function")moveInd()}catch(e){}})();
 /* ===== Smooth light/dark switch =====
-   A soft circle of the new theme's colour grows from where you tapped (only a moving layer, so it stays smooth),
-   the theme changes underneath while it's covered, then the circle fades away. */
+   The cheapest possible animation: a plain colour layer fades in (only its opacity changes),
+   the theme switches underneath with every other transition turned off, then the layer fades out. */
 (function(){
-var px=innerWidth-60,py=60;document.addEventListener("pointerdown",function(e){px=e.clientX;py=e.clientY},true);
-var inner=setTheme,busy=false;
-function motionOK(){return !(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)&&document.documentElement.classList.contains("motion")}
+var root=document.documentElement,inner=setTheme,busy=false;
+function motionOK(){return !(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)&&root.classList.contains("motion")}
 function darkFor(m){return m==="dark"||(m!=="light"&&window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches)}
-function colourFor(dark){try{var w=WP.filter(function(x){return x.id===cur})[0];if(w){if(dark&&ls("oled","")==="1")return "#000";return (dark?w.d:w.l)[1]||(dark?w.d:w.l)[0]}}catch(e){}return dark?"#0b0c10":"#f3f4f6"}
+function colourFor(dark){if(dark&&ls("oled","")==="1")return "#000";try{var w=WP.filter(function(x){return x.id===cur})[0];if(w)return (dark?w.d:w.l)[1]}catch(e){}return dark?"#0b0c10":"#f3f4f6"}
+function quietSwap(m){root.classList.add("thswap");inner(m,false);ss("wth",m);void root.offsetWidth;requestAnimationFrame(function(){requestAnimationFrame(function(){root.classList.remove("thswap")})})}
+var veil=null;
+function getVeil(){if(!veil){veil=document.createElement("div");veil.id="thveil";veil.setAttribute("aria-hidden","true");document.body.appendChild(veil)}return veil}
 setTheme=function(m,save){
- if(!save||busy||!motionOK()||darkFor(m)===isDark()){var r=inner(m,false);if(save)ss("wth",m);return r}
- busy=true;var dark=darkFor(m),R=Math.hypot(Math.max(px,innerWidth-px),Math.max(py,innerHeight-py))+40,S=160,k=R/(S/2);
- var o=document.createElement("div");o.setAttribute("aria-hidden","true");
- o.style.cssText="position:fixed;left:"+(px-S/2)+"px;top:"+(py-S/2)+"px;width:"+S+"px;height:"+S+"px;border-radius:50%;z-index:9998;pointer-events:none;will-change:transform,opacity;transform:scale(0);background:radial-gradient(circle,"+colourFor(dark)+" 62%,"+colourFor(dark)+"00 72%)";
- document.body.appendChild(o);
- var grow=o.animate([{transform:"scale(0)"},{transform:"scale("+(k*1.3).toFixed(2)+")"}],{duration:420,easing:"cubic-bezier(.45,0,.2,1)",fill:"forwards"});
- var done=false;function swap(){if(done)return;done=true;inner(m,false);ss("wth",m);
-  requestAnimationFrame(function(){requestAnimationFrame(function(){var f=o.animate([{opacity:1},{opacity:0}],{duration:320,easing:"ease-out",fill:"forwards"});f.onfinish=f.oncancel=function(){o.remove();busy=false}})})}
- grow.onfinish=swap;setTimeout(swap,700)};
+ if(!save){return inner(m,false)}
+ if(busy||!motionOK()||darkFor(m)===isDark()){quietSwap(m);return}
+ busy=true;var v=getVeil();v.style.background=colourFor(darkFor(m));v.className="";void v.offsetWidth;v.className="in";
+ setTimeout(function(){quietSwap(m);
+  /* wait until the page has finished drawing the new theme, so the fade-out itself stays smooth */
+  var t0=performance.now(),last=t0,calm=0;(function settle(t){var dt=t-last;last=t;calm=dt<26?calm+1:0;if(calm>=2||t-t0>900){v.className="out";setTimeout(function(){v.className="";busy=false},380)}else requestAnimationFrame(settle)})(t0)},180)};
 })();

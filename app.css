@@ -2753,3 +2753,14 @@ html.hid *,html.hid *::before,html.hid *::after{animation-play-state:paused!impo
 .modal{-webkit-backdrop-filter:blur(12px) saturate(150%);backdrop-filter:blur(12px) saturate(150%)}
 .modal .sheet{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:color-mix(in srgb,var(--panel) 94%,transparent)}
 html.mopen #bg *,html.mopen .wds *,html.mopen #bg .sv.aw{animation-play-state:paused!important}
+/* light/dark switch */
+#thveil{position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:0;visibility:hidden;will-change:opacity;contain:strict}
+#thveil.in{visibility:visible;opacity:1;transition:opacity .18s cubic-bezier(.4,0,.2,1)}
+#thveil.out{visibility:visible;opacity:0;transition:opacity .36s cubic-bezier(.2,0,.2,1)}
+html.thswap *,html.thswap *::before,html.thswap *::after{transition:none!important}
+/* wallpaper: the version for the other theme waits underneath, still and already drawn */
+#bg .lyr{z-index:0}
+#bg .lyr.lyon{z-index:1}
+#bg .lyr:not(.lyon) .sv{animation-play-state:paused!important}
+#bg .vig,#bg .grn{z-index:2}
+#bg .lyr:not([data-k]){z-index:1}
