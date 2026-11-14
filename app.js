@@ -1477,6 +1477,7 @@ h='<p class="wpintro">A soft blend made from one colour. The first one is your a
 else{var ph=ls("wp-photo","");h='<p class="wpintro">Use a photo of your own.</p>'+(ph?'<div class="wpcolprev">'+thumb('<div class="sky lv-photo" style="background-image:url('+ph+')"></div>',"#000")+'</div>':'<label class="wpdrop" id="wpdrop"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg><b>Choose a photo</b><small>or drop one here</small><input type="file" id="wpfile" accept="image/*" hidden></label>')+
 (ph?'<div class="wprow"><label class="btn">Change photo<input type="file" id="wpfile" accept="image/*" hidden></label><button type="button" class="btn del" id="wpphrm">Remove</button>'+(X.mode==="photo"?'':'<button type="button" class="btn pri" data-md="photo">Use this photo</button>')+'</div>':'')+
 '<p class="wpnote">It’s saved in this browser only.</p>'}
+h+='<div class="wpl">Glass</div><div class="glbox wpglb"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="8" width="13" height="11" rx="3.5"/><rect x="8" y="5" width="13" height="11" rx="3.5"/></svg><input type="range" id="wpgl" class="glsl" min="0" max="100" value="'+(typeof GL==="number"?GL:50)+'" style="--v:'+(typeof GL==="number"?GL:50)+'%" aria-label="Glass, from clear to tinted"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="3" y="8" width="13" height="11" rx="3.5" opacity=".55"/><rect x="8" y="5" width="13" height="11" rx="3.5"/></svg></div><p class="wpnote wpglnote">Slide left for clearer glass, right for more tint. Changes show as you drag.</p>';
 h+='<div class="wpl wpladj">Adjust<button type="button" class="wpreset" id="wpreset"'+((X.blur||0)||(X.dim||100)!==100?'':' hidden')+'>Reset</button></div>'+slider("wpbl","Blur",0,40,X.blur||0,"")+slider("wpdi","Brightness",40,120,X.dim||100,"%")+'<p class="wpnote">Colours, panels and animations are in Settings › Look.</p>';
 EL("wpsb").innerHTML=h;fixDrop()}
 function mark(){if(!P.hidden&&tab==="scene")P.querySelectorAll("[data-sc]").forEach(function(b){var on=X.mode==="scene"&&(X.id||cur)===b.dataset.sc;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on);var c=b.querySelector(".wpck");if(on&&!c)b.querySelector(".wpt").insertAdjacentHTML("afterend",chk(true));if(!on&&c)c.remove()})}
@@ -1505,9 +1506,9 @@ if(t.id==="wpreset"){X.blur=0;X.dim=100;saveX();adjust();draw();return}});
 P.addEventListener("input",function(e){var t=e.target;
 if(t.id==="wpbl"){X.blur=+t.value;EL("wpblv").textContent=t.value;adjust();saveX();EL("wpreset").hidden=false}
 else if(t.id==="wpdi"){X.dim=+t.value;EL("wpdiv").textContent=t.value+"%";adjust();saveX();EL("wpreset").hidden=false}
-else if(t.id==="wpgl"){EL("wpglv").textContent=t.value;if(typeof setGl==="function")setGl(t.value,true)}
+else if(t.id==="wpgl"){GL=+t.value;t.style.setProperty("--v",t.value+"%");document.documentElement.classList.add("gldrag");if(!glRAF)glRAF=requestAnimationFrame(function(){glRAF=0;applyGl(GL)})}
 else if(t.id==="wpany"){X.color=t.value;X.mode="color";saveX();render();var pv=P.querySelector(".wpcolprev");if(pv){var pp=colourPal(t.value,X.harm||"soft");pv.innerHTML=thumb(mesh(pp),pp[0])}}});
-P.addEventListener("change",function(e){var t=e.target;
+P.addEventListener("change",function(e){var t=e.target;if(t.id==="wpgl"){document.documentElement.classList.remove("gldrag");setGl(t.value,true);return}
 if(t.id==="wprot"){X.rot=t.checked;saveX()}
 else if(t.id==="wpmo2"){var a=EL("wpmo");if(a){a.checked=t.checked;a.onchange&&a.onchange()}}
 else if(t.id==="wpgr2"){var g=EL("wpgr");if(g){g.checked=t.checked;g.onchange&&g.onchange()}}
