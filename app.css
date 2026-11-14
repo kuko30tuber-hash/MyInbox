@@ -2654,3 +2654,17 @@ html.nosplash #splash{display:none}
 :root[data-theme="dark"] .lqs .lqs-track{background:rgba(255,255,255,.14)}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .lqs .lqs-track{background:rgba(255,255,255,.14)}}
 .wpglb{padding:14px 16px}
+/* clear glass: no milk, no blur. Only the edges and one small highlight show the glass is there */
+.lqs .lqs-knob{background:rgba(255,255,255,calc(1 - var(--p,0)));
+ box-shadow:0 calc(3px + var(--p,0)*3px) calc(12px + var(--p,0)*6px) rgba(0,0,0,calc(.26 - var(--p,0)*.16)),0 1px 2px rgba(0,0,0,calc(.12 - var(--p,0)*.08)),inset 0 1px 0 rgba(255,255,255,calc(.95 - var(--p,0)*.95))}
+.lqs.on .lqs-knob{-webkit-backdrop-filter:saturate(1.25) contrast(1.05);backdrop-filter:saturate(1.25) contrast(1.05)}
+.lqs .lqs-rim{background:radial-gradient(42% 22% at 32% 14%,rgba(255,255,255,.55),rgba(255,255,255,0) 100%);
+ box-shadow:inset 0 0 0 .75px rgba(255,255,255,.7),inset 0 1.5px 1px -.5px rgba(255,255,255,.9),inset 0 -1.5px 1px -.5px rgba(255,255,255,.45),inset 0 0 5px rgba(0,0,0,.07),inset 3px 0 3px -2px rgba(90,180,255,.35),inset -3px 0 3px -2px rgba(255,110,190,.3)}
+:root[data-theme="dark"] .lqs .lqs-rim{box-shadow:inset 0 0 0 .75px rgba(255,255,255,.45),inset 0 1.5px 1px -.5px rgba(255,255,255,.7),inset 0 -1.5px 1px -.5px rgba(255,255,255,.25),inset 0 0 6px rgba(0,0,0,.25),inset 3px 0 3px -2px rgba(90,180,255,.35),inset -3px 0 3px -2px rgba(255,110,190,.3)}
+.lqs.on .lqs-knob{-webkit-backdrop-filter:none;backdrop-filter:none}
+.lqs .lqs-mag{box-shadow:none}
+/* solid track colours so the magnified copy matches what's under the lens instead of doubling up */
+.lqs .lqs-track{background:color-mix(in srgb,var(--mute) 30%,var(--panel))}
+:root[data-theme="dark"] .lqs .lqs-track{background:color-mix(in srgb,#fff 14%,var(--panel))}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .lqs .lqs-track{background:color-mix(in srgb,#fff 14%,var(--panel))}}
+:root[data-theme="dark"] .lqs .lqs-rim{background:radial-gradient(42% 22% at 32% 14%,rgba(255,255,255,.28),rgba(255,255,255,0) 100%)}
