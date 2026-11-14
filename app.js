@@ -137,7 +137,7 @@ document.addEventListener("click",function(e){if(!wpp.hidden&&!wpp.contains(e.ta
 document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!wpp.hidden){wpOpen(false);wb.focus()}});
 try{var mq=window.matchMedia("(prefers-color-scheme: dark)");if(mq.addEventListener)mq.addEventListener("change",re);else mq.addListener(re)}catch(e){}
 try{new MutationObserver(re).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]})}catch(e){}
-var saved="flow";try{saved=localStorage.getItem("wp")||"flow"}catch(e){}
+var saved="mint";try{saved=localStorage.getItem("wp")||"mint"}catch(e){}
 cur=saved;buildWp();applyWp(saved);
 var off=0,tomorrow=tk.format(new Date(now.getTime()+864e5));
 function rel(k){return k===today?"Today, ":k===tomorrow?"Tomorrow, ":""}
@@ -903,7 +903,7 @@ function recent(){try{var a=JSON.parse(localStorage.getItem("colrecent")||"[]");
 function pushRecent(c){var a=recent().filter(function(x){return x!==c});a.unshift(c);try{localStorage.setItem("colrecent",JSON.stringify(a.slice(0,8)))}catch(e){}}
 
 /* --- what a picker controls: an account ("acc:email") or the app accent ("accent") --- */
-var ACC_DEF="#3346d3";
+var ACC_DEF="#0e7a5a";
 function getAccent(){var c=ls("wacc","");return HEX.test(c)?c:""}
 function applyAccent(){var c=getAccent(),r=document.documentElement.style;if(c){r.setProperty("--accent",c);r.setProperty("--dot",c);r.setProperty("--today",c)}else{r.removeProperty("--accent");r.removeProperty("--dot");r.removeProperty("--today")}}
 applyAccent();
@@ -1755,7 +1755,7 @@ var _TN=TN;TN=function(id){var l=jparse("wd-look",{})[id];return l&&l.col&&/^#[0
 /* the default wallpaper becomes quiet: a soft off-white, or near-black with a faint violet glow */
 var d=WP.filter(function(w){return w.id==="default"})[0];
 if(d){d.n="Calm";d.l=["#f4f3f7","#e4dcff","#f3e6f1","#e2ecf4","#ece6ff","#f6eef0"];d.d=["#09090d","#2a1f55","#1a1330","#0f1a2c","#22183f","#140f24"]}
-if(typeof applyWp==="function"&&(jparse("wpx",{}).mode||"scene")==="scene")applyWp(ls("wp","flow"),false);
+if(typeof applyWp==="function"&&(jparse("wpx",{}).mode||"scene")==="scene")applyWp(ls("wp","mint"),false);
 buildWds("mail");buildWds("calendar");buildWds("weather");buildWds("spotify");tickWds();
 })();
 /* ===== Premium 2: a sidebar on desktop ===== */
@@ -2924,7 +2924,7 @@ var _r=renderMail;renderMail=function(L,note){_r.apply(this,arguments);
 var isNew=false;try{var L=localStorage;isNew=!L.getItem("oi-welcome")&&!L.getItem("wd")&&!L.getItem("gaccts")&&!L.getItem("gsigned")&&!L.getItem("wp")&&!L.getItem("wth")&&!L.getItem("wacc")}catch(e){}
 var force=/(^|[#&])welcome\b/.test(window.__hash0||location.hash||"");
 if(!isNew&&!force)return;
-var ACC=[["","Sapphire","#3346d3"],["#7c4dff","Violet"],["#00c7be","Mint"],["#34c759","Green"],["#ff9500","Orange"],["#ff2d55","Pink"],["#af52de","Purple"],["#455a64","Graphite"]];
+var ACC=[["","Emerald","#0e7a5a"],["#3346d3","Sapphire"],["#7c4dff","Violet"],["#00c7be","Mint"],["#34c759","Green"],["#ff9500","Orange"],["#ff2d55","Pink"],["#af52de","Purple"],["#455a64","Graphite"]];
 var PK=[["ess","Essentials","A bit of everything",["unread","next","weather"]],["mail","Mail","Unread, important, latest, deliveries",["unread","important","latest","deliveries"]],["calendar","Calendar","Next up, agenda, week, month",["next","agenda","week","month"]],["weather","Weather","Forecast, sun, world clock",["weather","sun","world"]],["notes","Notes","Notes, to-do, habits, focus",["notes","todo","habits","focus"]],["none","Start empty","Add widgets later",[]]];
 var S={step:0,pk:"ess"},N=4;
 var LOGO='<img src="logo.svg" alt="" width="76" height="76">';
