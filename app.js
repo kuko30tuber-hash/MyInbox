@@ -2647,7 +2647,7 @@ window.__m3={archive:archive,setUnread:setUnread,serverSearch:serverSearch,endSe
 (function(){
 if(!window.gAuth||!gAuth.api)return;
 var SCOPE="https://www.googleapis.com/auth/drive.appdata",FILE="owninbox-settings.json",DRIVE="https://www.googleapis.com/drive/v3/files",UP="https://www.googleapis.com/upload/drive/v3/files";
-var KEYS=["wd","wd-size","wd-col","wd-cfg","wd-look","wd-w3","wd-packs","wd-packsel","wd-spamfrom","wd-notspam","wd-imp","wd-notimp","wd-cd","wd-water","wd-todo","wd-hab","wd-notes","wprefs","wacc","wth","wp","wpx","wpo","acccol","colrecent","hidcal","wxp-places","wxp-sel","nt2","sp-cid","notif","calview","tabs-hide","oled","snd","wd-izs","fm-uri"];
+var KEYS=["wd","wd-size","wd-col","wd-cfg","wd-look","wd-w3","wd-packs","wd-packsel","wd-spamfrom","wd-notspam","wd-imp","wd-notimp","wd-cd","wd-water","wd-todo","wd-hab","wd-notes","wprefs","wacc","wth","wp","wpx","wpo","acccol","colrecent","hidcal","wxp-places","wxp-sel","nt2","sp-cid","notif","calview","tabs-hide","oled","snd","wd-izs","fm-uri","lang"];
 var KS={};KEYS.forEach(function(k){KS[k]=1});
 function st(){return jparse("sync",{})}            /* {on, email, at (last local change), seen (remote time we have), fid, last} */
 function saveSt(x){try{_set.call(localStorage,"sync",JSON.stringify(x))}catch(e){}}
@@ -3222,4 +3222,15 @@ setTheme=function(m,save){
  setTimeout(function(){quietSwap(m);
   /* wait until the page has finished drawing the new theme, so the fade-out itself stays smooth */
   var t0=performance.now(),last=t0,calm=0;(function settle(t){var dt=t-last;last=t;calm=dt<26?calm+1:0;if(calm>=2||t-t0>900){v.className="out";setTimeout(function(){v.className="";busy=false},380)}else requestAnimationFrame(settle)})(t0)},180)};
+})();
+/* ===== Settings › Look: language ===== */
+(function(){
+var L=[["en","English"],["sk","Slovenčina"],["cs","Čeština"],["de","Deutsch"],["es","Español"],["fr","Français"]];
+function cur(){return ls("lang","en")}
+function html(){var c=cur();return '<div class="s3g" id="s3lang" data-noi18n><div class="s3h">'+(window.oiT?oiT("Language"):"Language")+'</div><div class="s3r"><div class="s3l"><b>'+(window.oiT?oiT("Language of the app"):"Language of the app")+'</b><small>'+(window.oiT?oiT("Emails, events and names stay as they are."):"Emails, events and names stay as they are.")+'</small></div><div class="s3c"><select id="langsel" class="s3sel" aria-label="Language">'+L.map(function(x){return '<option value="'+x[0]+'"'+(x[0]===c?' selected':'')+'>'+x[1]+'</option>'}).join("")+'</select></div></div></div>'}
+function paint(){var b=EL("stbody");if(!b||typeof stTab==="undefined"||stTab!=="look")return;var g=EL("s3lang");if(g){g.outerHTML=html();return}b.insertAdjacentHTML("afterbegin",html())}
+var _ds=drawSettings;drawSettings=function(){_ds.apply(this,arguments);paint()};
+EL("st").addEventListener("change",function(e){if(e.target.id!=="langsel")return;var v=e.target.value;if(v==="en"){try{localStorage.removeItem("lang")}catch(x){}}else ss("lang",v);
+ try{sessionStorage.setItem("oi-launched","1");sessionStorage.setItem("lang-open","1")}catch(x){}location.reload()});
+try{if(sessionStorage.getItem("lang-open")){sessionStorage.removeItem("lang-open");setTimeout(function(){var b=EL("stbtn")||document.querySelector('[aria-label*="Settings"]');if(b)b.click()},400)}}catch(e){}
 })();
