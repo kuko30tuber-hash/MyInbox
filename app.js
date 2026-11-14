@@ -2685,7 +2685,7 @@ var NS=("Notification" in window);
 function cfg(){var c=jparse("notif",{});return {mail:!!c.mail,ev:!!c.ev,lead:c.lead||10}}
 function save(c){ss("notif",JSON.stringify(c))}
 function allowed(){return NS&&Notification.permission==="granted"}
-var ICON="icon-192.png";
+var ICON="icon-192.png?v=7";
 function notify(title,body,tag,onclick){
  if(document.visibilityState==="visible"&&document.hasFocus()){var tt=EL("toast");tt.innerHTML='<b>'+esc(title)+'</b> '+esc(body)+(onclick?' <button type="button" class="undo" id="ntgo">Open</button>':'');tt.hidden=false;clearTimeout(tt._k);tt._k=setTimeout(function(){tt.hidden=true},7000);if(onclick)EL("ntgo").onclick=function(){tt.hidden=true;onclick()};return}
  if(!allowed())return;try{var n=new Notification(title,{body:body,tag:tag,icon:ICON,badge:ICON});n.onclick=function(){window.focus();if(onclick)onclick();n.close()}}catch(e){
@@ -2927,7 +2927,7 @@ if(!isNew&&!force)return;
 var ACC=[["","Emerald","#0e7a5a"],["#3346d3","Sapphire"],["#7c4dff","Violet"],["#00c7be","Mint"],["#34c759","Green"],["#ff9500","Orange"],["#ff2d55","Pink"],["#af52de","Purple"],["#455a64","Graphite"]];
 var PK=[["ess","Essentials","A bit of everything",["unread","next","weather"]],["mail","Mail","Unread, important, latest, deliveries",["unread","important","latest","deliveries"]],["calendar","Calendar","Next up, agenda, week, month",["next","agenda","week","month"]],["weather","Weather","Forecast, sun, world clock",["weather","sun","world"]],["notes","Notes","Notes, to-do, habits, focus",["notes","todo","habits","focus"]],["none","Start empty","Add widgets later",[]]];
 var S={step:0,pk:"ess"},N=4;
-var LOGO='<img src="logo.svg" alt="" width="76" height="76">';
+var LOGO='<img src="logo.svg?v=7" alt="" width="76" height="76">';
 var m=document.createElement("div");m.id="welc";m.className="modal";m.innerHTML='<div class="sheet frsheet" role="dialog" aria-modal="true" aria-labelledby="frh"><div id="frbody"></div><div class="frfoot"><div class="frdots" aria-hidden="true"></div><div class="frbtns"></div></div></div>';
 document.body.appendChild(m);
 function curAcc(){var c=ls("wacc","");return c}
