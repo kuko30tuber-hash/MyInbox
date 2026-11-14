@@ -1205,7 +1205,7 @@ WTABS.forEach(function(tab){EL("wds-"+tab).addEventListener("click",function(e){
 document.addEventListener("click",function(){requestAnimationFrame(function(){if(!cm.hidden&&typeof pills==="function")pills()})});
 
 /* ---------- packs in the gallery ---------- */
-var PACKS=[["mail","Mail","mail",["unread","important","latest","deliveries"]],["calendar","Calendar","calendar",["next","agenda","week","month"]],["notes","Notes","notes",["notes","todo","habits","focus"]],["weather","Weather","weather",["weather","sun","world","rings"]],["spotify","Spotify","spotify",["spnow","splists","sprecent","spqueue"]]];
+var PACKS=[["mail","Mail","mail",["unread","important","latest","deliveries"]],["calendar","Calendar","calendar",["next","agenda","week","month"]],["notes","Notes","notes",["notes","todo","habits","countdown"]],["weather","Weather","weather",["weather","sun","world","rings"]],["spotify","Spotify","spotify",["spnow","splists","sprecent","spqueue"]]];
 function packIcon(t){var b=EL("t"+t),v=b&&b.querySelector("svg");return v?v.outerHTML:""}
 var PK_CHECK='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>',
  PK_PEN='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
@@ -2925,7 +2925,7 @@ var isNew=false;try{var L=localStorage;isNew=!L.getItem("oi-welcome")&&!L.getIte
 var force=/(^|[#&])welcome\b/.test(window.__hash0||location.hash||"");
 if(!isNew&&!force)return;
 var ACC=[["","Emerald","#0e7a5a"],["#3346d3","Sapphire"],["#7c4dff","Violet"],["#00c7be","Mint"],["#34c759","Green"],["#ff9500","Orange"],["#ff2d55","Pink"],["#af52de","Purple"],["#455a64","Graphite"]];
-var PK=[["ess","Essentials","A bit of everything",["unread","next","weather"]],["mail","Mail","Unread, important, latest, deliveries",["unread","important","latest","deliveries"]],["calendar","Calendar","Next up, agenda, week, month",["next","agenda","week","month"]],["weather","Weather","Forecast, sun, world clock",["weather","sun","world"]],["notes","Notes","Notes, to-do, habits, focus",["notes","todo","habits","focus"]],["none","Start empty","Add widgets later",[]]];
+var PK=[["ess","Essentials","A bit of everything",["unread","next","weather"]],["mail","Mail","Unread, important, latest, deliveries",["unread","important","latest","deliveries"]],["calendar","Calendar","Next up, agenda, week, month",["next","agenda","week","month"]],["weather","Weather","Forecast, sun, world clock",["weather","sun","world"]],["notes","Notes","Notes, to-do, habits, countdown",["notes","todo","habits","countdown"]],["none","Start empty","Add widgets later",[]]];
 var S={step:0,pk:"ess"},N=4;
 var LOGO='<img src="logo.svg?v=7" alt="" width="76" height="76">';
 var m=document.createElement("div");m.id="welc";m.className="modal";m.innerHTML='<div class="sheet frsheet" role="dialog" aria-modal="true" aria-labelledby="frh"><div id="frbody"></div><div class="frfoot"><div class="frdots" aria-hidden="true"></div><div class="frbtns"></div></div></div>';
@@ -3044,4 +3044,13 @@ WTABS.forEach(function(tb){var c=EL("wds-"+tb);if(!c)return;mark(c);
  function run(e,t){if(c.classList.contains("edit"))return;var f=GO[t.dataset.w];if(!f)return;f(t)}
  c.addEventListener("click",function(e){if(c.classList.contains("edit")||e.defaultPrevented)return;if(e.target.closest("button,a,input,textarea,select,label,[data-acgo],[data-sd],[data-br],[data-si]"))return;var t=e.target.closest(".wgrid>.wd[data-w]");if(t)run(e,t)});
  c.addEventListener("keydown",function(e){if(e.key!=="Enter"&&e.key!==" ")return;var t=e.target;if(!t.matches||!t.matches(".wgrid>.wd[data-go]"))return;e.preventDefault();run(e,t)})});
+})();
+/* ===== Retired widgets: Breathe, Photo, Water, Focus timer, Top senders ===== */
+(function(){
+var GONE={breathe:1,photo:1,water:1,focus:1,senders:1};
+WG=WG.filter(function(w){return !GONE[w.id]});
+var changed=false;
+Object.keys(WD).forEach(function(t){if(!Array.isArray(WD[t]))return;var n=WD[t].filter(function(id){return !GONE[id]});if(n.length!==WD[t].length){WD[t]=n;changed=true}});
+if(changed){saveWd();WTABS.forEach(function(t){try{buildWds(t)}catch(e){}})}
+try{var P=jparse("wd-packs",[]);if(Array.isArray(P)){var pc=false;P.forEach(function(p){["ids","w","items"].forEach(function(k){if(Array.isArray(p[k])){var n=p[k].filter(function(id){return !GONE[id]});if(n.length!==p[k].length){p[k]=n;pc=true}}})});if(pc)ss("wd-packs",JSON.stringify(P))}}catch(e){}
 })();
