@@ -189,7 +189,7 @@ function refocus(t){var x=document.querySelector('#mail a[data-k="'+t+'"]');if(x
 document.addEventListener("keydown",function(e){if(e.key==="Escape"&&openTid&&EL("add").hidden){var t=openTid;openTid=null;renderMail(lastL,lastNote);refocus(t)}});
 async function openRd(a){var tid=a.dataset.t,key=a.dataset.k;
 if(openTid===key){openTid=null;renderMail(lastL,lastNote);refocus(key);return}
-openTid=key;openHTML='<p class="rh">Loading…</p>';renderMail(lastL,lastNote);refocus(key);
+openTid=key;openHTML='<p class="rh" aria-busy="true" aria-label="Loading"><span class="skr"><i style="width:62%"></i><i style="width:38%"></i><i></i><i></i><i style="width:84%"></i><i style="width:56%"></i></span></p>';renderMail(lastL,lastNote);refocus(key);
 try{if(!tid)throw {code:"no_live"};if(!mcpNS&&window.claude)mcpNS=await claude.use("mcp");if(!mcpNS)throw {code:"no_live"};
 var r=await mcpNS.callTool("Gmail","get_thread",{threadId:tid,messageFormat:"PLAIN_TEXT"});var p=r.payload;if(typeof p==="string"){try{p=JSON.parse(p)}catch(x){}}
 var ms=p&&p.messages;if(!ms||!ms.length)throw {code:"empty"};
@@ -386,12 +386,13 @@ EL("v-mail").addEventListener("click",function(e){var b=e.target.closest("[data-
 if(b.dataset.del!=null){bar.innerHTML='<span class="tq">Move this email to Trash?</span><button type="button" class="btn" data-delno="1">Cancel</button><button type="button" class="btn pri red" data-delok="'+b.dataset.del+'">Move to Trash</button>'}
 else if(b.dataset.delno!=null){renderMail(lastL,lastNote)}
 else if(b.dataset.delok!=null){doDel(b.dataset.delok,bar,b)}});
-async function doDel(tid,bar,btn){btn.disabled=true;btn.textContent="Moving\u2026";
-try{var m=mcpNS||(window.claude&&await claude.use("mcp"));if(!m)throw {code:"no_live"};
-await m.callTool("Gmail","trash_thread",{threadId:tid});
-lastDel=lastL.filter(function(x){return x[6]===tid})[0]||null;lastL=lastL.filter(function(x){return x[6]!==tid});openTid=null;renderMail(lastL,lastNote);
-quiet(m.invalidate("Gmail","search_threads"));showUndo(tid)}
-catch(e){bar.innerHTML='<span class="tq err">'+esc(DE[e&&e.code]||"Couldn\u2019t move it to Trash. Nothing was changed.")+'</span><button type="button" class="btn" data-delno="1">Close</button>'}}
+async function doDel(tid,bar,btn){btn.disabled=true;
+var m=mcpNS||(window.claude&&await claude.use("mcp").catch(function(){return null}));
+if(!m){bar.innerHTML='<span class="tq err">'+esc(DE.no_live||"Couldn\u2019t move it to Trash. Nothing was changed.")+'</span><button type="button" class="btn" data-delno="1">Close</button>';return}
+/* instant: it leaves the list now; if Gmail says no, it comes back */
+var idx=lastL.findIndex(function(x){return x[6]===tid});lastDel=idx>-1?lastL[idx]:null;lastL=lastL.filter(function(x){return x[6]!==tid});openTid=null;renderMail(lastL,lastNote);showUndo(tid);
+try{await m.callTool("Gmail","trash_thread",{threadId:tid});quiet(m.invalidate("Gmail","search_threads"))}
+catch(e){if(lastDel&&!lastL.some(function(x){return x[6]===tid})){lastL.splice(Math.min(idx,lastL.length),0,lastDel);renderMail(lastL,lastNote)}var tt=EL("toast");clearTimeout(undoT);tt.textContent="Couldn\u2019t move it to Trash. It\u2019s back in your list.";tt.hidden=false;undoT=setTimeout(function(){tt.hidden=true},4500)}}
 function showUndo(tid){var tt=EL("toast");clearTimeout(undoT);tt.innerHTML='Moved to Trash <button type="button" class="undo">Undo</button>';tt.hidden=false;
 tt.querySelector(".undo").onclick=async function(){this.disabled=true;
 try{var m=mcpNS||await claude.use("mcp");await m.callTool("Gmail","untrash_thread",{threadId:tid});
@@ -2521,14 +2522,17 @@ var IC={arch:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke
 var _ab=actBar;actBar=function(tid,m,subj){var h=_ab(tid,m,subj);
  var extra='<button type="button" class="btn rep" data-arch="'+esc(tid)+'">'+IC.arch+' Archive</button><button type="button" class="btn rep" data-unread="'+esc(tid)+'">'+IC.unread+' Mark unread</button>';
  return h.replace('<button type="button" class="btn del"',extra+'<button type="button" class="btn del"')};
-function archive(tid,silent){var i=rowOf(tid);var row=i>-1?lastL[i]:null;
- return mcp().then(function(m){if(!m)throw 0;return m.callTool("Gmail","unlabel_thread",{threadId:tid,labelIds:["INBOX"]}).then(function(){bust(m);
-  if(i>-1){lastL.splice(rowOf(tid),1)}if(SEARCH&&SEARCH.saved){SEARCH.saved.L=SEARCH.saved.L.filter(function(x){return x[6]!==tid})}
-  if(openTid===tid)openTid=null;renderMail(lastL,lastNote);
-  if(!silent)toast("Archived",function(){m.callTool("Gmail","label_thread",{threadId:tid,labelIds:["INBOX"]}).then(function(){bust(m);if(row&&rowOf(tid)<0){lastL.splice(Math.min(i,lastL.length),0,row);renderMail(lastL,lastNote)}})})})}).catch(function(){toast("Couldn’t archive that email.",null,4000)})}
-function setUnread(tid,on){var i=rowOf(tid),row=i>-1?lastL[i]:null;
- return mcp().then(function(m){if(!m)throw 0;return m.callTool("Gmail",on?"label_thread":"unlabel_thread",{threadId:tid,labelIds:["UNREAD"]}).then(function(){bust(m);if(row)row[3]=on?1:0;
-  if(on&&openTid===tid)openTid=null;renderMail(lastL,lastNote);toast(on?"Marked as unread":"Marked as read",null,3000)})}).catch(function(){toast("Couldn’t change that email.",null,4000)})}
+function archive(tid,silent){var i=rowOf(tid);var row=i>-1?lastL[i]:null,wasOpen=openTid===tid,saved=SEARCH&&SEARCH.saved?SEARCH.saved.L.slice():null;
+ /* instant: the email leaves the list now, Gmail catches up in the background */
+ if(i>-1)lastL.splice(i,1);if(SEARCH&&SEARCH.saved){SEARCH.saved.L=SEARCH.saved.L.filter(function(x){return x[6]!==tid})}
+ if(wasOpen)openTid=null;renderMail(lastL,lastNote);
+ function back(){if(row&&rowOf(tid)<0){lastL.splice(Math.min(i,lastL.length),0,row)}if(saved&&SEARCH&&SEARCH.saved)SEARCH.saved.L=saved;renderMail(lastL,lastNote)}
+ var done=mcp().then(function(m){if(!m)throw 0;return m.callTool("Gmail","unlabel_thread",{threadId:tid,labelIds:["INBOX"]}).then(function(){bust(m);return m})});
+ if(!silent)toast("Archived",function(){back();done.then(function(m){return m.callTool("Gmail","label_thread",{threadId:tid,labelIds:["INBOX"]}).then(function(){bust(m)})}).catch(function(){})});
+ return done.catch(function(){back();toast("Couldn’t archive that email. It’s back in your Inbox.",null,4500)})}
+function setUnread(tid,on){var i=rowOf(tid),row=i>-1?lastL[i]:null,was=row?row[3]:null;
+ if(row)row[3]=on?1:0;if(on&&openTid===tid)openTid=null;renderMail(lastL,lastNote);toast(on?"Marked as unread":"Marked as read",null,3000);
+ return mcp().then(function(m){if(!m)throw 0;return m.callTool("Gmail",on?"label_thread":"unlabel_thread",{threadId:tid,labelIds:["UNREAD"]}).then(function(){bust(m)})}).catch(function(){if(row){row[3]=was;renderMail(lastL,lastNote)}toast("Couldn’t change that email.",null,4000)})}
 
 /* ---------- attachments ---------- */
 var ATT={},attN=0;
@@ -2895,4 +2899,22 @@ EL("st").addEventListener("change",function(e){var id=e.target.id;
  if(id==="detoled"){ss("oled",e.target.checked?"1":"");applyOled();if(e.target.checked&&!isDark())say("Pure black shows when dark mode is on.",3500)}
  else if(id==="detsnd"){ss("snd",e.target.checked?"1":"");if(e.target.checked)play("chime")}});
 window.addEventListener("storage",function(e){if(e.key==="oled")applyOled()});
+})();
+/* ===== Smoother: email opens out of its row, placeholders while mail loads ===== */
+(function(){
+var RM=function(){return !(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)&&!(window.motionOn&&!motionOn())};
+var from=null;
+EL("mail").addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("li > a[data-k]");if(!a)return;from={k:a.dataset.k,r:a.getBoundingClientRect(),opening:openTid!==a.dataset.k}},true);
+function grow(){var f=from;from=null;if(!f||!f.opening||!RM()||openTid!==f.k)return;var pane=EL("mpane");if(!pane||!pane.offsetParent||!WIDE())return;
+ var pr=pane.getBoundingClientRect();if(!pr.width||!pr.height)return;var r=f.r,g=document.createElement("div");g.className="rdghost";g.setAttribute("aria-hidden","true");
+ g.style.cssText="left:"+pr.left+"px;top:"+pr.top+"px;width:"+pr.width+"px;height:"+pr.height+"px";document.body.appendChild(g);
+ var sx=r.width/pr.width,sy=Math.max(r.height/pr.height,.04);
+ var an=g.animate([{transform:"translate("+(r.left-pr.left)+"px,"+(r.top-pr.top)+"px) scale("+sx+","+sy+")",opacity:.95,borderRadius:"14px"},{transform:"none",opacity:.95,offset:.75},{transform:"none",opacity:0}],{duration:520,easing:"cubic-bezier(.2,.9,.25,1)"});
+ var inn=pane.querySelector(".inl.pane");if(inn)inn.animate([{opacity:0,transform:"translateY(6px)"},{opacity:0,offset:.35},{opacity:1,transform:"none"}],{duration:520,easing:"cubic-bezier(.2,.8,.2,1)"});
+ an.onfinish=an.oncancel=function(){g.remove()}}
+function skel(n){var s="";for(var i=0;i<n;i++)s+='<li class="mskel" aria-hidden="true"><span class="sk-av"></span><span class="sk-l"><i style="width:'+(28+((i*37)%30))+'%"></i><i style="width:'+(55+((i*23)%35))+'%"></i><i style="width:'+(40+((i*17)%40))+'%"></i></span></li>';return s}
+var _r=renderMail;renderMail=function(L,note){_r.apply(this,arguments);
+ var ul=EL("mail"),c=EL("count");
+ if(ul&&(!L||!L.length)&&(/loading/i.test(note||"")||(c&&/^Searching/.test(c.textContent)))){ul.innerHTML=skel(6);ul.setAttribute("aria-busy","true");var lc=EL("mlc");if(lc&&/loading/i.test(note||""))lc.textContent="Loading…"}else if(ul)ul.removeAttribute("aria-busy");
+ if(from)requestAnimationFrame(grow)};
 })();
