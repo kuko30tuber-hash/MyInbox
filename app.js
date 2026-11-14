@@ -832,7 +832,7 @@ drawGrid();
 })();
 (function(){try{history.scrollRestoration="manual"}catch(e){}
 function top0(){if(/^#(mail|calendar|notes)$/.test(location.hash))window.scrollTo(0,0)}
-top0();window.addEventListener("load",function(){top0();setTimeout(top0,0)});window.addEventListener("hashchange",function(){setTimeout(top0,0)})})();
+window.addEventListener("load",function(){top0()});window.addEventListener("hashchange",function(){setTimeout(top0,0)})})();
 /* ===== Important + several accounts ===== */
 function acctChips(){if(!(window.gAuth&&gAuth.accounts))return "";var A=gAuth.accounts();if(!A.length)return "";
 return A.map(function(a,i){return '<span class="cc acct'+(a.on?'':' off')+'" title="'+esc(a.email)+'"><i style="background:'+accColor(a.email)+'"></i><span class="acm">'+esc(a.email)+'</span>'+(a.on?'':'<button type="button" class="acin" data-acin="'+esc(a.email)+'">Sign in</button>')+'<button type="button" class="acx" data-acrm="'+esc(a.email)+'" aria-label="Sign out of '+esc(a.email)+'">×</button></span>'}).join("")+'<button type="button" class="cc gso" id="gadd">+ Add account</button>'}
@@ -2966,4 +2966,19 @@ m.addEventListener("click",function(e){var b;
 m.addEventListener("keydown",function(e){if(e.key==="Escape"){e.stopPropagation();finish()}else if(e.key==="Enter"&&e.target===document.body){var f=m.querySelector(".frbtns .btn.pri");if(f)f.click()}});
 draw();m.hidden=false;
 window.__welcome={finish:finish,S:S};
+})();
+/* ===== Speed: one layout read per frame, build hidden tabs when they're opened ===== */
+(function(){
+/* tab highlight and segmented pills: measure once per frame instead of every call */
+if(typeof moveInd==="function"){var _mi=moveInd,mq=0;moveInd=function(){if(mq)return;mq=requestAnimationFrame(function(){mq=0;_mi()})}}
+if(typeof pill==="function"){var _pl=pill,PQ=[],pq=0;pill=function(box){if(!box)return;if(PQ.indexOf(box)<0)PQ.push(box);if(pq)return;pq=requestAnimationFrame(function(){pq=0;var a=PQ;PQ=[];a.forEach(function(b){_pl(b)})})}}
+/* widgets on a tab you can't see are built when you open it */
+if(typeof buildWds==="function"&&typeof WTABS!=="undefined"){var _bw=buildWds,DIRTY={};
+ function vis(tab){var s=EL("v-"+tab);return !s||!s.hidden}
+ buildWds=function(tab){if(!vis(tab)&&EL("wds-"+tab)){DIRTY[tab]=1;return}delete DIRTY[tab];return _bw.apply(this,arguments)};
+ function flush(){WTABS.forEach(function(t){if(DIRTY[t]&&vis(t)){delete DIRTY[t];_bw(t)}})}
+ var _sh=show;show=function(){var r=_sh.apply(this,arguments);flush();return r};
+ if(window.MutationObserver)WTABS.forEach(function(t){var s=EL("v-"+t);if(s)new MutationObserver(function(){if(!s.hidden&&DIRTY[t])flush()}).observe(s,{attributes:true,attributeFilter:["hidden"]})});
+
+ window.__perf={dirty:DIRTY}}
 })();
