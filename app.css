@@ -2717,3 +2717,39 @@ html.motion .fmw.on .fmr{animation:fmP 2.4s ease-out infinite}
 .wd.zs .fmw .ws{font-size:12px}
 .wd.zs .izf{width:calc(40px * var(--s,1));height:calc(50px * var(--s,1))}
 #sprule{display:none!important}
+/* ===== Performance pass: animations that run on the graphics card instead of repainting ===== */
+/* wallpaper: move the whole picture as one layer (cheap) instead of redrawing its shapes every frame */
+html.motion:not(.still) #bg .sv.aw .awr0,html.motion:not(.still) #bg .sv.aw .awr1,html.motion:not(.still) #bg .sv.aw .awf0,html.motion:not(.still) #bg .sv.aw .awf1,html.motion:not(.still) #bg .sv.aw .awh{animation:none}
+#bg .sv.aw{transform:scale(1.06);transform-origin:50% 50%;backface-visibility:hidden}
+html.motion:not(.still) #bg .sv.aw{animation:awLayer 38s ease-in-out infinite alternate;will-change:transform}
+@keyframes awLayer{from{transform:translate3d(-1.1%,-.7%,0) scale(1.06) rotate(-.4deg)}to{transform:translate3d(1.1%,.8%,0) scale(1.075) rotate(.4deg)}}
+/* rain and snow on the live sky: slide a layer instead of repainting the pattern */
+.lv-rain{animation:none;background:none;overflow:hidden}
+.lv-rain::before{content:"";position:absolute;left:0;right:-40px;top:-240px;bottom:0;background:repeating-linear-gradient(100deg,transparent 0 11px,rgba(255,255,255,.22) 11px 12px,transparent 12px 26px);background-size:100% 120px;animation:lvRain2 .5s linear infinite;will-change:transform}
+@keyframes lvRain2{from{transform:translate3d(0,0,0)}to{transform:translate3d(-20px,120px,0)}}
+.lv-snow{animation:none;background:none;overflow:hidden}
+.lv-snow::before{content:"";position:absolute;left:-60px;right:0;top:-460px;bottom:0;background-image:radial-gradient(circle,rgba(255,255,255,.95) 0 1.6px,transparent 2.4px);background-size:46px 46px;animation:lvSnow2 9s linear infinite;will-change:transform}
+@keyframes lvSnow2{from{transform:translate3d(0,0,0)}to{transform:translate3d(30px,460px,0)}}
+/* loading shimmer: a light band slides across (no repaint) */
+.wsk i,.mskel i,.mskel .sk-av,.skr i{position:relative;overflow:hidden;animation:none!important;background:color-mix(in srgb,var(--ink) 8%,transparent)!important}
+.wsk i::after,.mskel i::after,.mskel .sk-av::after,.skr i::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--ink) 9%,transparent),transparent);transform:translateX(-100%);animation:shim2 1.4s ease-in-out infinite}
+@keyframes shim2{to{transform:translateX(100%)}}
+/* sun glow: fade a glow layer instead of animating the shadow */
+html.motion .sn2s:not(.low){animation:none}
+.sn2s:not(.low)::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:0 0 0 6px rgba(255,190,60,.16),0 0 24px 6px rgba(255,180,40,.5);opacity:0;pointer-events:none}
+html.motion .sn2s:not(.low)::after{animation:glow2 4s ease-in-out infinite alternate}
+@keyframes glow2{to{opacity:1}}
+/* new email highlight: fade a layer */
+html.motion #mail>li.rnew>a{animation:none;position:relative}
+html.motion #mail>li.rnew>a::after{content:"";position:absolute;inset:0;border-radius:inherit;background:color-mix(in srgb,var(--accent) 22%,transparent);pointer-events:none;animation:glow3 1.8s ease both}
+@keyframes glow3{0%,40%{opacity:1}100%{opacity:0}}
+/* things you can't see don't animate */
+.offs,.offs *{animation-play-state:paused!important}
+html.hid *,html.hid *::before,html.hid *::after{animation-play-state:paused!important}
+/* long mail lists: rows outside the screen aren't laid out or painted */
+#mail>li{content-visibility:auto;contain-intrinsic-size:auto 84px}
+#mail>li.open,#mail>li:has(>a[aria-expanded="true"]){content-visibility:visible}
+/* dialogs: one blur for the backdrop, not a blur on top of a blur; and the page behind stops animating */
+.modal{-webkit-backdrop-filter:blur(12px) saturate(150%);backdrop-filter:blur(12px) saturate(150%)}
+.modal .sheet{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:color-mix(in srgb,var(--panel) 94%,transparent)}
+html.mopen #bg *,html.mopen .wds *,html.mopen #bg .sv.aw{animation-play-state:paused!important}

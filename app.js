@@ -1,3 +1,11 @@
+/* while the app starts, the mail list and widgets are drawn once at the end instead of many times.
+   Every call during start-up is noted and skipped; the whole chain of add-ons runs once when start-up ends. */
+var BOOT={on:true,q:{}};
+function bootProp(name){var real=null;Object.defineProperty(window,name,{configurable:true,
+ get:function(){var f=real;return function(){if(BOOT.on&&f){(BOOT.q[name]=BOOT.q[name]||[]).push([].slice.call(arguments));if(name==="renderMail"){lastL=arguments[0];lastNote=arguments[1]}return}return f.apply(this,arguments)}},
+ set:function(v){real=v}})}
+bootProp("renderMail");bootProp("buildWds");bootProp("tickWds");
+renderMail=renderMail0;buildWds=buildWds0;tickWds=tickWds0;
 
 var M=[];
 function esc(s){return s.replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
@@ -58,7 +66,7 @@ if(/\bIMPORTANT\b/.test(labels)&&!m[9]&&!/CATEGORY_(PROMOTIONS|SOCIAL|FORUMS)/.t
 return ""}
 function isImp(m){return !!impWhy(m)}
 
-function renderMail(L,note){lastL=L;lastNote=note;var A=accts(),multi=A.length>1;if(acctF&&A.indexOf(acctF)<0)acctF="";
+function renderMail0(L,note){lastL=L;lastNote=note;var A=accts(),multi=A.length>1;if(acctF&&A.indexOf(acctF)<0)acctF="";
 var F=multi&&acctF?L.filter(function(m){return m[10]===acctF}):L;
 var sp=F.filter(isSpam),inb=F.filter(function(m){return !isSpam(m)}),imp=F.filter(isImp),cur=view==="sp"?sp:view==="imp"?imp:inb,un=cur.filter(function(m){return m[3]}).length;
 document.getElementById("tin").textContent="Inbox ("+inb.length+")";var iu=L.filter(function(m){return m[3]&&!isSpam(m)}).length;var bb=document.getElementById("tmailb");bb.textContent=iu>99?"99+":iu;bb.hidden=!iu;document.getElementById("tsp").textContent="Spam ("+sp.length+")";var ti=document.getElementById("timp");if(ti)ti.textContent="Important ("+imp.length+")";
@@ -301,7 +309,7 @@ var WG=[
 {id:"todo",tab:"both",wide:1,name:"To-do list",desc:"A simple checklist saved in this browser",r:todoHtml}];
 function wgById(id){return WG.filter(function(w){return w.id===id})[0]}
 
-function tickWds(){WTABS.forEach(function(tab){WD[tab].forEach(function(id){var w=wgById(id);if(!w||!w.live)return;var b=document.querySelector('#wds-'+tab+' [data-w="'+id+'"] .wb');if(b)b.innerHTML=w.r()})})}
+function tickWds0(){WTABS.forEach(function(tab){WD[tab].forEach(function(id){var w=wgById(id);if(!w||!w.live)return;var b=document.querySelector('#wds-'+tab+' [data-w="'+id+'"] .wb');if(b)b.innerHTML=w.r()})})}
 function bindWds(tab){var c=EL("wds-"+tab);
 c.addEventListener("click",function(e){var t=e.target.closest("button,input");if(!t)return;
 if(t.dataset.rm){WD[tab]=WD[tab].filter(function(i){return i!==t.dataset.rm});saveWd();buildWds(tab);return}
@@ -612,7 +620,7 @@ function jparse(k,d){try{var v=JSON.parse(ls(k,"null"));return v==null?d:v}catch
 function WS(){return window.__ws||(window.__ws={sz:jparse("wd-size",{}),col:jparse("wd-col",{}),edit:{}})}
 function TN(id){return ({unread:"#0a84ff",spam:"#ff9f0a",senders:"#bf5af2",orders:"#30d158",latest:"#64d2ff",activity:"#0a84ff",next:"#bf5af2",f1:"#ff453a",week:"#0a84ff",today:"#30d158",holiday:"#ff375f",tomorrow:"#ff9f0a",busiest:"#ff453a",mix:"#5e5ce6",clock:"#64d2ff",world:"#64d2ff",focus:"#ff453a",countdown:"#ff9f0a",year:"#30d158",quote:"#ac8e68",notes:"#ffd60a",todo:"#30d158"})[id]||"#0a84ff"}
 var CHEV='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>',ZL={s:"S",w:"M",l:"L"};
-function buildWds(tab){var c=EL("wds-"+tab),W=WS(),ids=WD[tab],col=!!W.col[tab],ed=!!W.edit[tab];c.className="wds"+(ed?" edit":"")+(col?" col":"");
+function buildWds0(tab){var c=EL("wds-"+tab),W=WS(),ids=WD[tab],col=!!W.col[tab],ed=!!W.edit[tab];c.className="wds"+(ed?" edit":"")+(col?" col":"");
 var bar='<div class="wbar"><button type="button" class="wbtn wchev" data-wcol="'+tab+'" aria-expanded="'+!col+'" aria-label="'+(col?"Show":"Hide")+' widgets">'+CHEV+'</button><span class="wbt">Widgets</span><span class="wbn">'+ids.length+'</span><span class="wsp"></span>'+(col?'':'<button type="button" class="wbtn" data-add="'+tab+'">+ Add</button><button type="button" class="wbtn'+(ed?' on':'')+'" data-edit="'+tab+'">'+(ed?"Done":"Edit")+'</button>')+'</div>';
 var tiles=ids.map(function(id){var w=wgById(id);if(!w)return "";var z=W.sz[tab+":"+id]||(w.wide?"w":"s");
 return '<div class="wd z'+z+'" data-w="'+id+'" style="--tn:'+TN(id)+'"'+(ed?' draggable="true"':'')+'><button class="wx" type="button" data-rm="'+id+'" aria-label="Remove '+esc(w.name)+'">\u2212</button>'+(ed?'<div class="wmv"><button type="button" data-mv="-1" data-i="'+id+'" aria-label="Move earlier">\u2039</button><button type="button" data-mv="1" data-i="'+id+'" aria-label="Move later">\u203a</button><button type="button" data-sz="'+id+'" aria-label="Change size, now '+ZL[z]+'">'+ZL[z]+'</button></div>':'')+'<div class="wb">'+w.r()+'</div></div>'}).join("");
@@ -3165,3 +3173,22 @@ window.__nw={rainLoad:rainLoad,RN:RN,moonAt:moonAt,streak:function(){return stre
 document.addEventListener("click",function(e){var t=e.target.closest&&e.target.closest(".wds:not(.edit) .wgrid>.wd[data-w]");if(!t||!M[t.dataset.w]||e.target.closest("button,a,input,textarea,select,label"))return;M[t.dataset.w]()});
 function mark(){document.querySelectorAll(".wgrid>.wd[data-w]").forEach(function(t){if(M[t.dataset.w]&&!t.hasAttribute("data-go")){t.setAttribute("data-go","1");if(!t.hasAttribute("tabindex"))t.tabIndex=0}})}
 var _b=buildWds;buildWds=function(){var r=_b.apply(this,arguments);mark();return r};mark()})();
+/* ===== Performance: pause animations you can't see ===== */
+(function(){
+var root=document.documentElement;
+document.addEventListener("visibilitychange",function(){root.classList.toggle("hid",document.hidden)});
+if(!("IntersectionObserver" in window))return;
+var io=new IntersectionObserver(function(es){es.forEach(function(e){e.target.classList.toggle("offs",!e.isIntersecting)})},{rootMargin:"120px"});
+var seen=new WeakSet();
+function watch(){document.querySelectorAll(".wgrid>.wd").forEach(function(t){if(!seen.has(t)){seen.add(t);io.observe(t)}})}
+var _b=buildWds;buildWds=function(){var r=_b.apply(this,arguments);watch();return r};watch();
+})();
+(function(){var root=document.documentElement;function upd(){root.classList.toggle("mopen",!!document.querySelector(".modal:not([hidden])"))}
+if(window.MutationObserver)new MutationObserver(upd).observe(document.body,{attributes:true,attributeFilter:["hidden"],subtree:true,childList:true});upd()})();
+/* ===== end of start-up: draw everything once ===== */
+(function(){BOOT.on=false;var q=BOOT.q;BOOT.q={};
+ var tabs={};(q.buildWds||[]).forEach(function(a){if(a[0])tabs[a[0]]=1});
+ Object.keys(tabs).forEach(function(t){try{buildWds(t)}catch(e){console.error(e)}});
+ if(q.renderMail)try{renderMail(lastL,lastNote)}catch(e){console.error(e)}
+ try{tickWds()}catch(e){console.error(e)}
+ try{if(typeof moveInd==="function")moveInd()}catch(e){}})();
