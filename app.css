@@ -2716,3 +2716,4 @@ html.motion .fmw.on .fmr{animation:fmP 2.4s ease-out infinite}
 .wd.zs .fmt{font-size:13.5px}
 .wd.zs .fmw .ws{font-size:12px}
 .wd.zs .izf{width:calc(40px * var(--s,1));height:calc(50px * var(--s,1))}
+#sprule{display:none!important}

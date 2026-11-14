@@ -582,7 +582,7 @@ if(me){MYMAIL=me.id.toLowerCase();var f=EL("cmfrom");if(f)f.textContent="From "+
 buildLegend();buildCalSelect()}
 function spamList(){try{var a=JSON.parse(ls("wd-spamfrom","[]"));return Array.isArray(a)?a:[]}catch(e){return[]}}
 function mkForce(){var a=spamList();return a.length?new RegExp(a.map(function(x){return x.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")}).join("|"),"i"):/(?!)/}
-function spUi(){var box=EL("sprule");if(!box)return;box.hidden=view!=="sp";EL("spc").innerHTML=spamList().map(function(x,i){return '<span class="spchip">'+esc(x)+'<button type="button" data-spx="'+i+'" aria-label="Remove '+esc(x)+'">\u00d7</button></span>'}).join("")||'<span class="spnone">No senders added yet</span>'}
+function spUi(){var box=EL("sprule");if(!box)return;box.hidden=true;EL("spc").innerHTML=spamList().map(function(x,i){return '<span class="spchip">'+esc(x)+'<button type="button" data-spx="'+i+'" aria-label="Remove '+esc(x)+'">\u00d7</button></span>'}).join("")||'<span class="spnone">No senders added yet</span>'}
 function spAdd(){var v=EL("spin").value.trim().toLowerCase();if(v.length<3)return;var a=spamList();if(a.indexOf(v)<0){a.push(v);ss("wd-spamfrom",JSON.stringify(a))}EL("spin").value="";FORCE=mkForce();renderMail(lastL,lastNote)}
 EL("spgo").onclick=spAdd;
 EL("spin").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();spAdd()}});
