@@ -2530,3 +2530,29 @@ svg[stroke="currentColor"][width="40"],svg[stroke="currentColor"][width="44"]{st
 html body .sbr,html body nav.top button,html body #sttabs button,.wbtn,.wpbtn{border-radius:var(--r-sm)!important}
 #wgl .wd,.wd.wghost{border-radius:var(--r-lg)!important}
 html.sidebar .top .sbx .sbr,html.sidebar .top .sbx #sbadd{border-radius:var(--r-sm)!important}
+/* ===== Details ===== */
+html{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--ink) 22%,transparent) transparent}
+*{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--ink) 22%,transparent) transparent}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--ink) 20%,transparent);border-radius:99px;border:3px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-thumb:hover{background-color:color-mix(in srgb,var(--ink) 34%,transparent)}
+::selection{background:color-mix(in srgb,var(--accent) 30%,transparent);color:inherit}
+input::selection,textarea::selection{background:color-mix(in srgb,var(--accent) 34%,transparent)}
+body{font-variant-numeric:tabular-nums}
+.rd .body,.rbody,.mbody,#reader .msg,.nwrap textarea,.nwrap [contenteditable],h1,h2{font-variant-numeric:normal}
+input[type="checkbox"],input[type="radio"],progress,input[type="range"]{accent-color:var(--accent)}
+/* pure black (OLED) dark mode: html.oled is set only while dark mode is showing */
+html.oled{--bg:#000;--panel:#0a0a0c;--line:rgba(255,255,255,.1);--glass:rgba(6,6,8,.8);--glass-lo:rgba(255,255,255,.045);--shadow:0 14px 48px rgba(0,0,0,.85)}
+html.oled body,html.oled #bg{background:#000}
+html.oled #bg>*:not(.vig):not(.grn){filter:brightness(.34) saturate(1.1)}
+html.oled .wds .wd,html.oled #v-mail .mwrap,html.oled .cal,html.oled .nwrap,html.oled .wxc,html.oled .wxt,html.oled .spk,html.oled #wkv,html.oled .modal .sheet{background-color:rgba(8,8,10,.86)!important}
+/* launch */
+#splash{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:var(--bg);pointer-events:none;animation:splOut .5s cubic-bezier(.4,0,.2,1) .78s forwards}
+#splash img{width:84px;height:84px;border-radius:22px;animation:splIn .7s cubic-bezier(.3,1.35,.5,1) both;filter:drop-shadow(0 18px 40px color-mix(in srgb,var(--accent) 45%,transparent))}
+#splash .spl-glow{position:absolute;width:260px;height:260px;border-radius:50%;background:radial-gradient(closest-side,color-mix(in srgb,var(--accent) 38%,transparent),transparent);animation:splGlow 1.2s ease-out both}
+@keyframes splIn{0%{opacity:0;transform:scale(.72) rotate(-8deg)}60%{opacity:1}100%{opacity:1;transform:none}}
+@keyframes splGlow{0%{opacity:0;transform:scale(.5)}50%{opacity:1}100%{opacity:.6;transform:scale(1.2)}}
+@keyframes splOut{to{opacity:0;visibility:hidden;transform:scale(1.04)}}
+html.nosplash #splash{display:none}
+@media(prefers-reduced-motion:reduce){#splash{display:none}}

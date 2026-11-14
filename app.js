@@ -2621,7 +2621,7 @@ window.__m3={archive:archive,setUnread:setUnread,serverSearch:serverSearch,endSe
 (function(){
 if(!window.gAuth||!gAuth.api)return;
 var SCOPE="https://www.googleapis.com/auth/drive.appdata",FILE="owninbox-settings.json",DRIVE="https://www.googleapis.com/drive/v3/files",UP="https://www.googleapis.com/upload/drive/v3/files";
-var KEYS=["wd","wd-size","wd-col","wd-cfg","wd-look","wd-w3","wd-packs","wd-packsel","wd-spamfrom","wd-notspam","wd-imp","wd-notimp","wd-cd","wd-water","wd-todo","wd-hab","wd-notes","wprefs","wacc","wth","wp","wpx","wpo","acccol","colrecent","hidcal","wxp-places","wxp-sel","nt2","sp-cid","notif","calview","tabs-hide"];
+var KEYS=["wd","wd-size","wd-col","wd-cfg","wd-look","wd-w3","wd-packs","wd-packsel","wd-spamfrom","wd-notspam","wd-imp","wd-notimp","wd-cd","wd-water","wd-todo","wd-hab","wd-notes","wprefs","wacc","wth","wp","wpx","wpo","acccol","colrecent","hidcal","wxp-places","wxp-sel","nt2","sp-cid","notif","calview","tabs-hide","oled","snd"];
 var KS={};KEYS.forEach(function(k){KS[k]=1});
 function st(){return jparse("sync",{})}            /* {on, email, at (last local change), seen (remote time we have), fid, last} */
 function saveSt(x){try{_set.call(localStorage,"sync",JSON.stringify(x))}catch(e){}}
@@ -2858,3 +2858,41 @@ EL("st").addEventListener("click",function(e){if(!e.target.closest("#instgo")||!
 /* screen readers: say which tab is open */
 (function(){function mark(){document.querySelectorAll("nav.top button[id^='t']").forEach(function(b){if(b.classList.contains("on"))b.setAttribute("aria-current","page");else b.removeAttribute("aria-current")})}
 var _sh=show;show=function(){var r=_sh.apply(this,arguments);mark();return r};mark()})();
+/* ===== Details: pure black dark mode, soft sounds ===== */
+(function(){
+var root=document.documentElement;
+function oled(){return ls("oled","")==="1"}
+function snd(){return ls("snd","")==="1"}
+function applyOled(){root.classList.toggle("oled",oled()&&isDark())}
+applyOled();var _st=setTheme;setTheme=function(){var r=_st.apply(this,arguments);applyOled();return r};
+if(window.matchMedia)try{matchMedia("(prefers-color-scheme: dark)").addEventListener("change",applyOled)}catch(e){}
+/* ---------- soft sounds, made on the fly (no files to download) ---------- */
+var AC=null;
+function ctx(){if(!AC){var A=window.AudioContext||window.webkitAudioContext;if(!A)return null;try{AC=new A()}catch(e){return null}}if(AC.state==="suspended")AC.resume();return AC}
+function tone(c,f1,f2,at,len,vol,type){var o=c.createOscillator(),g=c.createGain(),t=c.currentTime+at;o.type=type||"sine";o.frequency.setValueAtTime(f1,t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+len);
+ g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+0.012);g.gain.exponentialRampToValueAtTime(0.0001,t+len);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+len+0.02)}
+var KINDS={
+ send:function(c){tone(c,620,980,0,.16,.07);tone(c,990,1180,.09,.2,.045)},
+ away:function(c){tone(c,520,300,0,.18,.06,"triangle")},
+ tick:function(c){tone(c,1500,1400,0,.045,.035)},
+ chime:function(c){tone(c,880,0,0,.5,.05);tone(c,1320,0,.11,.6,.04)},
+ soft:function(c){tone(c,240,200,0,.16,.05,"triangle")}};
+function play(k){if(!snd()||!KINDS[k])return;if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches&&k==="tick")return;var c=ctx();if(!c)return;try{KINDS[k](c)}catch(e){}}
+window.oiSound=play;
+/* sound follows what the app already says in its toast */
+var tt=EL("toast"),lastTxt="",lastAt=0;
+if(tt&&window.MutationObserver)new MutationObserver(function(){if(tt.hidden)return;var s=tt.textContent.trim(),now=Date.now();if(!s||(s===lastTxt&&now-lastAt<1500))return;lastTxt=s;lastAt=now;
+ var k=/^(Sent to|Reply sent)/.test(s)?"send":/^(Archived|Moved to Trash)/.test(s)?"away":/^(Restored|Marked as|Undone)/.test(s)?"tick":/^Couldn|^That |can’t|isn’t/.test(s)?"soft":tt.querySelector("b")?"chime":null;
+ if(k)play(k)}).observe(tt,{childList:true,characterData:true,subtree:true,attributes:true,attributeFilter:["hidden"]});
+/* ---------- Settings › Look ---------- */
+function tg(id,on,l){return '<label class="s3t"><input type="checkbox" role="switch" id="'+id+'"'+(on?' checked':'')+' aria-label="'+l+'"><i aria-hidden="true"></i></label>'}
+function html(){return '<div class="s3g" id="s3det"><div class="s3h">Details</div>'+
+ '<div class="s3r"><div class="s3l"><b>Pure black in dark mode</b><small>Deeper blacks that look great and save battery on OLED screens.</small></div><div class="s3c">'+tg("detoled",oled(),"Pure black in dark mode")+'</div></div>'+
+ '<div class="s3r"><div class="s3l"><b>Sounds</b><small>Quiet sounds when you send, archive or get a reminder.</small></div><div class="s3c">'+tg("detsnd",snd(),"Play sounds")+'</div></div></div>'}
+function paint(){var b=EL("stbody");if(!b||typeof stTab==="undefined"||stTab!=="look")return;var g=EL("s3det");if(g){g.outerHTML=html();return}var t=EL("s3tabs");if(t)t.insertAdjacentHTML("beforebegin",html());else b.insertAdjacentHTML("beforeend",html())}
+var _ds=drawSettings;drawSettings=function(){_ds.apply(this,arguments);paint()};
+EL("st").addEventListener("change",function(e){var id=e.target.id;
+ if(id==="detoled"){ss("oled",e.target.checked?"1":"");applyOled();if(e.target.checked&&!isDark())say("Pure black shows when dark mode is on.",3500)}
+ else if(id==="detsnd"){ss("snd",e.target.checked?"1":"");if(e.target.checked)play("chime")}});
+window.addEventListener("storage",function(e){if(e.key==="oled")applyOled()});
+})();
